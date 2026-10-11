@@ -1,0 +1,827 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scale Dictates Structure</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800;900&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one fixed stage where the same folders re-seat themselves per pipeline; caption beside it, all five trees at rest below. Single dark look, taken from the CV. */
+:root{
+  color-scheme:dark;
+  --bg:#111012; --panel:#161416; --line:#2e2b2e; --fg:#eeeae4; --dim:#8f8a84; --soft:#d6d1ca; --accent:#ff3d7f; --ink:#140a0d;
+  --display:'Archivo',Arial,sans-serif; --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  --row:30px; --ind:18px;
+}
+body{background:var(--bg);color:var(--fg);font-family:var(--display);font-size:15px;line-height:1.45}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:28px 48px;display:flex;flex-direction:column;gap:28px}
+.rail{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:3px;color:var(--accent);text-transform:uppercase}
+h1{margin:6px 0 0;font-weight:900;font-size:clamp(34px,7vw,56px);line-height:.92;letter-spacing:-1.4px;text-transform:uppercase;text-wrap:balance}
+.lede{margin:10px 0 0;max-width:62ch;color:var(--soft)}
+h2{margin:0;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:3px;color:var(--accent);text-transform:uppercase;display:flex;gap:10px;align-items:center}
+h2::after{content:"";flex:1;height:1px;background:var(--line)}
+section{display:flex;flex-direction:column;gap:12px}
+
+.tabs{display:flex;flex-wrap:wrap;gap:6px}
+button{font:inherit;color:inherit;cursor:pointer}
+.tab{background:var(--panel);border:1px solid var(--line);padding:7px 10px;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--soft)}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--ink)}
+.tab:focus-visible,.ctl:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+
+.demo{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:760px){.demo{grid-template-columns:minmax(0,1fr)}}
+.stagebox{background:var(--panel);border:1px solid var(--line);padding:12px 12px 14px;min-width:0}
+.root{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--fg);padding-bottom:8px;border-bottom:1px solid var(--line);margin-bottom:8px;overflow-wrap:anywhere}
+.stage{position:relative;overflow:hidden}
+.node{position:absolute;left:0;right:0;top:0;height:var(--row);display:flex;align-items:center;gap:8px;opacity:0;
+  transition:transform .9s cubic-bezier(.6,0,.2,1),padding-left .9s cubic-bezier(.6,0,.2,1),opacity .45s}
+.node.on{opacity:1}
+.node.lvl .ico{display:none}
+.node.lvl .lab{font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent)}
+.node.lvl{border-top:1px dashed var(--line)}
+.mini div.mlvl{font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-top:4px}
+.ico{flex:none;position:relative;width:15px;height:10px;margin-top:3px;border-radius:1.5px;background:var(--c)}
+.ico::before{content:"";position:absolute;left:0;top:-3px;width:7px;height:3px;border-radius:1.5px 1.5px 0 0;background:var(--c)}
+.lab{flex:none;font-family:var(--mono);font-size:12.5px;font-weight:600;white-space:nowrap}
+.note{flex:1;min-width:0;font-size:11.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip{flex:none;margin-left:auto;font-family:var(--mono);font-size:8.5px;font-weight:600;letter-spacing:1.5px;padding:1px 5px;border:1px solid var(--line);color:var(--soft)}
+.chip.new{border-color:var(--accent);color:var(--accent)}
+.chip:empty{display:none}
+@media (max-width:520px){.note{display:none}}
+
+.cap{display:flex;flex-direction:column;gap:12px;min-width:0}
+.cap .n{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:2px}
+.cap .name{font-weight:900;font-size:26px;line-height:1;text-transform:uppercase;letter-spacing:-.4px}
+.cap .time{font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:600;letter-spacing:1px}
+.cap p{margin:0;color:var(--soft);max-width:46ch}
+.lbl{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-bottom:-8px}
+.gone{font-family:var(--mono);font-size:11px;color:var(--dim);line-height:1.6}
+.gone b{color:var(--soft);font-weight:600}
+.ctls{display:flex;gap:6px;flex-wrap:wrap}
+.ctl{background:transparent;border:1px solid var(--line);padding:8px 14px;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase}
+.ctl.play{background:var(--accent);border-color:var(--accent);color:var(--ink)}
+.ctl[aria-pressed="true"]{border-color:var(--fg);color:var(--fg)}
+.case{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);padding:20px 22px 22px;display:flex;flex-direction:column;gap:16px}
+.case-eye{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:2.5px;color:var(--accent);text-transform:uppercase}
+.case-head{margin:-8px 0 0;font-weight:900;font-size:clamp(22px,3.4vw,32px);line-height:1.05;text-transform:uppercase;letter-spacing:-.5px;text-wrap:balance;max-width:40ch}
+.case-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.case-src{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;padding-top:14px;border-top:1px solid var(--line)}
+@media (max-width:760px){.case-cols,.case-src{grid-template-columns:minmax(0,1fr)}}
+.case p{margin:6px 0 0;color:var(--soft);font-size:14px;line-height:1.5}
+.case ul{margin:6px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:5px}
+.case li{font-size:13px;line-height:1.4;color:var(--soft)}
+.case li::before{content:"– ";color:var(--accent)}
+.case li em{font-style:normal;color:var(--dim);font-family:var(--mono);font-size:10.5px}
+.lbl2{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim)}
+.flowwrap{overflow-x:auto;background:var(--panel);border:1px solid var(--line);padding:16px}
+.flow{position:relative}
+#flowsvg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.fnode{position:absolute;width:148px;box-sizing:border-box;background:#1c1a1d;border:1px solid var(--line);border-top:3px solid var(--c);padding:7px 9px 8px;opacity:0;
+  transition:left .8s cubic-bezier(.6,0,.2,1),top .8s cubic-bezier(.6,0,.2,1),opacity .4s}
+.fnode.on{opacity:1}
+.fnode .fn{font-family:var(--mono);font-size:9px;font-weight:600;color:var(--c);letter-spacing:1px}
+.fnode .ft{display:block;font-weight:800;font-size:12px;line-height:1.15;text-transform:uppercase;margin-top:2px}
+.fnode ul{list-style:none;margin:5px 0 0;padding:0;display:flex;flex-direction:column;gap:1px}
+.fnode li{font-size:10.5px;line-height:1.3;color:var(--soft)}
+.fnode li::before{content:"– ";color:var(--c)}
+.fnode .rv{display:inline-block;margin-top:6px;font-family:var(--mono);font-size:8px;font-weight:600;letter-spacing:1.5px;padding:1px 4px;border:1px dashed var(--accent);color:var(--accent)}
+.fedge{fill:none;stroke:#6d6862;stroke-width:1.3}
+.flab{font-family:var(--mono);font-size:9px;fill:var(--dim);paint-order:stroke;stroke:var(--panel);stroke-width:4px;stroke-linejoin:round}
+.revbar{margin-top:8px;border:1px dashed var(--accent);padding:9px 12px;font-family:var(--mono);font-size:11px;color:var(--soft)}
+.revbar b{color:var(--accent);font-weight:600;letter-spacing:1.5px}
+@media (prefers-reduced-motion:reduce){.fnode{transition:none}}
+.ctl:disabled{opacity:.35;cursor:default}
+
+.all{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+@media (min-width:900px){.all{grid-template-columns:repeat(5,minmax(0,1fr))}}
+.mini div{text-overflow:ellipsis}
+.mini{background:var(--panel);border:1px solid var(--line);padding:10px 10px 12px;min-width:0}
+.mini h3{margin:0 0 8px;font-weight:900;font-size:13px;text-transform:uppercase}
+.mini div{display:flex;align-items:center;gap:6px;height:19px;font-family:var(--mono);font-size:10px;white-space:nowrap;overflow:hidden}
+.mini .ico{transform:scale(.75);transform-origin:left center;margin-right:-3px}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px 18px}
+.stg{display:flex;flex-direction:column;gap:3px;min-width:0}
+.stg span{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase}
+.stg li{font-weight:800;font-size:13px;text-transform:uppercase}
+.stg ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.stg li.here{color:var(--accent)}
+.stg li em{font-family:var(--mono);font-style:normal;font-weight:600;font-size:9px;letter-spacing:1.5px;margin-left:6px}
+.foot{font-size:12.5px;color:var(--dim);max-width:70ch;margin:0}
+@media (prefers-reduced-motion:reduce){.node{transition:none}}
+</style>
+<style>body{margin:0}</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="rail">Card 00.1 · Production methodologies · Proof of concept</div>
+    <h1>Scale dictates structure</h1>
+    <p class="lede">Below are 5 directory structures that I would suggest for each of the following production formats. Step through to see what moves, why it's designed this way and what benefits it buys the production.</p>
+  </header>
+
+  <section>
+    <div class="tabs" id="tabs" role="tablist" aria-label="Pipeline"></div>
+    <div class="demo">
+      <div class="stagebox">
+        <div class="root" id="root"></div>
+        <div class="stage" id="stage"></div>
+      </div>
+      <div class="cap" aria-live="polite">
+        <div>
+          <div class="n" id="capN"></div>
+          <div class="name" id="capName"></div>
+        </div>
+        <div class="time" id="capTime"></div>
+        <div class="lbl">Why it is built this way</div>
+        <p id="capWhy"></p>
+        <p id="capBen" hidden></p>
+        <div class="gone" id="capGone"></div>
+        <div class="ctls">
+          <button class="ctl" id="prev" type="button">Back</button>
+          <button class="ctl" id="next" type="button">Next</button>
+          <button class="ctl play" id="play" type="button">Play all</button>
+          <button class="ctl" id="shallow" type="button">Collapse a level</button>
+          <button class="ctl" id="deeper" type="button">Open next level</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The case for this structure</h2>
+    <article class="case" id="case">
+      <div class="case-eye" id="caseEye"></div>
+      <h3 class="case-head" id="caseHead"></h3>
+      <div class="case-cols">
+        <div><div class="lbl2">The problem</div><p id="caseProb"></p></div>
+        <div><div class="lbl2">The design</div><p id="caseDes"></p></div>
+        <div><div class="lbl2">What it buys the production</div><p id="caseBuy"></p></div>
+      </div>
+      <div class="case-src">
+        <div><div class="lbl2">Documented practice</div><ul id="caseDoc"></ul></div>
+        <div><div class="lbl2">My design decisions</div><ul id="caseOwn"></ul></div>
+      </div>
+    </article>
+  </section>
+
+  <section>
+    <h2>Production flow</h2>
+    <p class="foot" id="flowIntro">How the work moves from start to finish. Each line is a handoff and names what passes along it. Follows the format tabs above.</p>
+    <div class="flowwrap"><div class="flow" id="flow"><svg id="flowsvg" aria-hidden="true"></svg></div></div>
+    <div class="revbar" id="revbar"></div>
+  </section>
+
+  <section>
+    <div class="ctls">
+      <button class="ctl" id="shallow2" type="button">Collapse a level</button>
+      <button class="ctl" id="deeper2" type="button">Open next level</button>
+    </div>
+    <h2>All five at rest</h2>
+    <div class="all" id="all"></div>
+    <p class="foot">These are my designs, not an industry standard. They are the basis for my AYON project templates.</p>
+  </section>
+
+  <section>
+    <h2>Where this sits on CV page 2 · 21 disciplines, 7 stages</h2>
+    <div class="cards" id="cards"></div>
+  </section>
+</div>
+
+<script>
+// [id, label, depth, note]
+const P = [
+ {name:"Feature film", root:'/jobs/Production_Name/', own:true, head:'Two roots · studio asset library + the job', time:"6 to 18 months \u00b7 many vendors",
+  why:"Two roots: the studio library and the job, which opens with production tracking. The asset library is studio-wide: an asset is built once, stays in its home and is reused across productions. The show holds the shots and the edit decisions that drive them. Footage stays with the edit department, upstream of VFX. A shot holds its own plates and departments; colour grading sits beside VFX at show level. Every step splits into work and publish, so nobody builds on a file that is still changing. Review dailies and client deliveries sit at show level, in dated folders.",
+  tree:[
+  ["lv_studio", "Studio level", 0, ""],
+  ["assets", "/ASSETS/", 0, "Studio library. Built once, never leaves home"],
+  ["a_build", "Buildings", 1, ""],
+  ["chars", "Characters", 1, ""],
+  ["dogs", "Dogs", 2, ""],
+  ["alsatian", "Alsatian", 3, "Reused across productions"],
+  ["model", "model", 4, ""],
+  ["rig", "rig", 4, ""],
+  ["lookdev", "lookdev", 4, ""],
+  ["envs", "Environments", 1, ""],
+  ["a_furn", "Furniture", 1, ""],
+  ["a_plants", "Plants", 1, ""],
+  ["a_props", "Props", 1, ""],
+  ["a_trees", "Trees", 1, ""],
+  ["a_veh", "Vehicles", 1, ""],
+  ["lv_show", "Show level", 0, ""],
+  ["show", "/jobs/Production_Name/", 0, "The job: unique to this production"],
+  ["track", "00_Production_Tracking", 1, "Progress against schedule and budget"],
+  ["tr_wf", "production_workflows", 2, "Pipeline docs, naming conventions, folder templates"],
+  ["tr_bd", "vfx_breakdown", 2, "Script breakdown and shot list, with the method for each shot"],
+  ["tr_shoot", "vfx_shoot_strategies", 2, "On-set plans per shot: HDRIs, LIDAR, markers, witness cameras"],
+  ["tr_bids", "bids", 2, "Shot counts and costed bids"],
+  ["tr_budget", "budget", 2, "Costs and hours against the budget"],
+  ["tr_sched", "schedule", 2, "Planned against actual, by week"],
+  ["tr_daily", "daily_reports", 2, "Shots and scenes completed each day"],
+  ["tr_issues", "issues", 2, "Delays, blockers and what is outstanding"],
+  ["tr_spec", "delivery_specs", 2, "Formats and technical specs agreed for delivery"],
+  ["lv_seq", "Sequence level", 1, ""],
+  ["ca_previz", "previz", 1, "Plans complex shots before the shoot"],
+  ["pv_seq", "SEQ010", 2, ""],
+  ["pv_shot", "SH010", 3, ""],
+  ["pv_plates", "plates", 4, ""],
+  ["pv_3d", "3D", 4, ""],
+  ["pv_2d", "2D", 4, ""],
+  ["pv_dmp", "DMP", 4, ""],
+  ["dit", "DIT", 1, "On-set data: offloads, camera reports, show LUTs"],
+  ["editorial", "editorial", 1, "Edit decisions only: EDLs and turnovers"],
+  ["ed_seq", "SEQ010", 2, ""],
+  ["ed_edl", "EDL", 3, "Turnover per sequence"],
+  ["postvis", "postvis", 1, "Its own department, beside editorial"],
+  ["po_seq", "SEQ010", 2, ""],
+  ["po_shot", "SH010", 3, ""],
+  ["po_plates", "plates", 4, ""],
+  ["po_3d", "3D", 4, ""],
+  ["po_2d", "2D", 4, ""],
+  ["po_dmp", "DMP", 4, ""],
+  ["vfx", "vfx", 1, "Shot production, beside previz and postvis"],
+  ["seq", "SEQ010", 2, ""],
+  ["shot", "SH010", 3, "Links to library assets, never copies"],
+  ["plate", "plates", 4, "Several per shot, all from editorial"],
+  ["plg", "graded", 5, "With the look applied"],
+  ["pln", "neutral", 5, "Neutral grade"],
+  ["plgr", "grained", 5, "As shot"],
+  ["pld", "degrained", 5, "For keying and tracking"],
+  ["d3", "3D", 4, "CG production for this shot"],
+  ["tracking", "tracking", 5, "Camera solve and matchmove from the plates"],
+  ["layout", "layout", 5, "Camera and blocking"],
+  ["anim", "anim", 5, ""],
+  ["fx", "fx", 5, ""],
+  ["light", "light", 5, "Carries shot-level look overrides"],
+  ["d2", "2D", 4, "Roto, paint and comp for this shot"],
+  ["roto", "roto", 5, ""],
+  ["paint", "paint", 5, ""],
+  ["comp", "comp", 5, "Same work and publish split under every step"],
+  ["work", "work", 6, "comp_script.nk, artist versions in progress"],
+  ["pub", "publish", 6, "Approved versions, the only thing others pick up"],
+  ["rend2", "renders", 6, "Comp output, versioned"],
+  ["dmp", "DMP", 4, "Matte painting for this shot"],
+  ["review", "Review", 1, "Show level, not per shot"],
+  ["dailies", "dailies", 2, "One dated folder per day"],
+  ["colour", "Colour_Grading", 1, "Grades, LUTs and versions, organised by shot"],
+  ["deliv", "Deliverables", 1, "Show level, not per shot"],
+  ["client", "client", 2, "One dated folder per client delivery"],
+  ["transc", "transcodes", 2, "Delivery formats made from the masters"]]},
+ {name:"Episodic", root:'/jobs/Production_Name/', own:true, head:'Two roots · studio asset library + the job', time:"Months per season \u00b7 episodes overlap",
+  why:"Same roots, same library. Several episodes are in post at once and you may be booked on only one, so each episode gets its own folder under the production, holding everything for that episode.",
+  tree:[
+  ["lv_studio", "Studio level", 0, ""],
+  ["assets", "/ASSETS/", 0, "Studio library. Built once, never leaves home"],
+  ["a_build", "Buildings", 1, ""],
+  ["chars", "Characters", 1, ""],
+  ["dogs", "Dogs", 2, ""],
+  ["alsatian", "Alsatian", 3, "Reused across productions"],
+  ["model", "model", 4, ""],
+  ["rig", "rig", 4, ""],
+  ["lookdev", "lookdev", 4, ""],
+  ["envs", "Environments", 1, ""],
+  ["a_furn", "Furniture", 1, ""],
+  ["a_plants", "Plants", 1, ""],
+  ["a_props", "Props", 1, ""],
+  ["a_trees", "Trees", 1, ""],
+  ["a_veh", "Vehicles", 1, ""],
+  ["lv_show", "Show level", 0, ""],
+  ["show", "/jobs/Production_Name/", 0, "The job: unique to this production"],
+  ["track", "00_Production_Tracking", 1, "Progress against schedule and budget"],
+  ["tr_wf", "production_workflows", 2, "Pipeline docs, naming conventions, folder templates"],
+  ["tr_bd", "vfx_breakdown", 2, "Script breakdown and shot list, with the method for each shot"],
+  ["tr_shoot", "vfx_shoot_strategies", 2, "On-set plans per shot: HDRIs, LIDAR, markers, witness cameras"],
+  ["tr_bids", "bids", 2, "Shot counts and costed bids"],
+  ["tr_budget", "budget", 2, "Costs and hours against the budget"],
+  ["tr_sched", "schedule", 2, "Planned against actual, by week"],
+  ["tr_daily", "daily_reports", 2, "Shots and scenes completed each day"],
+  ["tr_issues", "issues", 2, "Delays, blockers and what is outstanding"],
+  ["tr_spec", "delivery_specs", 2, "Formats and technical specs agreed for delivery"],
+  ["lv_ep", "Episode level", 1, ""],
+  ["episode", "EP101", 1, "One episode: often the unit you are booked on"],
+  ["ca_previz", "previz", 2, "Plans complex shots before the shoot"],
+  ["pv_seq", "SEQ010", 3, ""],
+  ["pv_shot", "SH010", 4, ""],
+  ["pv_plates", "plates", 5, ""],
+  ["pv_3d", "3D", 5, ""],
+  ["pv_2d", "2D", 5, ""],
+  ["pv_dmp", "DMP", 5, ""],
+  ["dit", "DIT", 2, "On-set data: offloads, camera reports, show LUTs"],
+  ["editorial", "editorial", 2, "Edit decisions only, one turnover per episode"],
+  ["ed_seq", "SEQ010", 3, ""],
+  ["ed_edl", "EDL", 4, "Turnover per sequence"],
+  ["postvis", "postvis", 2, "Its own department, beside editorial"],
+  ["po_seq", "SEQ010", 3, ""],
+  ["po_shot", "SH010", 4, ""],
+  ["po_plates", "plates", 5, ""],
+  ["po_3d", "3D", 5, ""],
+  ["po_2d", "2D", 5, ""],
+  ["po_dmp", "DMP", 5, ""],
+  ["vfx", "vfx", 2, "Shot production, beside previz and postvis"],
+  ["seq", "SEQ010", 3, ""],
+  ["shot", "SH010", 4, "Links to library assets, never copies"],
+  ["plate", "plates", 5, "Several per shot, all from editorial"],
+  ["plg", "graded", 6, "With the look applied"],
+  ["pln", "neutral", 6, "Neutral grade"],
+  ["plgr", "grained", 6, "As shot"],
+  ["pld", "degrained", 6, "For keying and tracking"],
+  ["d3", "3D", 5, "CG production for this shot"],
+  ["tracking", "tracking", 6, "Camera solve and matchmove from the plates"],
+  ["layout", "layout", 6, "Camera and blocking"],
+  ["anim", "anim", 6, ""],
+  ["fx", "fx", 6, ""],
+  ["light", "light", 6, "Carries shot-level look overrides"],
+  ["d2", "2D", 5, "Roto, paint and comp for this shot"],
+  ["roto", "roto", 6, ""],
+  ["paint", "paint", 6, ""],
+  ["comp", "comp", 6, "Same work and publish split under every step"],
+  ["work", "work", 7, "comp_script.nk, artist versions in progress"],
+  ["pub", "publish", 7, "Approved versions, the only thing others pick up"],
+  ["rend2", "renders", 7, "Comp output, versioned"],
+  ["dmp", "DMP", 5, "Matte painting for this shot"],
+  ["review", "Review", 2, "Show level, not per shot"],
+  ["dailies", "dailies", 3, "One dated folder per day"],
+  ["colour", "Colour_Grading", 2, "Grades, LUTs and versions, organised by shot"],
+  ["deliv", "Deliverables", 2, "Show level, not per shot"],
+  ["client", "client", 3, "One dated folder per client delivery"],
+  ["transc", "transcodes", 3, "Delivery formats made from the masters"]]},
+ {name:'Commercial', root:'/Job_Number_Brand/', time:'1 to 3 weeks · client in the room',
+  why:'A small team and days, not months. One job folder holds the rushes, the edit and the grade beside VFX. Shots keep their 2D and 3D folders but lose the sequence level, postvis has no place, the asset library shrinks to one assets folder inside the job, and delivery splits by aspect ratio with client review beside it.',
+  tree:[
+  ['track','00_Production_Tracking',0,'Progress against schedule and budget'],
+  ['tr_wf','production_workflows',1,'Pipeline docs, naming conventions, folder templates'],
+  ['tr_bd','vfx_breakdown',1,'Script breakdown and shot list, with the method for each shot'],
+  ['tr_shoot','vfx_shoot_strategies',1,'On-set plans per shot: HDRIs, LIDAR, markers, witness cameras'],
+  ['tr_bids','bids',1,'Shot counts and costed bids'],
+  ['tr_budget','budget',1,'Costs and hours against the budget'],
+  ['tr_sched','schedule',1,'Planned against actual, by week'],
+  ['tr_daily','daily_reports',1,'Shots and scenes completed each day'],
+  ['tr_issues','issues',1,'Delays, blockers and what is outstanding'],
+  ['tr_spec','delivery_specs',1,'Formats and technical specs agreed for delivery'],
+  ['preprod','01_Pre-Production',0,''],
+  ['ca_script','script',1,''],
+  ['ca_boards','storyboard',1,'Agency boards'],
+  ['ca_previz','previz',1,'Plans the VFX shots before the shoot'],
+  ['footage','02_Footage_Raws',0,'All shoot days together'],
+  ['dit','03_DIT',0,'Offloads, camera reports, show LUTs'],
+  ['editorial','04_Projs_Editorial',0,'One project, many cutdowns'],
+  ['vfx','05_VFX',0,''],
+  ['assets','assets',1,'Hero builds for this job, shared by every shot'],
+  ['model','model',2,''],
+  ['rig','rig',2,''],
+  ['lookdev','lookdev',2,'Developed once, not once per shot'],
+  ['shots','shots',1,'Shot production for this job'],
+  ['shot','SH010',2,'No sequence level'],
+  ['plate','plates',3,'Several per shot, pulled from the edit'],
+  ['plg','graded',4,'With the look applied'],
+  ['pln','neutral',4,'Neutral grade'],
+  ['plgr','grained',4,'As shot'],
+  ['pld','degrained',4,'For keying and tracking'],
+  ['d3','3D',3,'Links to the job assets'],
+  ['tracking','tracking',4,'Camera solve and matchmove'],
+  ['layout','layout',4,'Camera and blocking'],
+  ['anim','anim',4,''],
+  ['fx','fx',4,''],
+  ['light','light',4,'Carries shot-level look overrides'],
+  ['d2','2D',3,''],
+  ['roto','roto',4,''],
+  ['paint','paint',4,''],
+  ['comp','comp',4,'Same work, publish and renders split as the feature'],
+  ['gfx','GFX',3,''],
+  ['dmp','DMP',3,''],
+  ['review','06_Review',0,'Internal review before the client sees it'],
+  ['dailies','dailies',1,'One dated folder per day'],
+  ['audio','07_Audio_VO_Mix',0,'VO takes, licensed track, mix'],
+  ['colour','08_Colour_Grading',0,'Often graded in the edit suite'],
+  ['deliv','09_Exports_Client_Review',0,''],
+  ['clrev','Client_Review',1,'Dated v1, v2, client notes'],
+  ['ca_rc','Master',1,'One master per version of the spot'],
+  ['ca_m30','30"',2,''],
+  ['ca_m60','60"',2,''],
+  ['ca_promo','Promo',2,''],
+  ['ca_bump','Advertising_Bumpers',2,''],
+  ['ca_cinema','Cinema_Ad',2,''],
+  ['socdel','Deliverables',1,'Social media formats of each master'],
+  ['transc','transcodes',2,'Delivery formats made from the masters'],
+  ['f169','16x9',2,''],
+  ['f916','9x16',2,'Vertical'],
+  ['f11','1x1',2,'Square']]},
+ {name:'Commercial animation', root:'/Job_Number_Brand/', time:'2 to 6 weeks · generalists',
+  why:'No shoot and no plates, so the job is filed by production stage. Every design decision is made and approved in pre-production. Production builds the assets once, then the shots that link to them, and with no shoot there is no wrap: shots go straight to post.',
+  tree:[
+  ['track','00_Production_Tracking',0,'Progress against schedule and budget'],
+  ['tr_wf','production_workflows',1,'Pipeline docs, naming conventions, folder templates'],
+  ['tr_bd','vfx_breakdown',1,'Script breakdown and shot list, with the method for each shot'],
+  ['tr_bids','bids',1,'Shot counts and costed bids'],
+  ['tr_budget','budget',1,'Costs and hours against the budget'],
+  ['tr_sched','schedule',1,'Planned against actual, by week'],
+  ['tr_daily','daily_reports',1,'Shots and scenes completed each day'],
+  ['tr_issues','issues',1,'Delays, blockers and what is outstanding'],
+  ['tr_spec','delivery_specs',1,'Formats and technical specs agreed for delivery'],
+  ['ca_dev','01_Development',0,''],
+  ['ca_script','script',1,''],
+  ['ca_boards','storyboard',1,''],
+  ['preprod','02_Pre-Production',0,''],
+  ['ca_animatic','animatic',1,'Boards cut to time with scratch VO'],
+  ['ca_previz','previz',1,'Rough 3D for camera and timing'],
+  ['ca_vo','voiceover',1,'Scratch and guide VO'],
+  ['ca_design','design_assets',1,'All design prep, approved before anything moves'],
+  ['ca_charsheets','character_sheets',2,''],
+  ['ca_concept','concept_art',2,''],
+  ['ca_style','style_frames',2,''],
+  ['vfx','03_Production',0,'Assets, then shots'],
+  ['assets','assets',1,'Built once for the job; every shot links to them'],
+  ['model','model',2,''],
+  ['rig','rig',2,''],
+  ['lookdev','lookdev',2,''],
+  ['shots','shots',1,''],
+  ['shot','SH010',2,'The master folder for the shot'],
+  ['d3','3D',3,'Links to the assets'],
+  ['layout','layout',4,'Camera and blocking, from the previz'],
+  ['anim','anim',4,''],
+  ['fx','fx',4,''],
+  ['light','light',4,''],
+  ['d2','2D',3,''],
+  ['comp','comp',4,'Work, publish and renders; vector layers live in work'],
+  ['review','Review',1,'Shots reviewed before post'],
+  ['dailies','dailies',2,'One dated folder per day'],
+  ['ca_post','04_Post-Production',0,''],
+  ['audio','audio',1,''],
+  ['ca_sfx','sound_design',2,''],
+  ['ca_music','music',2,''],
+  ['ca_mix','final_mix',2,'Final VO mix'],
+  ['ca_grade','Colour_Grading',1,''],
+  ['ca_sgrade','Stereo_Mastering',1,''],
+  ['ca_rc','Master',1,'One master per version of the spot'],
+  ['ca_m30','30"',2,''],
+  ['ca_m60','60"',2,''],
+  ['ca_promo','Promo',2,''],
+  ['ca_bump','Advertising_Bumpers',2,''],
+  ['ca_cinema','Cinema_Ad',2,''],
+  ['deliv','05_Distribution',0,''],
+  ['ca_clear','clearance',1,'Broadcast clearance, such as Clearcast'],
+  ['socdel','Deliverables',1,'Social media formats of each master'],
+  ['transc','transcodes',2,'Delivery formats made from the masters'],
+  ['f169','16x9',2,''],
+  ['f916','9x16',2,'Vertical'],
+  ['f11','1x1',2,'Square']]},
+ {name:'Feature animation', root:'/Feature_Animation_Root/', time:'2 to 5 years · departments',
+  why:'The roadmap stages without wrap, since there is no set to strike. Development and design are signed off before production, assets are built once and referenced by every shot, and each shot splits by department.',
+  tree:[
+  ['track','00_Production_Tracking',0,'Progress against schedule and budget'],
+  ['tr_wf','production_workflows',1,'Pipeline docs, naming conventions, folder templates'],
+  ['tr_bd','vfx_breakdown',1,'Script breakdown and shot list, with the method for each shot'],
+  ['tr_bids','bids',1,'Shot counts and costed bids'],
+  ['tr_budget','budget',1,'Costs and hours against the budget'],
+  ['tr_sched','schedule',1,'Planned against actual, by week'],
+  ['tr_daily','daily_reports',1,'Shots and scenes completed each day'],
+  ['tr_issues','issues',1,'Delays, blockers and what is outstanding'],
+  ['tr_spec','delivery_specs',1,'Formats and technical specs agreed for delivery'],
+  ['ca_dev','01_Development',0,''],
+  ['ca_d01','01_concept_research',1,'Central idea, subject and practical needs'],
+  ['ca_d02','02_logline_synopsis',1,''],
+  ['ca_d03','03_outline_treatment',1,''],
+  ['ca_script','04_script_drafts',1,'Drafts and revisions'],
+  ['ca_d05','05_rights',1,'Permission to adapt existing material, if needed'],
+  ['ca_d06','06_attachments',1,'Producer and director'],
+  ['ca_d07','07_pitch_deck',1,''],
+  ['ca_d08','08_preliminary_budget',1,''],
+  ['ca_d09','09_financing',1,''],
+  ['ca_d10','10_audience_release',1,'Initial audience and release strategy'],
+  ['preprod','02_Pre-Production',0,''],
+  ['fa_p01','01_production_script',1,'Numbered scenes, dated versions'],
+  ['fa_p02','02_script_breakdown',1,'Characters, sets, props and FX per scene'],
+  ['fa_p03','03_detailed_budget',1,''],
+  ['fa_p04','04_crew_hiring',1,''],
+  ['fa_p05','05_voice_casting',1,'Performer agreements'],
+  ['fa_p06','06_visual_planning',1,'Framing, colour, aspect ratio, camera'],
+  ['ca_design','07_design',1,'Approved before anything is built'],
+  ['ca_charsheets','character_sheets',2,''],
+  ['ca_concept','concept_art',2,''],
+  ['ca_style','style_frames',2,''],
+  ['fa_setdes','set_and_prop_design',2,''],
+  ['ca_boards','08_storyboard',1,''],
+  ['ca_animatic','09_animatic',1,'Boards cut to time with scratch dialogue'],
+  ['ca_previz','10_previz',1,'Camera and timing in rough 3D'],
+  ['fa_p11','11_shot_lists',1,''],
+  ['fa_p12','12_voice_recording',1,'Scratch and final dialogue sessions'],
+  ['fa_p13','13_pipeline_tests',1,'Render, backup and post workflow tests'],
+  ['fa_p14','14_production_schedule',1,''],
+  ['ca_prod','03_Production',0,''],
+  ['assets','assets',1,'Built once, referenced everywhere'],
+  ['chars','Characters',2,'Model, rig, lookdev'],
+  ['envs','Environments',2,'Set dressing, master light rig'],
+  ['a_props','Props',2,''],
+  ['vfx','shots',1,'Assemble the assets'],
+  ['seq','SEQ_010',2,''],
+  ['shot','SH_010_01',3,''],
+  ['layout','layout',4,''],
+  ['anim','animation',4,''],
+  ['fx','fx',4,''],
+  ['light','lighting',4,''],
+  ['cg','renders',4,'EXR passes per shot'],
+  ['review','Review',1,'Shots reviewed before post'],
+  ['dailies','dailies',2,'One dated folder per day'],
+  ['ca_post','04_Post-Production',0,''],
+  ['editorial','01_editorial',1,''],
+  ['fa_e1','assembly',2,''],
+  ['fa_e2','rough_cut',2,''],
+  ['fa_e3','fine_cut',2,''],
+  ['fa_e4','picture_lock',2,''],
+  ['fa_p_rev','02_reviews',1,'Consolidated notes and versions'],
+  ['comp','03_comp',1,'Final layers and finishing'],
+  ['fa_conform','04_conform',1,''],
+  ['audio','05_sound',1,''],
+  ['fa_s1','dialogue_edit',2,''],
+  ['fa_s2','adr_voiceover',2,''],
+  ['fa_s3','sound_design_foley',2,''],
+  ['fa_s4','score_music_licensing',2,''],
+  ['fa_s5','final_mix',2,''],
+  ['colour','06_colour',1,'Grade and output colour space'],
+  ['fa_titles','07_titles_credits',1,''],
+  ['fa_caps','08_captions_accessibility',1,''],
+  ['fa_master','09_mastering',1,'Masters, viewing copies, DCP'],
+  ['fa_qc','10_qc',1,''],
+  ['fa_arch','11_archive',1,'Final assets and verified backups'],
+  ['deliv','05_Distribution',0,''],
+  ['fa_d1','01_release_plan',1,''],
+  ['ca_fest','02_festivals',1,''],
+  ['fa_d3','03_premiere_screenings',1,''],
+  ['ca_press','04_marketing_assets',1,'Posters, stills, trailer'],
+  ['fa_d5','05_press_kit',1,''],
+  ['fa_d6','06_distributor_outreach',1,''],
+  ['fa_d7','07_agreements',1,''],
+  ['ca_platform','08_platform_delivery',1,'Masters and supporting files'],
+  ['fa_d9','09_release_campaign',1,''],
+  ['fa_d10','10_results',1,'Viewing, revenue and audience data']]}
+];
+const C = {show:'#eeeae4',tr_wf:'#b8b2ab',tr_bd:'#b8b2ab',tr_shoot:'#b8b2ab',tr_bids:'#b8b2ab',tr_spec:'#b8b2ab',track:'#b8b2ab',tr_daily:'#b8b2ab',tr_sched:'#b8b2ab',tr_budget:'#b8b2ab',tr_issues:'#b8b2ab',pv_plates:'#ffd98a',po_plates:'#ffd98a',pv_3d:'#c86bff',po_3d:'#c86bff',pv_2d:'#ffd9e5',po_2d:'#ffd9e5',pv_dmp:'#58d68d',po_dmp:'#58d68d',clrev:'#5fe0c8',transc:'#5fe0c8',pv_seq:'#c86bff',pv_shot:'#c86bff',po_seq:'#c86bff',po_shot:'#c86bff',ed_seq:'#39d7ff',ed_edl:'#39d7ff',dit:'#ffb938',fa_setdes:'#ff9a5c',fa_dailies:'#ff3d7f',fa_reports:'#b8b2ab',fa_e1:'#39d7ff',fa_e2:'#39d7ff',fa_e3:'#39d7ff',fa_e4:'#39d7ff',fa_p_rev:'#39d7ff',fa_conform:'#39d7ff',fa_s1:'#58d68d',fa_s2:'#58d68d',fa_s3:'#58d68d',fa_s4:'#58d68d',fa_s5:'#58d68d',fa_titles:'#eeeae4',fa_caps:'#eeeae4',fa_master:'#ffd9e5',fa_qc:'#ffd9e5',fa_arch:'#b8b2ab',socdel:'#5fe0c8',a_build:'#ff9a5c',a_furn:'#ff9a5c',a_trees:'#ff9a5c',a_plants:'#ff9a5c',a_props:'#ff9a5c',a_veh:'#ff9a5c',ca_grade:'#7f8cff',ca_sgrade:'#7f8cff',ca_m30:'#ffd9e5',ca_m60:'#ffd9e5',ca_promo:'#ffd9e5',ca_bump:'#ffd9e5',ca_cinema:'#ffd9e5',ca_design:'#ff9a5c',ca_prod:'#ff3d7f',ca_fest:'#5fe0c8',ca_press:'#5fe0c8',ca_platform:'#5fe0c8',ca_rc:'#ffd9e5',ca_animatic:'#39d7ff',ca_previz:'#c86bff',ca_d01:'#eeeae4',ca_d02:'#eeeae4',ca_d03:'#eeeae4',ca_d05:'#eeeae4',ca_d06:'#eeeae4',ca_d07:'#eeeae4',ca_d08:'#eeeae4',ca_d09:'#eeeae4',ca_d10:'#eeeae4',ca_charsheets:'#ff9a5c',ca_concept:'#ff9a5c',ca_shotrend:'#ffd9e5',ca_dev:'#eeeae4',ca_wrap:'#b8b2ab',ca_archive:'#b8b2ab',ca_post:'#7f8cff',ca_clear:'#5fe0c8',ca_brief:'#39d7ff',ca_script:'#39d7ff',ca_vo:'#39d7ff',ca_boards:'#39d7ff',ca_vector:'#ff9a5c',ca_style:'#ff9a5c',ca_scene:'#ff3d7f',ca_sfx:'#58d68d',ca_music:'#58d68d',ca_mix:'#58d68d',ca_video:'#ffd9e5',ca_seq:'#ffd9e5',shots:'#ff7aa6',lookdev3:'#ffcfa8',gfx:'#39d7ff',rend2:'#ffd9e5',roto:'#ffd9e5',paint:'#ffd9e5',dmp:'#58d68d',d3:'#c86bff',d2:'#ffd9e5',tracking:'#39d7ff',layout:'#c86bff',plg:'#ffd98a',pln:'#ffd98a',plgr:'#ffd98a',pld:'#ffd98a',dogs:'#ff9a5c',alsatian:'#ff9a5c',model:'#ffcfa8',rig:'#ffcfa8',lookdev:'#ffcfa8',fx:'#58d68d',dailies:'#5fe0c8',client:'#5fe0c8',footage:'#ffb938',editorial:'#39d7ff',postvis:'#c86bff',audio:'#58d68d',vfx:'#ff3d7f',episode:'#ff7aa6',seq:'#ff7aa6',shot:'#ff7aa6',
+  plate:'#ffb938',cg:'#ff9a5c',comp:'#ffd9e5',work:'#b8b2ab',pub:'#eeeae4',colour:'#7f8cff',deliv:'#5fe0c8',review:'#5fe0c8',f169:'#5fe0c8',f916:'#5fe0c8',f11:'#5fe0c8',
+  assets:'#ff9a5c',chars:'#ff9a5c',envs:'#ff9a5c',preprod:'#39d7ff',anim:'#c86bff',light:'#ffb938'};
+P.forEach(p => { if(!p.own) p.tree = [['show', p.root, 0, '']].concat(p.tree.map(t => [t[0], t[1], t[2]+1, t[3]])); });
+const B = {
+ 'Feature film':'An asset fixed once is fixed in every shot and every show that links to it. Any shot can be found, or handed to another artist or vendor, as one folder holding its plates and its work.',
+ 'Episodic':'Episodes can be worked, reviewed and delivered on their own while sharing one library, so a late change to one episode does not disturb the next.',
+ 'Commercial':'The whole job is visible at a glance. Each shot still splits by department, so a freelancer can join for a day and work without colliding with anyone.',
+ 'Commercial animation':'Nothing to hunt for. One artist can carry the spot from design to delivery inside one folder.',
+ 'Feature animation':'Departments work on the same shot in parallel without touching each other\'s files, and an asset update reaches every shot through its reference.'
+};
+const ROW = 30, IND = 18;
+const $ = id => document.getElementById(id);
+const stage = $('stage'), els = {};
+let cur = 0, timer = null, level = 1;
+function eff(p){ let root = null; return p.tree.map(t => { if(t[2] === 0) root = t[0]; return t[2] === 0 ? 0 : t[2] + (root === 'assets' ? 1 : 0); }); }
+function maxLevel(p){ return Math.max(...eff(p)); }
+function rows(p){ const e = eff(p); return p.tree.filter((t, i) => e[i] <= level); }
+function inside(p){ const m = {}; p.tree.forEach((t,i) => { let n = 0; for(let j=i+1;j<p.tree.length && p.tree[j][2] > t[2];j++) n++; m[t[0]] = n; }); return m; }
+
+function parentOf(tree, i){ for(let j=i-1;j>=0;j--) if(tree[j][2] < tree[i][2]) return tree[j][0]; return null; }
+function info(p){ const r = rows(p), m = {}; r.forEach((t,i)=>{ m[t[0]] = {label:t[1], parent:parentOf(r,i)}; }); return m; }
+
+P.forEach(p => p.tree.forEach(t => {
+  if(els[t[0]]) return;
+  const d = document.createElement('div'); d.className = t[0].startsWith('lv_') ? 'node lvl' : 'node'; d.style.setProperty('--c', C[t[0]] || '#8f8a84');
+  d.innerHTML = '<span class="ico"></span><span class="lab"></span><span class="note"></span><span class="chip"></span>';
+  stage.appendChild(d); els[t[0]] = d;
+}));
+function setHeight(){ stage.style.height = Math.max(...P.map(p => rows(p).length)) * ROW + 'px'; }
+setHeight();
+
+function show(i, instant){
+  cur = i; const p = P[i], prev = i > 0 ? info(P[i-1]) : null, now = info(p), seen = {}, cnt = inside(p);
+  const vis = new Set(rows(p).map(t => t[0])), shut = {};
+  p.tree.forEach((t, k) => { const c = p.tree[k+1]; shut[t[0]] = !!(c && c[2] > t[2] && !vis.has(c[0])); });
+  rows(p).forEach((t, r) => {
+    const [id, label, depth] = t, el = els[id]; seen[id] = 1;
+    const note = shut[id] ? (t[3] ? t[3] + ' · ' : '') + cnt[id] + ' folders inside' : t[3];
+    const tf = 'translateY(' + (r*ROW) + 'px)', pad = depth*IND + 'px';
+    if(!el.classList.contains('on') || instant){
+      el.style.transition = 'none'; el.style.transform = tf; el.style.paddingLeft = pad; void el.offsetWidth; el.style.transition = '';
+    }
+    el.style.transform = tf; el.style.paddingLeft = pad;
+    el.children[1].textContent = label; el.children[2].textContent = note;
+    let tag = '', cls = 'chip';
+    if(prev){
+      if(!prev[id]){ tag = 'NEW'; cls = 'chip new'; }
+      else if(prev[id].parent !== now[id].parent) tag = 'MOVED';
+      else if(prev[id].label !== label) tag = 'RENAMED';
+    }
+    if(id.startsWith('lv_')) tag = '';
+    el.children[3].textContent = tag; el.children[3].className = cls;
+    el.classList.add('on');
+  });
+  Object.keys(els).forEach(id => { if(!seen[id]) els[id].classList.remove('on'); });
+  $('root').textContent = p.head || 'One root · everything lives in the job';
+  $('capN').textContent = '0' + (i+1) + ' / 0' + P.length;
+  $('capName').textContent = p.name; $('capTime').textContent = p.time; $('capWhy').textContent = p.why; $('capBen').textContent = B[p.name] || '';
+  const gone = prev ? Object.keys(prev).filter(id => !now[id]).map(id => prev[id].label) : [];
+  $('capGone').innerHTML = gone.length ? '<b>Leaves the tree:</b> ' + gone.join(', ') : (i === 0 ? '<b>Starting point.</b> Everything else is measured against this.' : '<b>Nothing leaves.</b>');
+  [...$('tabs').children].forEach((b, k) => b.setAttribute('aria-selected', k === i ? 'true' : 'false'));
+  $('prev').disabled = i === 0; $('next').disabled = i === P.length - 1;
+  if(typeof updLevel === 'function') updLevel();
+  if(typeof renderFlow === 'function') renderFlow(p.name);
+  if(typeof renderCase === 'function') renderCase(p.name, i);
+}
+function stop(){ clearInterval(timer); timer = null; $('play').textContent = 'Play all'; }
+function play(){
+  if(timer){ stop(); return; }
+  show(0); $('play').textContent = 'Stop';
+  timer = setInterval(() => { if(cur >= P.length - 1){ stop(); return; } show(cur + 1); }, 4500);
+}
+
+function renderMinis(){
+  $('all').innerHTML = P.map(p => '<div class="mini"><h3>' + p.name + '</h3>' + rows(p).map(t => t[0].startsWith('lv_') ? '<div class="mlvl">' + t[1] + '</div>' : '<div style="padding-left:' + t[2]*11 + 'px"><span class="ico" style="--c:' + (C[t[0]] || '#8f8a84') + '"></span>' + t[1] + '</div>').join('') + '</div>').join('');
+}
+P.forEach((p, i) => {
+  const b = document.createElement('button'); b.className = 'tab'; b.type = 'button'; b.setAttribute('role', 'tab'); b.id = 'tab' + i;
+  b.textContent = p.name; b.onclick = () => { stop(); show(i); }; $('tabs').appendChild(b);
+});
+renderMinis();
+const MAXL = Math.max(...P.map(maxLevel));
+function updLevel(){
+  ['', '2'].forEach(k => {
+    $('deeper' + k).disabled = level >= MAXL; $('shallow' + k).disabled = level <= 1;
+    $('deeper' + k).textContent = level >= MAXL ? 'Fully open' : 'Open next level · ' + level + ' / ' + MAXL;
+  });
+}
+function relevel(d){ level = Math.max(1, Math.min(MAXL, level + d)); setHeight(); renderMinis(); show(cur); updLevel(); }
+$('deeper2').onclick = () => relevel(1);
+$('shallow2').onclick = () => relevel(-1);
+$('deeper').onclick = () => relevel(1);
+$('shallow').onclick = () => relevel(-1);
+$('prev').onclick = () => { stop(); if(cur > 0) show(cur - 1); };
+$('next').onclick = () => { stop(); if(cur < P.length - 1) show(cur + 1); };
+$('play').onclick = play;
+
+const S = [
+ ['00 Across the whole show', ['Production methodologies','Pipeline & tools','Client & creative leadership']],
+ ['01 Plan & shoot', ['Pre-production & planning','On-set supervision','3D & USD']],
+ ['02 Clean the plate', ['Prep & cleanup','Roto & segmentation','AI & agentic coding']],
+ ['03 Solve the plate', ['Tracking & matchmove','Keying & extraction','Plate reconstruction']],
+ ['04 Build the shot', ['Environments & DMP','CG & AOV integration','Deep compositing']],
+ ['05 Shape the look', ['Camera & lens work','FX element integration','Creative & experimental FX']],
+ ['06 Finish & deliver', ['Lookdev & shot finishing','Stereo & immersive','Delivery, reels & submissions']]
+];
+$('cards').innerHTML = S.map(s => '<div class="stg"><span>' + s[0] + '</span><ul>' + s[1].map(t =>
+  '<li' + (t === 'Production methodologies' ? ' class="here">' + t + '<em>THIS DEMO</em>' : '>' + t) + '</li>').join('') + '</ul></div>').join('');
+
+// ---- production flow: [id, number, title, col, row, [steps], reviewed]
+const FL = {
+ 'Feature film': {review:'Director, producers and studio: dailies, cut reviews and VFX reviews', nodes:[
+  ['ca_dev',1,'Development',0,1,['Script','Budget and financing'],0],
+  ['ca_previz',2,'Previz',1,0,['Complex sequences','Camera and timing'],1],
+  ['assets',3,'Asset library',1,2,['Model, rig, lookdev','Reused across shows'],1],
+  ['dit',4,'Shoot and DIT',2,1,['Offloads and backups','Camera reports, LUTs'],0],
+  ['postvis',5,'Postvis',3,0,['Temp comps for the cut'],1],
+  ['editorial',6,'Editorial / offline',3,1,['Assembly to picture lock','Turnovers and pulls'],1],
+  ['vfx',7,'VFX',4,1,['Tracking, layout, anim, FX, light','Roto, paint, comp','DMP'],1],
+  ['fa_conform',8,'Conform / online',5,1,['Locked EDL','Final VFX cut in'],0],
+  ['colour',9,'Colour grading',6,0,['Grade and output space'],1],
+  ['audio',10,'Sound post',6,2,['Dialogue and ADR','Sound design and foley','Score and final mix'],1],
+  ['deliv',11,'Mastering and delivery',7,1,['DCP','Streaming masters','Archive'],1]],
+  edges:[['ca_dev','ca_previz','script, boards'],['ca_dev','assets','designs'],['ca_previz','dit','shot plans'],['dit','editorial','rushes, reports'],
+   ['editorial','postvis','cut'],['postvis','editorial','temp comps'],['editorial','vfx','EDLs, plates + handles'],['assets','vfx','linked, never copied'],
+   ['vfx','fa_conform','published shots'],['editorial','fa_conform','locked EDL'],['fa_conform','colour','conformed timeline'],['editorial','audio','locked cut, AAF'],
+   ['colour','deliv','graded picture'],['audio','deliv','mix stems']]},
+ 'Episodic': {review:'Showrunner, producers and network or streamer: per episode, several episodes in flight at once', nodes:[
+  ['ca_dev',1,'Development',0,1,['Season arc','Episode scripts'],0],
+  ['ca_previz',2,'Previz',1,0,['Hero sequences per block'],1],
+  ['assets',3,'Asset library',1,2,['Shared by every episode'],1],
+  ['dit',4,'Shoot and DIT',2,1,['Shot in blocks','Camera reports, LUTs'],0],
+  ['postvis',5,'Postvis',3,0,['Temp comps per episode'],1],
+  ['editorial',6,'Editorial / offline',3,1,['One cut per episode','Turnovers per episode'],1],
+  ['vfx',7,'VFX',4,1,['Episode, sequence, shot','Same 3D and 2D steps'],1],
+  ['fa_conform',8,'Conform / online',5,1,['Per episode'],0],
+  ['colour',9,'Colour grading',6,0,['Show look across episodes'],1],
+  ['audio',10,'Sound post',6,2,['Dialogue and ADR','Effects, music, mix'],1],
+  ['deliv',11,'Mastering and delivery',7,1,['Platform masters','Textless and stems'],1]],
+  edges:[['ca_dev','ca_previz','scripts'],['ca_dev','assets','designs'],['ca_previz','dit','shot plans'],['dit','editorial','rushes, reports'],
+   ['editorial','postvis','cut'],['postvis','editorial','temp comps'],['editorial','vfx','turnover per episode'],['assets','vfx','linked'],
+   ['vfx','fa_conform','published shots'],['editorial','fa_conform','locked EDL'],['fa_conform','colour','conformed episode'],['editorial','audio','locked cut'],
+   ['colour','deliv','graded picture'],['audio','deliv','mix stems']]},
+ 'Commercial': {review:'Client and agency reviews at every major node', nodes:[
+  ['preprod',1,'Pre-production',0,1,['Agency script and boards','Previz'],1],
+  ['dit',2,'Shoot and DIT',1,1,['Rushes stay in the job'],0],
+  ['editorial',3,'Editorial / offline',2,1,['Master cut and cutdowns'],1],
+  ['assets',4,'Job assets',2,0,['Hero builds, lookdev'],1],
+  ['audio',5,'Audio post',3,2,['Sound design and SFX','VO recording','Mix and master, stereo or 5.1'],1],
+  ['fa_conform',6,'Conform / online',3,1,['Online edit'],0],
+  ['colour',7,'Colour grading',4,0,['Grade per master'],1],
+  ['vfx',8,'VFX / motion graphics',4,1,['Clean-up and beauty','2D and 3D','Titling and legal text'],1],
+  ['deliv',9,'Mastering and delivery',5,1,['Broadcast masters','Social cuts 16x9, 9x16, 1x1','Textless splits, archive'],1]],
+  edges:[['preprod','dit','script, boards'],['dit','editorial','rushes'],['editorial','audio','locked cut'],['editorial','fa_conform','EDL'],
+   ['assets','vfx','job assets'],['fa_conform','colour','online timeline'],['fa_conform','vfx','plates'],
+   ['colour','deliv','graded picture'],['vfx','deliv','finished shots'],['audio','deliv','mix']]},
+ 'Commercial animation': {review:'Client and agency reviews at every major node', nodes:[
+  ['ca_dev',1,'Development',0,1,['Script','Storyboard'],1],
+  ['preprod',2,'Pre-production',1,1,['Animatic and previz','Design assets'],1],
+  ['ca_vo',3,'Voiceover',1,2,['Scratch and final VO'],1],
+  ['vfx',4,'Shot production',2,1,['3D: layout, anim, FX, light','2D: comp'],1],
+  ['colour',5,'Colour grading',3,0,['Grade'],1],
+  ['audio',6,'Audio post',3,2,['Sound design','Music','Final mix'],1],
+  ['ca_sgrade',7,'Stereo mastering',4,0,['Stereo deliverables'],0],
+  ['ca_rc',8,'Master',4,1,['30", 60"','Promo, bumpers','Cinema ad'],1],
+  ['deliv',9,'Distribution',5,1,['Clearance','Social formats'],1]],
+  edges:[['ca_dev','preprod','script, boards'],['preprod','vfx','approved designs, animatic'],['preprod','ca_vo','script'],['ca_vo','audio','VO'],
+   ['vfx','colour','renders'],['colour','ca_sgrade','graded picture'],['colour','ca_rc','graded picture'],['audio','ca_rc','mix'],['ca_rc','deliv','masters']]},
+ 'Feature animation': {review:'Director and producers: daily reviews and sequence screenings throughout', nodes:[
+  ['ca_dev',1,'Development',0,1,['Concept to treatment','Script drafts','Pitch and financing'],0],
+  ['preprod',2,'Pre-production',1,1,['Design','Storyboard and animatic','Previz, voice recording'],1],
+  ['assets',3,'Asset build',2,0,['Model, rig, lookdev'],1],
+  ['editorial',4,'Editorial',2,2,['Animatic to picture lock'],1],
+  ['vfx',5,'Shots',3,1,['Layout, animation','FX, lighting','Renders'],1],
+  ['comp',6,'Comp',4,1,['Final layers'],1],
+  ['fa_conform',7,'Conform',5,1,['Locked picture'],0],
+  ['colour',8,'Colour grading',6,0,['Grade and output space'],1],
+  ['audio',9,'Sound',6,2,['Dialogue, foley','Score, final mix'],1],
+  ['deliv',10,'Mastering and distribution',7,1,['Masters, DCP, QC','Festivals, platforms'],1]],
+  edges:[['ca_dev','preprod','script'],['preprod','assets','approved designs'],['preprod','editorial','animatic'],['assets','vfx','referenced'],
+   ['editorial','vfx','timing'],['vfx','comp','EXR passes'],['comp','fa_conform','final shots'],['editorial','fa_conform','locked picture'],
+   ['fa_conform','colour','conformed timeline'],['editorial','audio','locked cut'],['colour','deliv','graded picture'],['audio','deliv','mix stems']]}
+};
+const flow = $('flow'), fsvg = $('flowsvg'), fels = {}, COLW = 240, ROWH = 172;
+Object.values(FL).forEach(g => g.nodes.forEach(n => {
+  if(fels[n[0]]) return;
+  const d = document.createElement('div'); d.className = 'fnode'; d.style.setProperty('--c', C[n[0]] || '#8f8a84');
+  flow.appendChild(d); fels[n[0]] = d;
+}));
+let flowName = null, flowRAF = 0;
+function drawEdges(g){
+  const fr = flow.getBoundingClientRect(), box = id => { const r = fels[id].getBoundingClientRect(); return {l:r.left-fr.left, r:r.right-fr.left, t:r.top-fr.top, b:r.bottom-fr.top}; };
+  const col = {}; g.nodes.forEach(n => col[n[0]] = n[3]);
+  let out = '<defs><marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#6d6862"/></marker></defs>';
+  g.edges.forEach(([a, b, lab]) => {
+    const A = box(a), B = box(b); let p, lx, ly;
+    if(col[b] > col[a]){
+      const x1 = A.r, y1 = (A.t+A.b)/2, x2 = B.l, y2 = (B.t+B.b)/2, k = Math.max(30, (x2-x1)/2);
+      p = `M${x1},${y1} C${x1+k},${y1} ${x2-k},${y2} ${x2},${y2}`; lx = (x1+x2)/2; ly = (y1+y2)/2 - 4;
+    } else {
+      const down = B.t > A.b, x1 = (A.l+A.r)/2 + (down ? 18 : -18), x2 = (B.l+B.r)/2 + (down ? 18 : -18);
+      const y1 = down ? A.b : A.t, y2 = down ? B.t : B.b;
+      p = `M${x1},${y1} C${x1},${(y1+y2)/2} ${x2},${(y1+y2)/2} ${x2},${y2}`; lx = x1 + (down ? 6 : -6); ly = (y1+y2)/2 + 3;
+    }
+    const anchor = col[b] > col[a] ? 'middle' : (B.t > A.b ? 'start' : 'end');
+    out += `<path class="fedge" d="${p}" marker-end="url(#ah)"/><text class="flab" x="${lx}" y="${ly}" text-anchor="${anchor}">${lab}</text>`;
+  });
+  fsvg.innerHTML = out;
+}
+function renderFlow(name){
+  const g = FL[name]; if(!g) return;
+  const seen = {}; let maxc = 0, maxr = 0;
+  g.nodes.forEach(([id, n, title, c, r, steps, rv]) => {
+    const el = fels[id]; seen[id] = 1; maxc = Math.max(maxc, c); maxr = Math.max(maxr, r);
+    el.innerHTML = `<span class="fn">${String(n).padStart(2,'0')}</span><span class="ft">${title}</span><ul>${steps.map(x => '<li>' + x + '</li>').join('')}</ul>` + (rv ? '<span class="rv">REVIEW</span>' : '');
+    if(!el.classList.contains('on')){ el.style.transition = 'none'; el.style.left = c*COLW + 'px'; el.style.top = r*ROWH + 'px'; void el.offsetWidth; el.style.transition = ''; }
+    el.style.left = c*COLW + 'px'; el.style.top = r*ROWH + 'px'; el.classList.add('on');
+  });
+  Object.keys(fels).forEach(id => { if(!seen[id]) fels[id].classList.remove('on'); });
+  flow.style.width = (maxc*COLW + 150) + 'px'; flow.style.height = (maxr*ROWH + 150) + 'px';
+  $('revbar').innerHTML = '<b>REVIEWS</b> &nbsp;' + g.review + '. Nodes marked REVIEW are signed off before work moves on.';
+  cancelAnimationFrame(flowRAF); const t0 = performance.now();
+  const tick = () => { drawEdges(g); if(performance.now() - t0 < 900) flowRAF = requestAnimationFrame(tick); };
+  tick(); flowName = name;
+}
+
+// ---- the case for each structure
+const CASE = {
+ 'Feature film': {head:'Two roots: a library that never moves, and a show that only links to it',
+  prob:'Many vendors work on the same film for many months. If assets are copied into shots, a fix made once has to be made everywhere, and versions drift.',
+  des:'Assets live in a studio-wide library and every shot links to them. Editorial hands VFX only edit decisions, as pulled plates with handles. Each shot holds its plates and its 3D and 2D work, and every step splits into work and publish.',
+  doc:[['Reference assets, never copy them','OpenUSD asset structure principles'],['Plates pulled from editorial with handles','Evan Schiff, Feature Turnover Guide: VFX'],['Work and publish resolve to unique paths','AYON project anatomy'],['Folders mirror the tracked entities: sequence, shot, step','Flow Toolkit, AYON']],
+  own:['One asset library shared across shows','Footage stays with editorial, outside the show','Four plate types per shot','Steps grouped under 3D and 2D, with DMP alongside','Colour grading at show level beside VFX']},
+ 'Episodic': {head:'The feature structure, with an episode level',
+  prob:'Several episodes are in post at once, each on its own schedule, all sharing the same cast and sets.',
+  des:'An episode level sits above sequence inside vfx, and turnovers arrive per episode. The same studio library serves every episode.',
+  doc:[['Episode, sequence and shot as nested levels','CGWire file hierarchy proposal'],['Folders mirror the tracked entities','Flow Toolkit, AYON']],
+  own:['The feature film layout carried over unchanged','One library shared by every episode']},
+ 'Commercial': {head:'One job folder, with feature discipline inside each shot',
+  prob:'Days rather than months, a small team, the client in the room, and many versions of every master.',
+  des:'Rushes, edit, VFX, audio and grade sit side by side in one numbered job folder. Shots lose the sequence level but keep plates, 3D, 2D, GFX and DMP. Assets live in the job, and masters and social formats get their own folders.',
+  doc:[['Commercials run a few dozen hero assets with a small, fast team','A+C Studios, Commercial vs Series pipelines'],['Shot-numbered folders keep a shot\'s elements together','Frame.io, VFX workflow best practices']],
+  own:['A job-level assets folder instead of the library','Rushes kept inside the job','Masters and social deliverables kept apart']},
+ 'Commercial animation': {head:'Filed by production stage, because there is no shoot',
+  prob:'There are no plates and no set. The risk is building shots before the look has been signed off.',
+  des:'Development and pre-production hold every design decision. Production builds the assets first, then the shots that link to them, each split into 3D and 2D. Post holds audio, colour grading, stereo mastering and the masters; distribution holds clearance and social formats.',
+  doc:[['Production stages from development to distribution','The Indie Film Production Roadmap'],['Commercial work is fast and reactive with small teams','A+C Studios, Commercial vs Series pipelines']],
+  own:['No production wrap stage','Design approved before any shot is built','Assets built once at the start of production, so every shot links to the same build','Masters made in post, formats in distribution']},
+ 'Feature animation': {head:'The full roadmap, built around referenced assets',
+  prob:'Years of work, many departments, and thousands of shots that use the same characters and sets.',
+  des:'Folders follow the production stages from development to distribution. Assets are built once in production and every shot references them, and each shot splits by department.',
+  doc:[['Production stages, adapted for animation','The Indie Film Production Roadmap'],['Reference assets, never copy them','OpenUSD asset structure principles'],['Assets and shots as separate branches, split by step','CGWire, CAVE Academy']],
+  own:['Wrap removed: there is no set to strike','Roadmap steps translated for animation, such as voice casting and pipeline tests']}
+};
+function renderCase(name, i){
+  const c = CASE[name]; if(!c) return;
+  $('caseEye').textContent = '0' + (i+1) + ' / 0' + P.length + ' · ' + name;
+  $('caseHead').textContent = c.head; $('caseProb').textContent = c.prob; $('caseDes').textContent = c.des; $('caseBuy').textContent = B[name] || '';
+  $('caseDoc').innerHTML = c.doc.map(d => '<li>' + d[0] + ' <em>' + d[1] + '</em></li>').join('');
+  $('caseOwn').innerHTML = c.own.map(o => '<li>' + o + '</li>').join('');
+}
+
+show(0, true);
+</script>
+
+</body>
+</html>
