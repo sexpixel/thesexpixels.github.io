@@ -73,28 +73,29 @@ def header(current="", sub="VFX Supervisor"):
             return f'<li class="role"><a href="{href}"{cur}><span class="ph">{phase}</span>{label}</a></li>'
         return f'<li><a href="{href}"{cur}>{label}</a></li>'
     sub_items = "\n          ".join(f'<li><a href="/work/{FORMAT_SLUGS[f]}/">{" ".join(w.capitalize() for w in f.split())}</a></li>' for f in FORMATS)
-    # Second row: the five production phases, Development → Distribution. Each opens a small panel:
-    # As (crew role) and On (format), linking to that page with the phase filter set.
+    # Second row: the five production phases (When), Development → Distribution. Each opens a small panel:
+    # Who (crew role) and What (format), linking to that page with the phase filter set.
     def ph_item(n, name, roles, fmts):
         sl = name.lower()
         as_ = "".join(f'<a href="{h}?phase={sl}">{r}</a>' for r, h in roles)
         on_ = "".join(f'<a href="/work/{FORMAT_SLUGS[f]}/?phase={sl}">{" ".join(w.capitalize() for w in f.split())}</a>' for f in fmts)
         return (f'<li class="p" data-ph="{sl}"><button type="button" aria-expanded="false"><span class="n">{n:02d}</span>{name}</button>'
-                f'<div class="panel"><div class="as"><p class="lab">As</p>{as_}</div><div class="on"><p class="lab">On</p>{on_}</div></div></li>')
+                f'<div class="panel"><div class="as"><p class="lab">Who</p>{as_}</div><div class="on"><p class="lab">What</p>{on_}</div></div></li>')
     F, V, N = ("Filmmaker", "/thefleapit/"), ("VFX Supervisor", "/vfxsupervisor/"), ("Nuke Compositor", "/nukecompositor/")
     phrow = "".join(ph_item(i + 1, *x) for i, x in enumerate([
-        ("Development",     [F],       ["Feature film", "Episodic", "Feature animation"]),
-        ("Pre-production",  [V, F],    ["Feature film", "Episodic", "Visualisation"]),
-        ("Production",      [V, F],    ["Feature film", "Episodic", "Feature animation"]),
-        ("Post-production", [N, V, F], ["Feature film", "Episodic", "Visualisation", "Shorts", "Feature animation"]),
-        ("Distribution",    [F],       ["Shorts", "Feature film", "Feature animation"]),
+        # The Fleapit is Mark's personal work and has no phases, so Filmmaker isn't listed here.
+        ("Development",     [V, N],    ["Feature film", "Episodic", "Visualisation", "Feature animation"]),
+        ("Pre-production",  [V, N],    ["Feature film", "Episodic", "Visualisation", "Shorts", "Feature animation"]),
+        ("Production",      [V, N],    ["Feature film", "Episodic", "Visualisation", "Shorts", "Feature animation"]),
+        ("Post-production", [N, V],    ["Feature film", "Episodic", "Visualisation", "Shorts", "Feature animation"]),
+        ("Distribution",    [V, N],    ["Feature film", "Episodic", "Visualisation", "Feature animation"]),
     ]))
     return f'''<header class="nav" id="nav">
   <a class="mark" href="/" aria-label="Mark Pinheiro{", " + sub if sub else ""}, home"><b>Mark Pinheiro</b>{f"<small>{sub}</small>" if sub else ""}</a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
   <nav aria-label="Main" id="menu">
     <ul>
-      {a("/thefleapit/", "Filmmaker", "fleapit", "All phases")}
+      {a("/thefleapit/", "Filmmaker", "fleapit", "Personal work")}
       {a("/vfxsupervisor/", "VFX Supervisor", "vfxsup", "Pre-production")}
       {a("/nukecompositor/", "Nuke Compositor", "nuke", "Post-production")}
       <li class="sep" aria-hidden="true"></li>
@@ -722,7 +723,7 @@ def tagged_reels(reels, page):
         out.append(r)
     return out + [r for r in reels if not r.get("video")]
 
-def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wide, idle_empty, extra_links, page_title, desc, tag_page=None):
+def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wide, idle_empty, extra_links, page_title, desc, tag_page=None, phases=True):
     reels = tagged_reels(reels, tag_page)
     cells = "\n".join(reel_cell(i, r) for i, r in enumerate(reels))
     has_any = any(r["video"] for r in reels)
@@ -745,7 +746,7 @@ def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wid
     <div class="fp-slot" id="fp-slot"></div>{idle}
     <div class="herotitle herotop heroui">
       <span class="lab"><b>{rail_n}</b> · {rail_label}</span>
-      <h1 class="herohead">{title_html}</h1>{phase_strip(reels) if has_any else ""}
+      <h1 class="herohead">{title_html}</h1>{phase_strip(reels) if has_any and phases else ""}
     </div>
     <div class="reelbar heroui">
       <span class="fp-title" id="fp-title" aria-live="polite"></span>{ctrls}
@@ -782,7 +783,7 @@ player_page("thefleapit/index.html", "fleapit", "The Sex Pixels", 'The Fleapit<s
             FLEAPIT_REELS, False, "The first reel is in the edit",
             f'<a class="pill" href="{INSTAGRAM}" target="_blank" rel="noopener">Follow on Instagram ↗</a>',
             "The Fleapit · Mark Pinheiro",
-            "The Fleapit. SE1. A word from our advertisers.", tag_page="Filmmaker")
+            "The Fleapit. SE1. A word from our advertisers.", phases=False)   # personal work: no phase filter, not driven by the tags
 player_page("nukecompositor/index.html", "nuke", "Nuke Compositor", 'Nuke Compositor', "2D", "Showreels",
             "Compositing showreels and project reels. Play them all, or pick one from the grid.",
             NUKE_REELS, True, "", "", "Nuke Compositor · Mark Pinheiro",
