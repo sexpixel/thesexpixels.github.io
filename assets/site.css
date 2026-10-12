@@ -513,3 +513,6 @@ iframe{color-scheme:normal}
 .linkrow .iconpill .ic.xs{width:40px;height:40px}
 @media (max-width:520px){.linkrow .pill.iconpill{padding:14px 4px;min-width:0;gap:8px;font-size:10px;letter-spacing:1.2px}.linkrow .iconpill .ic.xs{width:30px;height:30px}}
 @media (max-width:380px){.linkrow .pill.iconpill{font-size:9px;letter-spacing:.6px}.linkrow .iconpill .ic.xs{width:26px;height:26px}}
+/* Play buttons on thumbnails: small, in the top right corner */
+.fp-cell .play,.thumb .play{top:10px;right:10px;left:auto;bottom:auto;width:28px;height:28px;margin:0}
+.fp-cell .play::before,.thumb .play::before{border-left-width:8px;border-top-width:5px;border-bottom-width:5px;margin-left:2px}
