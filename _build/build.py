@@ -726,6 +726,20 @@ for n in NEWS:
 ''')
 
 # ---------------------------------------------------------------- contact
+# Simple line icons for the contact page (original drawings, not the brands' own logos).
+ICONS = {
+    "Showreel": '<circle cx="12" cy="12" r="9.5"/><path d="M10 8.2v7.6l6-3.8z" fill="currentColor"/>',
+    "Sizzle": '<path d="M13.5 2.5 5 13.5h6l-1.5 8 8.5-11h-6z"/>',
+    "Vimeo": '<rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M10 9.2v5.6l4.6-2.8z" fill="currentColor"/>',
+    "Instagram": '<path d="M3 8.5a2 2 0 0 1 2-2h2.6l1.6-2.2h5.6l1.6 2.2H19a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.8"/>',
+    "IMDb": '<path d="M3.5 10h17v9.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1z"/><path d="m3.2 9.6 15.9-4.8-.9-3.1L2.3 6.5z"/><path d="m7.4 4.9 2.6 3.3M12.4 3.4 15 6.7"/>',
+    "LinkedIn": '<rect x="2.5" y="7" width="19" height="13" rx="2"/><path d="M8.5 7V5a1.5 1.5 0 0 1 1.5-1.5h4A1.5 1.5 0 0 1 15.5 5v2M2.5 12.5h19"/>',
+    "Email": '<rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3 6 9 7 9-7"/>',
+    "Based": '<path d="M12 21s-6.5-6.2-6.5-11.2a6.5 6.5 0 0 1 13 0C18.5 14.8 12 21 12 21z"/><circle cx="12" cy="9.8" r="2.4"/>',
+    "Company": '<path d="M4 21V5.5L12 3v18M12 8.5l8 2.5V21M2.5 21h19M7 8h2M7 11.5h2M7 15h2M15 13.5h2M15 17h2"/>',
+}
+def icon(name, cls="ic"):
+    return f'<svg class="{cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{ICONS[name]}</svg>'
 CONTACT_LINKS = [
     ("Showreel", "Compositing showreel 2026", "https://vimeo.com/1232958213/ffbea294d7"),
     ("Sizzle", "17 years in 02:30", "https://youtu.be/SDAXjN_sOlE"),
@@ -745,16 +759,16 @@ contact = head("Contact · Mark Pinheiro", "Contact Mark Pinheiro: email, showre
 {page_intro("04", "Contact", "Let's talk")}
     <div class="ctop">
       <div>
-        <span class="clabel">Email</span>
+        <span class="clabel">{icon("Email", "ic sm")}Email</span>
         <a class="email" href="mailto:mark@thesexpixels.com">mark@thesexpixels.com</a>
       </div>
       <div>
-        <span class="clabel">Based</span>
+        <span class="clabel">{icon("Based", "ic sm")}Based</span>
         <p class="cbig">London</p>
         <p class="csmall">UK work eligibility · valid passport · available to travel worldwide</p>
       </div>
       <div>
-        <span class="clabel">Company</span>
+        <span class="clabel">{icon("Company", "ic sm")}Company</span>
         <address>
           <b>The Sex Pixels Ltd.</b>
           Fifth Floor, Mariner House<br>
@@ -764,7 +778,7 @@ contact = head("Contact · Mark Pinheiro", "Contact Mark Pinheiro: email, showre
       </div>
     </div>
     <ul class="ctiles">
-{chr(10).join(f'      <li><a href="{u}" target="_blank" rel="noopener"><span class="k">{k}</span><span class="t">{E(t)}</span><span class="arr">↗</span></a></li>' for k, t, u in CONTACT_LINKS)}
+{chr(10).join(f'      <li><a href="{u}" target="_blank" rel="noopener">{icon(k)}<span class="k">{k}</span><span class="t">{E(t)}</span><span class="arr">↗</span></a></li>' for k, t, u in CONTACT_LINKS)}
     </ul>
   </section>
 </main>

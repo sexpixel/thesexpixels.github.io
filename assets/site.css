@@ -382,3 +382,13 @@ body.tuner.noguides .heroui{opacity:0}
 .laurel i{font-style:normal;font-family:var(--mono);font-size:8.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent)}
 .laurel span{font-size:clamp(10px,.8vw,12px);line-height:1.25;color:var(--soft)}
 .profile .awards-note{margin:4px 0 0}
+
+/* Contact: email on one line; icons */
+.contactpage .email{white-space:nowrap;font-size:clamp(18px,2.4vw,40px)}
+@media (max-width:980px){.contactpage .email{font-size:clamp(18px,6.4vw,40px)}}
+.clabel{display:flex;align-items:center;gap:8px}
+.ic{width:40px;height:40px;color:var(--accent);flex:none}
+.ic.sm{width:16px;height:16px}
+.ctiles a{justify-content:flex-start}
+.ctiles a .t{margin-top:auto}
+.ctiles a:hover .ic{color:var(--accent-hi)}
