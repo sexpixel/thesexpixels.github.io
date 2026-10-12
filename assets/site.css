@@ -291,3 +291,41 @@ address a{color:var(--fg)}
 body.tv .nav{transform:translateY(-100%);transition:transform .8s cubic-bezier(.6,0,.2,1)}
 body.tv .reelbar,body.tv .hero::after{opacity:0;pointer-events:none}
 body.tv .hero{cursor:none}
+
+/* ---------- Framestore-style: full-screen layer, page scrolls up over it ---------- */
+.stickyhero{position:sticky;top:0;height:100svh;min-height:420px;z-index:0}
+.over{position:relative;z-index:1;background:var(--bg);box-shadow:0 -40px 80px rgba(0,0,0,.55)}
+footer{position:relative;z-index:1;background:var(--bg)}
+.heroui{transition:opacity .8s ease}
+body.tv .heroui{opacity:0;pointer-events:none}
+.reelside{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.scrollcue{position:absolute;z-index:2;left:50%;bottom:14px;transform:translateX(-50%);font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--soft)}
+.scrollcue::after{content:"";display:block;width:1px;height:22px;margin:8px auto 0;background:var(--accent);animation:cue 1.8s ease-in-out infinite}
+@keyframes cue{0%,100%{transform:scaleY(.3);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}}
+@media (max-width:700px){.scrollcue{display:none}}
+
+/* 20th anniversary banner */
+.anniv{display:flex;align-items:flex-end;gap:clamp(10px,1.4vw,18px);text-decoration:none;color:var(--fg)}
+.anniv-n{font-weight:900;font-size:clamp(96px,15vw,220px);line-height:.76;letter-spacing:-.07em;color:var(--accent);text-shadow:0 4px 40px rgba(0,0,0,.35)}
+.anniv-t{display:flex;flex-direction:column;gap:6px;padding-bottom:4px}
+.anniv-t b{font-weight:900;font-size:clamp(30px,3.4vw,52px);line-height:.9;text-transform:uppercase;letter-spacing:-.03em}
+.anniv-t span{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--soft)}
+.anniv-t i{font-style:normal;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent-hi)}
+.anniv:hover .anniv-t i{color:var(--fg)}
+.anniv-thumb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:#161416}
+.anniv-thumb span{font-weight:900;font-size:clamp(72px,7vw,112px);line-height:.8;letter-spacing:-.06em;color:var(--accent)}
+.anniv-thumb i{font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:3px;color:var(--soft)}
+@media (max-width:700px){.reelbar{flex-direction:column;align-items:flex-start}.reelside{align-items:flex-start}}
+
+/* role pages: the player is the full-screen layer */
+.fp-player.stickyhero{aspect-ratio:auto;max-height:none;height:100svh;border:0}
+.hero.fp-player .fp-slot iframe{inset:auto;top:50%;left:50%;width:max(100vw,177.78svh);height:max(56.25vw,100svh);transform:translate(-50%,-50%)}
+.hero.fp-player.fit .fp-slot iframe{top:0;left:0;width:100%;height:100%;transform:none}
+.hero.fp-player.tall .fp-slot iframe{top:0;left:50%;width:auto;height:100%;aspect-ratio:9/16;transform:translateX(-50%);pointer-events:auto}
+.herotitle{display:flex;flex-direction:column;gap:2px;min-width:0}
+.herohead{margin:6px 0 8px;font-weight:900;font-size:clamp(44px,8.5vw,136px);line-height:.84;letter-spacing:-.045em;text-transform:uppercase;font-stretch:85%;text-shadow:0 2px 30px rgba(0,0,0,.35)}
+.herohead .dot{color:var(--accent)}
+.herotitle .fp-title{flex:none}
+.fp-ctrls{display:flex;gap:8px;flex-wrap:wrap}
+.hero .fp-btn{background:rgba(17,16,18,.55);backdrop-filter:blur(6px)}
+.fp-reels{padding-top:clamp(48px,8vh,96px)!important}

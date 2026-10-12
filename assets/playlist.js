@@ -1,4 +1,4 @@
-// Playlist player (The Fleapit, Nuke Compositor): plays every reel in the grid, one after another.
+// Playlist player (The Fleapit, Nuke Compositor, VFX Supervisor): plays every reel in the grid, one after another.
 // Vimeo and YouTube reels advance by themselves when they end. Instagram allows no
 // "ended" signal, so on an Instagram reel the player waits for the Next button.
 (function(){
@@ -6,6 +6,16 @@
   if (!cells.length) return;
   var stage = document.getElementById('fp-player'), slot = document.getElementById('fp-slot'), titleEl = document.getElementById('fp-title');
   var cur = -1, player = null, sound = false, vimeoReady, ytReady;
+  var soundBtn = document.getElementById('fp-sound');
+  function showSound(){ if (soundBtn) { soundBtn.textContent = sound ? 'Sound off' : 'Sound on'; soundBtn.setAttribute('aria-pressed', sound ? 'true' : 'false'); } }
+  function applySound(){
+    showSound();
+    if (!player) return;
+    try {
+      if (typeof player.unMute === 'function') { if (sound) { player.unMute(); player.setVolume(100); } else player.mute(); }   // YouTube
+      else { if (player.setMuted) player.setMuted(!sound); player.setVolume(sound ? 1 : 0); }                                // Vimeo
+    } catch (e) {}
+  }
 
   function loadScript(src){ return new Promise(function(res, rej){ var s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s); }); }
   function vimeo(){ return vimeoReady || (vimeoReady = window.Vimeo ? Promise.resolve() : loadScript('https://player.vimeo.com/api/player.js')); }
@@ -27,7 +37,8 @@
     cur = i;
     var c = cells[i], spec = c.getAttribute('data-src'), p = spec.split(':'), mine = i;
     cells.forEach(function(x, k){ x.classList.toggle('on', k === i); });
-    titleEl.textContent = (i + 1) + ' / ' + cells.length + ' · ' + c.getAttribute('data-title');
+    titleEl.textContent = 'Now playing · ' + (i + 1) + ' / ' + cells.length + ' · ' + c.getAttribute('data-title');
+    showSound();
     stage.classList.add('playing'); stage.classList.toggle('tall', p[0] === 'instagram');
     clear();
     var box = document.createElement('div'); slot.appendChild(box);
@@ -60,6 +71,7 @@
   if (start) start.addEventListener('click', function(){ sound = true; play(0); });
   document.getElementById('fp-prev').addEventListener('click', function(){ sound = true; play(cur - 1); });
   document.getElementById('fp-next').addEventListener('click', function(){ sound = true; play(cur + 1); });
+  if (soundBtn) soundBtn.addEventListener('click', function(){ sound = !sound; applySound(); });
   document.getElementById('fp-full').addEventListener('click', function(){ if (stage.requestFullscreen) stage.requestFullscreen().catch(function(){}); });
 
   // Start straight away, muted (browsers only allow sound after a click).

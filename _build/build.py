@@ -146,56 +146,106 @@ def page_intro(n, label, title, lede=""):
     <h1 class="pagetitle">{title}</h1>{lede_html}'''
 
 # ---------------------------------------------------------------- home
+ANNIV = NEWS[0]  # the 20th anniversary story
 home = head("Mark Pinheiro · Filmmaker / VFX / AI",
-            "Mark Pinheiro: filmmaker, Nuke compositor and VFX supervisor.") + f'''
+            "Mark Pinheiro: filmmaker, Nuke compositor and VFX supervisor. The Sex Pixels, 20 years: 2006–2026.") + f'''
 <body>
 
 {header()}
 
 <main id="top">
-  <section class="hero" aria-label="Showreel" style="padding:0;max-width:none">
+  <section class="hero stickyhero" aria-label="Showreel">
     <iframe
       src="https://player.vimeo.com/video/1232958213?h=ffbea294d7&amp;background=1&amp;autoplay=1&amp;muted=1&amp;loop=1&amp;autopause=0&amp;controls=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;dnt=1"
       title="Mark Pinheiro compositing showreel 2026, playing muted in the background"
       allow="autoplay; fullscreen; picture-in-picture"
       tabindex="-1"></iframe>
-    <div class="reelbar">
-      <span class="lab"><b>Compositing showreel</b> · 2026</span>
-      <a class="pill" href="https://vimeo.com/1232958213/ffbea294d7" data-video="{REEL_2026}"><i></i>Watch full screen</a>
+    <div class="reelbar heroui">
+      <a class="anniv" href="/news/{ANNIV["slug"]}/">
+        <span class="anniv-n">20</span>
+        <span class="anniv-t"><b>Years</b><span>The Sex Pixels · 2006–2026</span><i>Read the story →</i></span>
+      </a>
+      <div class="reelside">
+        <span class="lab"><b>Compositing showreel</b> · 2026</span>
+        <a class="pill" href="https://vimeo.com/1232958213/ffbea294d7" data-video="{REEL_2026}"><i></i>Watch full screen</a>
+      </div>
+    </div>
+    <div class="scrollcue heroui" aria-hidden="true">Scroll</div>
+  </section>
+
+  <div class="over">
+  <section aria-labelledby="latest-h">
+    <div class="rail"><span class="n">01</span><span id="latest-h">Latest</span></div>
+    <div class="cards">
+      <a class="card" href="/news/{ANNIV["slug"]}/">
+        <div class="thumb anniv-thumb" aria-hidden="true"><span>20</span><i>2006–2026</i></div>
+        <div class="meta">
+          <span class="kicker">News · 12 October 2026</span>
+          <h3>{ANNIV["title"]}</h3>
+          <p>Twenty years of The Sex Pixels, marked with a new website.</p>
+          <span class="go">Read →</span>
+        </div>
+      </a>
+      <a class="card" href="/nukecompositor/">
+        <div class="thumb"><img data-vimeo="https://vimeo.com/1232958213/ffbea294d7" alt="" hidden><span class="play"></span></div>
+        <div class="meta">
+          <span class="kicker">Nuke compositor</span>
+          <h3>Compositing showreel</h3>
+          <p>The 2026 compositing reel, plus project reels.</p>
+          <span class="go">Watch →</span>
+        </div>
+      </a>
+      <a class="card" href="/vfxsupervisor/">
+        <div class="thumb"><img src="https://i.ytimg.com/vi/9KZPd8__8ys/hqdefault.jpg" alt="" loading="lazy"><span class="play"></span></div>
+        <div class="meta">
+          <span class="kicker">VFX supervisor</span>
+          <h3>Supervisor showreel</h3>
+          <p>On-set and in-facility supervision, plus project reels.</p>
+          <span class="go">Watch →</span>
+        </div>
+      </a>
+      <a class="card" href="/thefleapit/">
+        <div class="thumb"><img data-vimeo="https://vimeo.com/389670596" alt="" hidden><span class="play"></span></div>
+        <div class="meta">
+          <span class="kicker">Filmmaker</span>
+          <h3>The Fleapit</h3>
+          <p>Filmmaking experiments: uncommercials, fake trailers, idents and film essays.</p>
+          <span class="go">Watch →</span>
+        </div>
+      </a>
     </div>
   </section>
 
-  <section class="doors" aria-label="Sections">
+  <section aria-labelledby="explore-h" style="padding-top:0">
+    <div class="rail"><span class="n">02</span><span id="explore-h">Explore</span></div>
     <div class="cards">
       <a class="card" href="/work/">
-        <div class="thumb"><img data-vimeo="https://vimeo.com/1232958213/ffbea294d7" alt="" hidden></div>
+        {slate("Feature film · Episodic · Commercial", "Work")}
         <div class="meta">
-          <span class="kicker">01 · Work</span>
-          <h3>Showreels &amp; finals</h3>
-          <p>Project showreels and finished shots.</p>
+          <span class="kicker">Work</span>
+          <h3>Project reels by format</h3>
           <span class="go">Work →</span>
         </div>
       </a>
       <a class="card" href="/skills/">
         <div class="thumb" aria-hidden="true">{TREE}</div>
         <div class="meta">
-          <span class="kicker">02 · Skills</span>
-          <h3>Skills &amp; R&amp;D</h3>
-          <p>21 disciplines across 7 stages of production, each with a working demo as it is made.</p>
+          <span class="kicker">Skills · R&amp;D</span>
+          <h3>21 disciplines, 7 stages</h3>
           <span class="go">Skills →</span>
         </div>
       </a>
-      <a class="card" href="/thefleapit/">
-        <div class="thumb fleapit-thumb" aria-hidden="true"><span>The Fleapit<b>.</b></span></div>
+      <a class="card" href="/about/">
+        {slate("Since 1995", "About")}
         <div class="meta">
-          <span class="kicker">03 · The Fleapit</span>
-          <h3>Filmmaking experiments</h3>
-          <p>Uncommercials, fake trailers, idents and film essays.</p>
-          <span class="go">The Fleapit →</span>
+          <span class="kicker">About</span>
+          <h3>History, awards &amp; kit</h3>
+          <span class="go">About →</span>
         </div>
       </a>
     </div>
   </section>
+  </div>
 </main>
 
 {FOOTER}
@@ -539,38 +589,42 @@ def reel_cell(i, r):
 def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wide, idle_empty, extra_links, page_title, desc):
     cells = "\n".join(reel_cell(i, r) for i, r in enumerate(reels))
     has_any = any(r["video"] for r in reels)
-    idle_btn = '<button class="pill" type="button" id="fp-start"><i></i>Play all</button>' if has_any else extra_links
+    idle = "" if has_any else f'''
+    <div class="fp-idle"><span class="fp-now">Now showing</span><span class="fp-big">{idle_empty}</span>{extra_links}</div>'''
+    ctrls = f'''
+        <div class="fp-ctrls">
+          <button type="button" class="fp-btn" id="fp-prev" aria-label="Previous reel">◀</button>
+          <button type="button" class="fp-btn" id="fp-next" aria-label="Next reel">▶</button>
+          <button type="button" class="fp-btn" id="fp-sound" aria-pressed="false">Sound on</button>
+          <button type="button" class="fp-btn" id="fp-full">Full screen</button>
+        </div>''' if has_any else ""
     pg = head(page_title, desc) + f'''
 <body>
 
 {header(key, sub)}
 
 <main>
-  <section class="page fp-head">
-    <div class="rail"><span class="n">{rail_n}</span>{rail_label}</div>
-    <h1 class="pagetitle">{title_html}</h1>
-    <p class="pagelede">{lede}</p>
+  <section class="hero stickyhero fp-player{" fit" if not wide else ""}{"" if has_any else " fp-empty"}" id="fp-player" aria-label="Player">
+    <div class="fp-slot" id="fp-slot"></div>{idle}
+    <div class="reelbar heroui">
+      <div class="herotitle">
+        <span class="lab"><b>{rail_n}</b> · {rail_label}</span>
+        <h1 class="herohead">{title_html}</h1>
+        <span class="fp-title" id="fp-title" aria-live="polite"></span>
+      </div>{ctrls}
+    </div>
+    <div class="scrollcue heroui" aria-hidden="true">Scroll for reels</div>
   </section>
 
-  <section class="fp-stage" aria-label="Player">
-    <div class="fp-player{"" if has_any else " fp-empty"}" id="fp-player">
-      <div class="fp-slot" id="fp-slot"></div>
-      <div class="fp-idle"><span class="fp-now">Now showing</span><span class="fp-big">{"Press play" if has_any else idle_empty}</span>{idle_btn}</div>
-    </div>
-    <div class="fp-bar"{"" if has_any else " hidden"}>
-      <button type="button" class="fp-btn" id="fp-prev" aria-label="Previous reel">◀</button>
-      <span class="fp-title" id="fp-title" aria-live="polite"></span>
-      <button type="button" class="fp-btn" id="fp-next" aria-label="Next reel">▶</button>
-      <button type="button" class="fp-btn" id="fp-full">Full screen</button>
-    </div>
-  </section>
-
+  <div class="over">
   <section class="fp-reels" aria-labelledby="reels-h">
     <div class="rail"><span class="n">Reels</span><span id="reels-h">All</span></div>
+    <p class="pagelede">{lede}</p>
     <div class="fp-grid{" wide" if wide else ""}">
 {cells}
     </div>
   </section>
+  </div>
 </main>
 
 {FOOTER}
