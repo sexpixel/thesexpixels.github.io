@@ -14,11 +14,18 @@
 <body>
 
 <header class="nav" id="nav">
-  <a class="mark" href="/" aria-label="Mark Pinheiro, The Sex Pixels, home"><b>Mark Pinheiro</b><small>The Sex Pixels</small></a>
-  <nav aria-label="Main">
+  <a class="mark" href="/" aria-label="Mark Pinheiro, VFX Supervisor, home"><b>Mark Pinheiro</b><small>VFX Supervisor</small></a>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+  <nav aria-label="Main" id="menu">
     <ul>
+      <!-- Showreels. When a reel exists, give its link href="<video url>" data-video="vimeo:ID:HASH", like Nuke Compositor. -->
+      <li><a href="/#reel-filmmaker">Filmmaker</a></li>
+      <li><a href="https://vimeo.com/1232958213/ffbea294d7" data-video="vimeo:1232958213:ffbea294d7">Nuke Compositor</a></li>
+      <li><a href="/#reel-vfx-supervisor">VFX Supervisor</a></li>
+      <li><a href="/skills/">Skills</a></li>
+      <li class="sep" aria-hidden="true"></li>
       <li><a href="/#work">Work</a></li>
-      <li class="opt"><a href="/about/" aria-current="page">About</a></li>
+      <li><a href="/about/" aria-current="page">About</a></li>
       <li><a href="/#contact">Contact</a></li>
     </ul>
   </nav>
@@ -35,7 +42,7 @@
         <p>He wrote the compositing course at Escape Studios in London, and still designs courses for the NFTS, ECAM Madrid and Escape Studios.</p>
         <p>He holds an MA in Writing for Script &amp; Screen from Falmouth University, and he is an <strong>agentic coder</strong>: every tool he builds is written with AI.</p>
         <p>He works through his boutique studio, The Sex Pixels, pairing traditional VFX craft with ethical AI.</p>
-        <a class="pill" href="https://vimeo.com/1232958213/ffbea294d7" data-video="vimeo:1232958213:ffbea294d7" style="margin-top:10px"><i></i>Showreel 2026</a>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px"><a class="pill" href="https://vimeo.com/1232958213/ffbea294d7" data-video="vimeo:1232958213:ffbea294d7"><i></i>Compositing showreel</a><a class="pill ghost" href="/skills/">Skills by discipline →</a></div>
       </div>
       <div>
         <figure class="quote">
@@ -54,239 +61,6 @@
     </div>
   </section>
 
-  <section id="disciplines">
-    <div class="rail"><span class="n">21</span>Disciplines · 7 stages</div>
-    <h2>Skills by discipline</h2>
-    <div class="filters" role="group" aria-label="Filter by stage">
-      <button type="button" data-f="all" aria-pressed="true">All</button>
-      <button type="button" data-f="00" aria-pressed="false">00 · Across the whole show</button>
-      <button type="button" data-f="01" aria-pressed="false">01 · Plan &amp; shoot</button>
-      <button type="button" data-f="02" aria-pressed="false">02 · Clean the plate</button>
-      <button type="button" data-f="03" aria-pressed="false">03 · Solve the plate</button>
-      <button type="button" data-f="04" aria-pressed="false">04 · Build the shot</button>
-      <button type="button" data-f="05" aria-pressed="false">05 · Shape the look</button>
-      <button type="button" data-f="06" aria-pressed="false">06 · Finish &amp; deliver</button>
-    </div>
-    <div class="cards" id="tiles">
-      <a class="card" href="/pipeline/" data-stage="00">
-        <div class="thumb" aria-hidden="true"><div class="tree">
-            <div style="--c:#eeeae4"><span></span>/jobs/Production_Name/</div>
-            <div style="--c:#b8b2ab;--a:18px;--b:0px"><span></span>00_Production_Tracking</div>
-            <div style="--c:#39d7ff;--a:18px;--b:36px"><span></span>editorial</div>
-            <div style="--c:#d4497c;--a:18px;--b:36px"><span></span>vfx</div>
-            <div style="--c:#ff7aa6;--a:36px;--b:54px"><span></span>SEQ010 / SH010</div>
-            <div style="--c:#5fe0c8;--a:18px;--b:0px"><span></span>Deliverables</div>
-          </div></div>
-        <div class="meta">
-          <span class="kicker">00.1 · Across the whole show</span>
-          <span class="client">Panda Plan · Gangs of London S3 · Black Sails S4</span>
-          <h3>Production methodologies</h3>
-          <p>Feature film supervision · Episodic / streaming supervision · Commercial / advertising supervision · Animation feature supervision · Virtual production / LED stage</p>
-          <span class="go">Open the demo →</span>
-        </div>
-      </a>
-      <div class="card" data-stage="00">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">00 · Across the whole show</span><span class="no">00.2</span></div></div>
-        <div class="meta">
-          <span class="kicker">00.2 · Across the whole show</span>
-          <span class="client">Unreal Fellowship, Epic Games</span>
-          <h3>Pipeline &amp; tools</h3>
-          <p>Custom gizmos and NDK plugins · Python / TCL development · Nuke script templating · AYON and Deadline · RV and Syncsketch</p>
-          <span class="go soon">Demo in production</span>
-        </div>
-      </div>
-      <div class="card" data-stage="00">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">00 · Across the whole show</span><span class="no">00.3</span></div></div>
-        <div class="meta">
-          <span class="kicker">00.3 · Across the whole show</span>
-          <span class="client">Game of Thrones S6 · Man in an Orange Shirt</span>
-          <h3>Client &amp; creative leadership</h3>
-          <p>Dailies leadership · Sequence continuity · Final shot sign-off · Mentoring artists and comp leads · Client review</p>
-          <span class="go soon">Demo in production</span>
-        </div>
-      </div>
-      <div class="card" data-stage="01">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">01 · Plan &amp; shoot</span><span class="no">01.1</span></div></div>
-        <div class="meta">
-          <span class="kicker">01.1 · Plan &amp; shoot</span>
-          <span class="client">Framestore FPS, Lead PostVis · Playmaker</span>
-          <h3>Pre-production &amp; planning</h3>
-          <p>Script breakdown for VFX shots · Bid input and feasibility · Methodology definition · Previz, postviz and techviz direction</p>
-          <span class="go soon">Demo in production</span>
-        </div>
-      </div>
-      <div class="card" data-stage="01">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">01 · Plan &amp; shoot</span><span class="no">01.2</span></div></div>
-        <div class="meta">
-          <span class="kicker">01.2 · Plan &amp; shoot</span>
-          <span class="client">The Ballad of a Small Player, dir. Edward Berger</span>
-          <h3>On-set supervision</h3>
-          <p>On-set decision making · Director and DP liaison · HDRI, chrome and grey ball capture · LIDAR · Witness camera arrays</p>
-          <span class="go soon">Demo in production</span>
-        </div>
-      </div>
-      <div class="card" data-stage="01">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">01 · Plan &amp; shoot</span><span class="no">01.3</span></div></div>
-        <div class="meta">
-          <span class="kicker">01.3 · Plan &amp; shoot</span>
-          <span class="client">Hugo · BBC World Cup titles · NukeGeoTools</span>
-          <h3>3D &amp; USD</h3>
-          <p>Photo-modelling and scan geometry · Nuke 3D camera projection · USD scene assembly · AI image-to-geometry</p>
-          <span class="go soon">Demo in production</span>
-        </div>
-      </div>
-      <div class="card" data-stage="02">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">02 · Clean the plate</span><span class="no">02.1</span></div></div>
-        <div class="meta">
-          <span class="kicker">02.1 · Clean the plate</span>
-          <span class="client">Damsel · Poldark S5</span>
-          <h3>Prep &amp; cleanup</h3>
-          <p>Rig, wire and marker removal · Crew, boom and reflection removal · Sign, logo and text removal · Beauty work</p>
-          <span class="go soon">Demo in production</span>
-        </div>
-      </div>
-      <div class="card" data-stage="02">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">02 · Clean the plate</span><span class="no">02.2</span></div></div>
-        <div class="meta">
-          <span class="kicker">02.2 · Clean the plate</span>
-          <span class="client">The Ballad of a Small Player</span>
-          <h3>Roto &amp; segmentation</h3>
-          <p>Hero character isolation · Fine-detail and hair roto · Garbage and holdout mattes · AI-assisted segmentation and matte QA</p>
-          <span class="go soon">Demo in production</span>
-        </div>
-      </div>
-      <div class="card" data-stage="02">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">02 · Clean the plate</span><span class="no">02.3</span></div></div>
-        <div class="meta">
-          <span class="kicker">02.3 · Clean the plate</span>
-          <span class="client">ComfyUI · NukeGeoTools · Playmaker app</span>
-          <h3>AI &amp; agentic coding</h3>
-          <p>Agentic coding for all tool development · Diffusion model compositing · AI roto and matte QA · Cross-model verification</p>
-          <span class="go soon">Demo in production</span>
-        </div>
-      </div>
-      <div class="card" data-stage="03">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">03 · Solve the plate</span><span class="no">03.1</span></div></div>
-        <div class="meta">
-          <span class="kicker">03.1 · Solve the plate</span>
-          <span class="client">Gangs of London S3 · The Rig</span>
-          <h3>Tracking &amp; matchmove</h3>
-          <p>3D camera tracking · 2D and point tracking · Object tracking · SmartVector</p>
-          <span class="go soon">Demo in production</span>
-        </div>
-      </div>
-      <div class="card" data-stage="03">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">03 · Solve the plate</span><span class="no">03.2</span></div></div>
-        <div class="meta">
-          <span class="kicker">03.2 · Solve the plate</span>
-          <span class="client">The Crown S2 · Captain Marvel</span>
-          <h3>Keying &amp; extraction</h3>
-          <p>Blue and green screen keying · Core / edge matte separation · Despill · Hair and fur preservation</p>
-          <span class="go soon">Demo in production</span>
-        </div>
-      </div>
-      <div class="card" data-stage="03">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">03 · Solve the plate</span><span class="no">03.3</span></div></div>
-        <div class="meta">
-          <span class="kicker">03.3 · Solve the plate</span>
-          <span class="client">The Ballad of a Small Player</span>
-          <h3>Plate reconstruction</h3>
-          <p>Clean plate generation · Patch, rebuild and restoration · Multi-frame reconstruction · Projection-based repair</p>
-          <span class="go soon">Demo in production</span>
-        </div>
-      </div>
-      <div class="card" data-stage="04">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">04 · Build the shot</span><span class="no">04.1</span></div></div>
-        <div class="meta">
-          <span class="kicker">04.1 · Build the shot</span>
-          <span class="client">The Buccaneers · Great Expectations</span>
-          <h3>Environments &amp; DMP</h3>
-          <p>Set extensions · Projection mapping (3D / 2.5D) · Matte painting integration · Sky replacements</p>
-          <span class="go soon">Demo in production</span>
-        </div>
-      </div>
-      <div class="card" data-stage="04">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">04 · Build the shot</span><span class="no">04.2</span></div></div>
-        <div class="meta">
-          <span class="kicker">04.2 · Build the shot</span>
-          <span class="client">Guardians of the Galaxy · Captain Marvel</span>
-          <h3>CG &amp; AOV integration</h3>
-          <p>Multi-pass assembly · AOV rebuilds · Creature and vehicle integration · Re-lighting in Nuke</p>
-          <span class="go soon">Demo in production</span>
-        </div>
-      </div>
-      <div class="card" data-stage="04">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">04 · Build the shot</span><span class="no">04.3</span></div></div>
-        <div class="meta">
-          <span class="kicker">04.3 · Build the shot</span>
-          <span class="client">Walking With Dinosaurs</span>
-          <h3>Deep compositing</h3>
-          <p>Deep compositing and multi-depth layers · Deep holdouts and merges · Depth-ordered atmospherics</p>
-          <span class="go soon">Demo in production</span>
-        </div>
-      </div>
-      <div class="card" data-stage="05">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">05 · Shape the look</span><span class="no">05.1</span></div></div>
-        <div class="meta">
-          <span class="kicker">05.1 · Shape the look</span>
-          <span class="client">Tenet · The French Dispatch</span>
-          <h3>Camera &amp; lens work</h3>
-          <p>Bokeh and defocus · Flare matching · Lens distortion / undistortion · STMap reprojection</p>
-          <span class="go soon">Demo in production</span>
-        </div>
-      </div>
-      <div class="card" data-stage="05">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">05 · Shape the look</span><span class="no">05.2</span></div></div>
-        <div class="meta">
-          <span class="kicker">05.2 · Shape the look</span>
-          <span class="client">Black Sails S4 · Lost in Space S2</span>
-          <h3>FX element integration</h3>
-          <p>FX simulation pass comp · Practical fire, smoke and sparks · Muzzle flashes and explosions</p>
-          <span class="go soon">Demo in production</span>
-        </div>
-      </div>
-      <div class="card" data-stage="05">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">05 · Shape the look</span><span class="no">05.3</span></div></div>
-        <div class="meta">
-          <span class="kicker">05.3 · Shape the look</span>
-          <span class="client">Klaxons &#x27;Twin Flames&#x27; UKMVA · M.I.A. &#x27;Borders&#x27; · Coldplay &#x27;Daddy&#x27;</span>
-          <h3>Creative &amp; experimental FX</h3>
-          <p>Time warping and echo effects · Procedural comp FX via gizmos · Stylised and non-photoreal looks · Music video and promo FX</p>
-          <span class="go soon">Demo in production</span>
-        </div>
-      </div>
-      <div class="card" data-stage="06">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">06 · Finish &amp; deliver</span><span class="no">06.1</span></div></div>
-        <div class="meta">
-          <span class="kicker">06.1 · Finish &amp; deliver</span>
-          <span class="client">Yardie · Murder Is Easy</span>
-          <h3>Lookdev &amp; shot finishing</h3>
-          <p>ACES / OCIO · Colour matching and balancing · Day-for-night · Grain matching and regrain</p>
-          <span class="go soon">Demo in production</span>
-        </div>
-      </div>
-      <div class="card" data-stage="06">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">06 · Finish &amp; deliver</span><span class="no">06.2</span></div></div>
-        <div class="meta">
-          <span class="kicker">06.2 · Finish &amp; deliver</span>
-          <span class="client">Hugo · Save The 365th Day</span>
-          <h3>Stereo &amp; immersive</h3>
-          <p>Mono-to-stereo conversion · Stereo eye matching · Depth maps · 360 comp passes</p>
-          <span class="go soon">Demo in production</span>
-        </div>
-      </div>
-      <div class="card" data-stage="06">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">06 · Finish &amp; deliver</span><span class="no">06.3</span></div></div>
-        <div class="meta">
-          <span class="kicker">06.3 · Finish &amp; deliver</span>
-          <span class="client">Absolute Post, deliveries across eight shows</span>
-          <h3>Delivery, reels &amp; submissions</h3>
-          <p>Editorial turnovers and change lists · EDL / AAF conform and VFX pulls · DCP production · Oscar and BAFTA submission prep</p>
-          <span class="go soon">Demo in production</span>
-        </div>
-      </div>
-    </div>
-  </section>
 </main>
 
 <footer>
@@ -295,18 +69,5 @@
 </footer>
 
 <script src="/assets/site.js"></script>
-<script>
-// Stage filters, like the category filters on Framestore's work page.
-(function(){
-  var btns = document.querySelectorAll('.filters button'), tiles = document.querySelectorAll('#tiles .card');
-  btns.forEach(function(b){
-    b.addEventListener('click', function(){
-      var f = b.getAttribute('data-f');
-      btns.forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
-      tiles.forEach(function(t){ t.hidden = !(f === 'all' || t.getAttribute('data-stage') === f); });
-    });
-  });
-})();
-</script>
 </body>
 </html>

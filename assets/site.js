@@ -7,12 +7,26 @@
     var update = function(){
       var y = window.scrollY;
       nav.classList.toggle('solid', y > 40);
+      if (nav.classList.contains('open')) { last = y; ticking = false; return; }
       if (y > last && y > 140) nav.classList.add('hide');
       else if (y < last - 4 || y <= 140) nav.classList.remove('hide');
       last = y; ticking = false;
     };
     window.addEventListener('scroll', function(){ if (!ticking) { requestAnimationFrame(update); ticking = true; } }, {passive:true});
     nav.addEventListener('focusin', function(){ nav.classList.remove('hide'); });
+  }
+
+
+  // 1b. Menu button for narrower screens: opens the menu full screen.
+  var btn = document.querySelector('.menu-btn');
+  if (btn && nav) {
+    var setOpen = function(on){
+      nav.classList.toggle('open', on); btn.setAttribute('aria-expanded', on ? 'true' : 'false');
+      btn.textContent = on ? 'Close' : 'Menu'; document.body.style.overflow = on ? 'hidden' : '';
+    };
+    btn.addEventListener('click', function(){ setOpen(!nav.classList.contains('open')); });
+    nav.querySelectorAll('nav a').forEach(function(a){ a.addEventListener('click', function(){ setOpen(false); }); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && nav.classList.contains('open')) { setOpen(false); btn.focus(); } });
   }
 
   // 2. Full-screen player. Any element with data-video="vimeo:ID:HASH" or "youtube:ID" opens it.

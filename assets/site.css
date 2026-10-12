@@ -23,15 +23,31 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--fg);outline-offset:
 .mark{display:flex;flex-direction:column;gap:5px;text-decoration:none;white-space:nowrap;line-height:.9}
 .mark b{font-weight:900;font-size:clamp(22px,2.6vw,36px);letter-spacing:-.03em;text-transform:uppercase}
 .mark small{font-family:var(--mono);font-size:clamp(9px,.8vw,11px);font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--accent);line-height:1}
-.nav ul{display:flex;gap:clamp(14px,3vw,40px);list-style:none;margin:0;padding:0}
-.nav ul a{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;color:var(--soft);
-  display:inline-block;padding:12px 0}
+.nav ul{display:flex;align-items:center;gap:clamp(16px,2vw,34px);list-style:none;margin:0;padding:0}
+.nav ul a{font-family:var(--display);font-size:clamp(13px,1.05vw,16px);font-weight:800;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--soft);
+  display:inline-flex;align-items:center;gap:8px;padding:12px 0;white-space:nowrap}
+.nav ul a[data-video]::before{content:"";border-left:7px solid var(--accent);border-top:4.5px solid transparent;border-bottom:4.5px solid transparent}
 .nav ul a:hover,.nav ul a[aria-current="page"]{color:var(--accent-hi)}
+.nav li.sep{width:1px;height:20px;background:var(--line)}
+.menu-btn{display:none;align-items:center;min-height:44px;padding:0 18px;border:1px solid var(--edge);border-radius:999px;background:rgba(17,16,18,.5);color:var(--fg);cursor:pointer;
+  font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase}
+@media (max-width:1100px){
+  .menu-btn{display:inline-flex}
+  .nav nav{display:none}
+  .nav.open{background:var(--bg);backdrop-filter:none;transform:none}
+  .nav.open nav{display:block;position:fixed;inset:0;z-index:-1;background:var(--bg);padding:110px var(--gutter) 40px;overflow:auto}
+  .nav.open ul{flex-direction:column;align-items:flex-start;gap:4px}
+  .nav.open ul a{font-size:clamp(28px,7vw,48px);font-weight:900;letter-spacing:-.02em;color:var(--fg);padding:6px 0}
+  .nav.open ul a[data-video]::before{border-left-width:14px;border-top-width:9px;border-bottom-width:9px}
+  .nav.open li.sep{width:64px;height:1px;margin:14px 0}
+}
 
 /* ---------- buttons ---------- */
 .pill{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 18px;border:0;border-radius:999px;background:var(--accent);color:var(--ink);cursor:pointer;
   font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;white-space:nowrap}
 .pill:hover{background:var(--accent-hi)}
+.pill.ghost{background:transparent;color:var(--fg);border:1px solid var(--edge)}
+.pill.ghost:hover{border-color:var(--accent);color:var(--accent-hi);background:transparent}
 .pill i{width:0;height:0;border-left:8px solid currentColor;border-top:5px solid transparent;border-bottom:5px solid transparent}
 
 /* ---------- hero: the reel, full bleed ---------- */
@@ -126,7 +142,3 @@ footer .avail b{background:var(--accent);color:var(--ink);padding:1px 4px 1px 8p
   font-family:var(--mono);font-size:20px;line-height:1}
 .lightbox .x:hover{border-color:var(--accent);color:var(--accent-hi)}
 
-@media (max-width:560px){
-  .nav ul{gap:14px}
-  .nav ul li.opt{display:none}
-}

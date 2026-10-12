@@ -14,12 +14,19 @@
 <body>
 
 <header class="nav" id="nav">
-  <a class="mark" href="/" aria-label="Mark Pinheiro, The Sex Pixels, home"><b>Mark Pinheiro</b><small>The Sex Pixels</small></a>
-  <nav aria-label="Main">
+  <a class="mark" href="/" aria-label="Mark Pinheiro, VFX Supervisor, home"><b>Mark Pinheiro</b><small>VFX Supervisor</small></a>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+  <nav aria-label="Main" id="menu">
     <ul>
-      <li><a href="#work">Work</a></li>
-      <li class="opt"><a href="/about/">About</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <!-- Showreels. When a reel exists, give its link href="<video url>" data-video="vimeo:ID:HASH", like Nuke Compositor. -->
+      <li><a href="/#reel-filmmaker">Filmmaker</a></li>
+      <li><a href="https://vimeo.com/1232958213/ffbea294d7" data-video="vimeo:1232958213:ffbea294d7">Nuke Compositor</a></li>
+      <li><a href="/#reel-vfx-supervisor">VFX Supervisor</a></li>
+      <li><a href="/skills/">Skills</a></li>
+      <li class="sep" aria-hidden="true"></li>
+      <li><a href="/#work">Work</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="/#contact">Contact</a></li>
     </ul>
   </nav>
 </header>
@@ -32,7 +39,7 @@
       allow="autoplay; fullscreen; picture-in-picture"
       tabindex="-1"></iframe>
     <div class="reelbar">
-      <span class="lab"><b>Showreel</b> · 2026</span>
+      <span class="lab"><b>Compositing showreel</b> · 2026</span>
       <a class="pill" href="https://vimeo.com/1232958213/ffbea294d7" data-video="vimeo:1232958213:ffbea294d7"><i></i>Watch full screen</a>
     </div>
   </section>
@@ -41,16 +48,36 @@
     <div class="rail"><span class="n">01</span>Work</div>
     <h2>Work</h2>
     <div class="cards">
-      <a class="card" href="https://vimeo.com/1232958213/ffbea294d7" data-video="vimeo:1232958213:ffbea294d7">
+      <div class="card" id="reel-filmmaker">
+        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">Showreel</span><span class="no">Film</span></div></div>
+        <div class="meta">
+          <span class="kicker">Filmmaker</span>
+          <span class="client">Showreel</span>
+          <h3>Filmmaking showreel</h3>
+          <p>Writing, directing and camera work.</p>
+          <span class="go soon">Coming soon</span>
+        </div>
+      </div>
+      <a class="card" id="reel-compositor" href="https://vimeo.com/1232958213/ffbea294d7" data-video="vimeo:1232958213:ffbea294d7">
         <div class="thumb"><img data-vimeo="https://vimeo.com/1232958213/ffbea294d7" alt="" hidden><span class="play"></span></div>
         <div class="meta">
-          <span class="kicker">Reel</span>
-          <span class="client">2026</span>
-          <h3>Showreel 2026</h3>
-          <p>The latest compositing and supervision reel.</p>
+          <span class="kicker">Nuke compositor</span>
+          <span class="client">Showreel · 2026</span>
+          <h3>Compositing showreel</h3>
+          <p>The latest compositing reel.</p>
           <span class="go">Play →</span>
         </div>
       </a>
+      <div class="card" id="reel-vfx-supervisor">
+        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">Showreel</span><span class="no">VFX</span></div></div>
+        <div class="meta">
+          <span class="kicker">VFX supervisor</span>
+          <span class="client">Showreel</span>
+          <h3>VFX supervisor showreel</h3>
+          <p>On-set and post supervision across film, episodic and commercials.</p>
+          <span class="go soon">Coming soon</span>
+        </div>
+      </div>
       <a class="card" href="/pipeline/">
         <div class="thumb" aria-hidden="true">
           <div class="tree">
