@@ -215,7 +215,7 @@ home = head("Mark Pinheiro · Filmmaker / VFX / AI",
         <div class="meta">
           <span class="kicker">Filmmaker</span>
           <h3>The Fleapit</h3>
-          <p>Now showing. Please take your seats: the ads and trailers before the main feature.</p>
+          <p>A word from our advertisers.</p>
           <span class="go">Watch →</span>
         </div>
       </a>
@@ -630,11 +630,11 @@ def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wid
     write(path, pg)
 
 player_page("thefleapit/index.html", "fleapit", "The Sex Pixels", 'The Fleapit<span class="dot">.</span>', "SE1", "Filmmaker",
-            "Please take your seats. Before tonight's main feature: a word from our advertisers, coming attractions and the odd intermission.",
+            "A word from our advertisers.",
             FLEAPIT_REELS, False, "The first reel is in the edit",
             f'<a class="pill" href="{INSTAGRAM}" target="_blank" rel="noopener">Follow on Instagram ↗</a>',
             "The Fleapit · Mark Pinheiro",
-            "The Fleapit. SE1. Please take your seats: a word from our advertisers and coming attractions, before tonight's main feature.")
+            "The Fleapit. SE1. A word from our advertisers.")
 player_page("nukecompositor/index.html", "nuke", "Nuke Compositor", 'Nuke Compositor', "2D", "Showreels",
             "Compositing showreels and project reels. Play them all, or pick one from the grid.",
             NUKE_REELS, True, "", "", "Nuke Compositor · Mark Pinheiro",
