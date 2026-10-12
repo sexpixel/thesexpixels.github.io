@@ -1,7 +1,7 @@
 # Work: professional jobs only (Nuke compositor, VFX supervisor, PostVis). Personal projects go on The Fleapit.
 # Each project: title, role label as credited, role group (filter), format (filter), company, year or "".
 # A project's reels go in clips=[("clip name", "vimeo id"), ...]; each clip becomes its own playable tile.
-ROLE_GROUPS = ["Nuke compositor", "VFX supervisor", "PostVis"]
+ROLE_GROUPS = ["Nuke compositor", "VFX supervisor", "PostVis", "Director"]
 FORMATS = ["Feature film", "Episodic", "Commercial", "Feature animation"]
 FORMAT_SLUGS = {"Feature film": "feature-film", "Episodic": "episodic", "Commercial": "commercial", "Feature animation": "feature-animation"}
 PROJECTS = [
@@ -13,6 +13,8 @@ PROJECTS = [
     dict(title="Gangs of London S3", role="On-set VFX supervisor", group="VFX supervisor", fmt="Episodic", co="", yr=""),
     dict(title="Panda Plan", role="VFX supervisor", group="VFX supervisor", fmt="Feature film", co="Horizon VFX", yr=""),
     dict(title="I Am Nobody S2", role="VFX consultant", group="VFX supervisor", fmt="Episodic", co="Horizon VFX", yr=""),
+    dict(title="Spotify", role="Director", group="Director", fmt="Commercial", co="The Sex Pixels", yr="",
+         clips=[("Happy Ending", "143586386"), ("Run Your Way", "143586363"), ("Procrastinator", "143586362")]),
     dict(title="Zinga Poker", role="Compositor", group="Nuke compositor", fmt="Commercial", co="ICHI Worldwide", yr="2024"),
     dict(title="Damsel", role="Lead PostVis artist", group="PostVis", fmt="Feature film", co="Proof", yr="2023",
          clips=[("The Knights Arrive", "1014291965"), ("The Knights: Rashomon", "1014291669"), ("The Fall", "1014291582")]),
