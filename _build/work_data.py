@@ -24,7 +24,8 @@ PROJECTS = [
          clips=[("Guardians of the Galaxy Vol. 3", "1014147480")]),
     dict(title="Moon Knight", role="PostVis", group="PostVis", fmt="Episodic", co="Framestore FPS", yr="",  # ROLE TO CONFIRM
          clips=[("The Castle", "1014146296"), ("The Ice Cream Van Chase", "1014145891"), ("The Book Attack", "1014145603"), ("The Museum", "1014145227"),
-                ("Security Desk", "1014145040"), ("Storage Lockup", "1014144960"), ("Khonshu Mentors", "1014144736")]),
+                ("Security Desk", "1014145040"), ("Storage Lockup", "1014144960"), ("Khonshu Mentors", "1014144736"),
+                ("Pyramid Fight", "1014144315"), ("Desert Magic", "1014144015"), ("The Asylum", "1014143259"), ("The Realm", "1014143091")]),
     dict(title="Lockwood & Co", role="PostVis", group="PostVis", fmt="Episodic", co="Framestore FPS", yr="",  # ROLE TO CONFIRM
          clips=[("S01E03 The Druids", "1014146695")]),
     dict(title="The Rig", role="", group="Nuke compositor", fmt="Episodic", co="Absolute Post", yr="",  # ROLE TO CONFIRM
