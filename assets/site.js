@@ -108,7 +108,7 @@
     box.className = 'lightbox'; box.hidden = true;
     box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-label', 'Video player');
     box.innerHTML = '<button class="x" type="button" aria-label="Close video">&times;</button>' +
-      '<iframe allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Video"></iframe>';
+      '<iframe allow="autoplay; fullscreen; picture-in-picture; encrypted-media" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="Video"></iframe>';
     document.body.appendChild(box);
     closeBtn = box.querySelector('.x'); frame = box.querySelector('iframe');
     closeBtn.addEventListener('click', close);

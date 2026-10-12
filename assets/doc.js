@@ -17,7 +17,8 @@
     now.textContent = 'Chapter ' + (i + 1) + ' of ' + chs.length + ' · ' + c.getAttribute('data-title');
     var f = document.createElement('iframe');
     f.src = 'https://player.vimeo.com/video/' + c.getAttribute('data-id') + '?autoplay=1&texttrack=false&title=0&byline=0&portrait=0&dnt=1';
-    f.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture'); f.setAttribute('allowfullscreen', '');
+    f.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media'); f.setAttribute('allowfullscreen', '');
+    f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');   // lets Vimeo see the site, for domain-restricted videos
     f.title = 'In his own words · ' + c.getAttribute('data-title');
     stage.innerHTML = ''; stage.appendChild(f); stage.classList.add('playing');
     vimeo().then(function(){

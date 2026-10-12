@@ -50,7 +50,8 @@
     stage.style.removeProperty('--ar');
     slot.innerHTML = '';
     var f = document.createElement('iframe');
-    f.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture'); f.title = r.title;
+    f.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media'); f.title = r.title;
+    f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
     if (p[0] === 'vimeo') {
       f.src = 'https://player.vimeo.com/video/' + p[1] + '?' + (p[2] ? 'h=' + p[2] + '&' : '') + 'autoplay=1&texttrack=false&muted=1&loop=1&controls=0&title=0&byline=0&portrait=0&dnt=1';
       slot.appendChild(f); apply();

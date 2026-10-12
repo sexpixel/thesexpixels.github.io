@@ -55,7 +55,8 @@
         f.src = 'https://player.vimeo.com/video/' + p[1] + '?' + (p[2] ? 'h=' + p[2] + '&' : '') +
           'autoplay=1&texttrack=false&muted=' + (sound ? 0 : 1) + '&title=0&byline=0&portrait=0&dnt=1&playsinline=1';
         f.title = c.getAttribute('data-title');
-        f.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
+        f.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media');
+        f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');   // lets Vimeo see the site, for domain-restricted videos
         slot.replaceChild(f, box);
         if (window.TSPcrop) window.TSPcrop(stage, f);
         player = new window.Vimeo.Player(f);
