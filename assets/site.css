@@ -369,4 +369,4 @@ body.tuner.noguides .heroui{opacity:0}
 
 /* Page name directly under Mark's name, small enough to live in the black strip above the picture. */
 .herotop .lab{display:none}
-.herotop .herohead{margin:0;font-size:clamp(28px,4.6vh,72px);line-height:.9}
+.herotop .herohead{margin:0}

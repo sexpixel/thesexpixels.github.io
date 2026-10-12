@@ -54,8 +54,6 @@
     if (!stage || !frame) return;
     var c = (stage.getAttribute('data-crop') || '').split(',').map(Number);
     var props = ['width', 'height', 'left', 'top', 'transform', 'clip-path'];
-    var title = stage.querySelector('.herotop'), head = title && title.querySelector('.herohead');
-    if (head) head.style.removeProperty('font-size');
     if (window.TSPplaceTitle) window.TSPplaceTitle();
     if (c.length < 4 || !(c[0] || c[1] || c[2] || c[3])) { props.forEach(function(k){ frame.style.removeProperty(k); }); return; }
     var t = c[0] / 100, b = c[1] / 100, l = c[2] / 100, r = c[3] / 100, fill = c[4] === 1;
@@ -68,11 +66,6 @@
     set('transform', 'none'); set('clip-path', 'inset(' + c[0] + '% ' + c[3] + '% ' + c[1] + '% ' + c[2] + '%)');
     // With a top crop, sit the page name in the black strip: its bottom on the crop line,
     // but never up under the menu.
-    // With a top crop, size the page name to fill the black strip between the menu and the picture.
-    if (head && t > 0 && !fill) {
-      var room = (vh / 2 - cy) + H * t - title.offsetTop - 6;
-      head.style.fontSize = Math.max(22, Math.min(96, room / 0.9)) + 'px';
-    }
   };
   // The page name sits directly under Mark's name in the menu bar.
   window.TSPplaceTitle = function(){
