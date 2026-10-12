@@ -60,7 +60,7 @@
         // using the video's real shape, so 4:3, 16:9 and scope reels all fill edge to edge.
         var f = document.createElement('iframe');
         f.src = 'https://player.vimeo.com/video/' + p[1] + '?' + (p[2] ? 'h=' + p[2] + '&' : '') +
-          'autoplay=1&texttrack=false&muted=' + (sound ? 0 : 1) + '&title=0&byline=0&portrait=0&dnt=1&playsinline=1';
+          'autoplay=1&autopause=0&texttrack=false&muted=' + (sound ? 0 : 1) + '&title=0&byline=0&portrait=0&dnt=1&playsinline=1';
         f.title = c.getAttribute('data-title');
         f.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media');
         f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');   // lets Vimeo see the site, for domain-restricted videos
@@ -68,7 +68,16 @@
         if (window.TSPcrop) window.TSPcrop(stage, f);
         player = new window.Vimeo.Player(f);
         player.on('ended', next);
+        player.on('error', function(){ setTimeout(next, 1500); });   // a video that can't play (privacy, removed) is skipped
         if (player.disableTextTrack) player.disableTextTrack().catch(function(){});   // no subtitles
+        // If the browser refuses to start the next video with sound, start it muted rather than stall.
+        var vp = player;
+        setTimeout(function(){
+          if (cur !== mine || !vp.getPaused) return;
+          vp.getPaused().then(function(paused){
+            if (paused && cur === mine) { sound = false; showSound(); vp.setMuted(true); vp.setVolume(0); return vp.play(); }
+          }).catch(function(){});
+        }, 2500);
         Promise.all([player.getVideoWidth(), player.getVideoHeight()]).then(function(d){
           if (cur === mine && d[0] && d[1]) { stage.style.setProperty('--ar', d[0] / d[1]); if (window.TSPcrop) window.TSPcrop(stage, f); }
         }).catch(function(){});
@@ -79,8 +88,13 @@
         player = new window.YT.Player(box, { videoId: p[1], playerVars: { autoplay: 1, mute: sound ? 0 : 1, rel: 0, modestbranding: 1, playsinline: 1, cc_load_policy: 0, iv_load_policy: 3 },
           events: { onReady: function(e){
                       noCaptions(e.target);
+                      var yp = e.target;
+                      setTimeout(function(){
+                        try { if (cur === mine && yp.getPlayerState && yp.getPlayerState() !== 1) { sound = false; showSound(); yp.mute(); yp.playVideo(); } } catch (x) {}
+                      }, 2500);
                       if (window.TSPcrop) window.TSPcrop(stage, slot.querySelector('iframe')); },
                     onApiChange: function(e){ noCaptions(e.target); },   // fires when YouTube loads its captions module
+                    onError: function(){ setTimeout(next, 1500); },   // unplayable YouTube video: skip it
                     onStateChange: function(e){
                       if (e.data === 1) { noCaptions(e.target); setTimeout(function(){ noCaptions(e.target); }, 1500); }   // playing
                       if (e.data === 0) next(); } } });
