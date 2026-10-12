@@ -4,11 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mark Pinheiro · Filmmaker / VFX / AI</title>
-<meta name="description" content="Mark Pinheiro: filmmaker, Nuke compositor and VFX supervisor, working through his studio, The Sex Pixels.">
+<meta name="description" content="Mark Pinheiro: filmmaker, Nuke compositor and VFX supervisor.">
 <meta name="theme-color" content="#111012">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,75..125,400..900;1,75..125,400..900&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yellowtail&display=swap">
 <link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
@@ -18,15 +19,15 @@
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
   <nav aria-label="Main" id="menu">
     <ul>
-      <!-- Showreels. When a reel exists, give its link href="<video url>" data-video="vimeo:ID:HASH", like Nuke Compositor. -->
-      <li><a href="/#reel-filmmaker">Filmmaker</a></li>
+      <li><a href="/work/#reel-filmmaker">Filmmaker</a></li>
       <li><a href="https://vimeo.com/1232958213/ffbea294d7" data-video="vimeo:1232958213:ffbea294d7">Nuke Compositor</a></li>
-      <li><a href="/#reel-vfx-supervisor">VFX Supervisor</a></li>
-      <li><a href="/skills/">Skills</a></li>
+      <li><a href="/work/#reel-vfx-supervisor">VFX Supervisor</a></li>
       <li class="sep" aria-hidden="true"></li>
-      <li><a href="/#work">Work</a></li>
+      <li><a href="/work/">Work</a></li>
+      <li><a href="/skills/">Skills</a></li>
+      <li><a href="/fleapit/">The Fleapit</a></li>
       <li><a href="/about/">About</a></li>
-      <li><a href="/#contact">Contact</a></li>
+      <li><a href="/contact/">Contact</a></li>
     </ul>
   </nav>
 </header>
@@ -35,7 +36,7 @@
   <section class="hero" aria-label="Showreel" style="padding:0;max-width:none">
     <iframe
       src="https://player.vimeo.com/video/1232958213?h=ffbea294d7&amp;background=1&amp;autoplay=1&amp;muted=1&amp;loop=1&amp;autopause=0&amp;controls=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;dnt=1"
-      title="Mark Pinheiro Showreel 2026, playing muted in the background"
+      title="Mark Pinheiro compositing showreel 2026, playing muted in the background"
       allow="autoplay; fullscreen; picture-in-picture"
       tabindex="-1"></iframe>
     <div class="reelbar">
@@ -44,85 +45,42 @@
     </div>
   </section>
 
-  <section id="work">
-    <div class="rail"><span class="n">01</span>Work</div>
-    <h2>Work</h2>
+  <section class="doors" aria-label="Sections">
     <div class="cards">
-      <div class="card" id="reel-filmmaker">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">Showreel</span><span class="no">Film</span></div></div>
+      <a class="card" href="/work/">
+        <div class="thumb"><img data-vimeo="https://vimeo.com/1232958213/ffbea294d7" alt="" hidden></div>
         <div class="meta">
-          <span class="kicker">Filmmaker</span>
-          <span class="client">Showreel</span>
-          <h3>Filmmaking showreel</h3>
-          <p>Writing, directing and camera work.</p>
-          <span class="go soon">Coming soon</span>
-        </div>
-      </div>
-      <a class="card" id="reel-compositor" href="https://vimeo.com/1232958213/ffbea294d7" data-video="vimeo:1232958213:ffbea294d7">
-        <div class="thumb"><img data-vimeo="https://vimeo.com/1232958213/ffbea294d7" alt="" hidden><span class="play"></span></div>
-        <div class="meta">
-          <span class="kicker">Nuke compositor</span>
-          <span class="client">Showreel · 2026</span>
-          <h3>Compositing showreel</h3>
-          <p>The latest compositing reel.</p>
-          <span class="go">Play →</span>
+          <span class="kicker">01 · Work</span>
+          <h3>Showreels &amp; finals</h3>
+          <p>Project showreels and finished shots.</p>
+          <span class="go">Work →</span>
         </div>
       </a>
-      <div class="card" id="reel-vfx-supervisor">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">Showreel</span><span class="no">VFX</span></div></div>
-        <div class="meta">
-          <span class="kicker">VFX supervisor</span>
-          <span class="client">Showreel</span>
-          <h3>VFX supervisor showreel</h3>
-          <p>On-set and post supervision across film, episodic and commercials.</p>
-          <span class="go soon">Coming soon</span>
-        </div>
-      </div>
-      <a class="card" href="/pipeline/">
-        <div class="thumb" aria-hidden="true">
-          <div class="tree">
+      <a class="card" href="/skills/">
+        <div class="thumb" aria-hidden="true"><div class="tree">
             <div style="--c:#eeeae4"><span></span>/jobs/Production_Name/</div>
             <div style="--c:#b8b2ab;--a:18px;--b:0px"><span></span>00_Production_Tracking</div>
             <div style="--c:#39d7ff;--a:18px;--b:36px"><span></span>editorial</div>
             <div style="--c:#d4497c;--a:18px;--b:36px"><span></span>vfx</div>
             <div style="--c:#ff7aa6;--a:36px;--b:54px"><span></span>SEQ010 / SH010</div>
             <div style="--c:#5fe0c8;--a:18px;--b:0px"><span></span>Deliverables</div>
-          </div>
-        </div>
+          </div></div>
         <div class="meta">
-          <span class="kicker">Card 00.1 · Production methodologies</span>
-          <span class="client">Proof of concept</span>
-          <h3>Scale dictates structure</h3>
-          <p>Five production formats, five folder structures. Step through to see what moves between them, and why.</p>
-          <span class="go">Open the demo →</span>
+          <span class="kicker">02 · Skills</span>
+          <h3>Skills &amp; R&amp;D</h3>
+          <p>21 disciplines across 7 stages of production, each with a working demo as it is made.</p>
+          <span class="go">Skills →</span>
         </div>
       </a>
-      <a class="card" href="https://youtu.be/SDAXjN_sOlE" data-video="youtube:SDAXjN_sOlE">
-        <div class="thumb"><img src="https://i.ytimg.com/vi/SDAXjN_sOlE/hqdefault.jpg" alt="" loading="lazy"><span class="play"></span></div>
+      <a class="card" href="/fleapit/">
+        <div class="thumb fleapit-thumb" aria-hidden="true"><span>The Fleapit.</span></div>
         <div class="meta">
-          <span class="kicker">Reel</span>
-          <span class="client">02:30</span>
-          <h3>Sizzle reel</h3>
-          <p>Seventeen years of work in two and a half minutes.</p>
-          <span class="go">Play →</span>
+          <span class="kicker">03 · The Fleapit</span>
+          <h3>Filmmaking experiments</h3>
+          <p>Uncommercials, fake trailers, idents and film essays.</p>
+          <span class="go">The Fleapit →</span>
         </div>
       </a>
-    </div>
-  </section>
-
-  <section id="contact">
-    <div class="rail"><span class="n">02</span>Contact</div>
-    <div class="contact">
-      <div>
-        <h2 style="margin-bottom:24px">Let's talk</h2>
-        <a class="email" href="mailto:info@thesexpixels.com">info@thesexpixels.com</a>
-      </div>
-      <address>
-        <b>The Sex Pixels Ltd.</b>
-        Fifth Floor, Mariner House<br>
-        62 Prince Street, Bristol<br>
-        BS1 4QD
-      </address>
     </div>
   </section>
 </main>
