@@ -35,7 +35,7 @@
     if (p[0] === 'vimeo') {
       vimeo().then(function(){
         if (cur !== mine) return;
-        player = new window.Vimeo.Player(box, { url: 'https://vimeo.com/' + p[1] + '/' + (p[2] || ''), autoplay: true, muted: !sound,
+        player = new window.Vimeo.Player(box, { url: 'https://vimeo.com/' + p[1] + (p[2] ? '/' + p[2] : ''), autoplay: true, muted: !sound,
           title: false, byline: false, portrait: false, dnt: true });
         player.on('ended', next);
       });

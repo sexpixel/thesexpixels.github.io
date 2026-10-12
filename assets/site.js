@@ -45,7 +45,7 @@
   }
   function srcFor(spec){
     var p = spec.split(':');
-    if (p[0] === 'vimeo') return 'https://player.vimeo.com/video/' + p[1] + '?h=' + (p[2] || '') + '&autoplay=1&title=0&byline=0&portrait=0&dnt=1';
+    if (p[0] === 'vimeo') return 'https://player.vimeo.com/video/' + p[1] + '?' + (p[2] ? 'h=' + p[2] + '&' : '') + 'autoplay=1&title=0&byline=0&portrait=0&dnt=1';
     if (p[0] === 'youtube') return 'https://www.youtube-nocookie.com/embed/' + p[1] + '?autoplay=1&rel=0&modestbranding=1&playsinline=1';
     if (p[0] === 'instagram') return 'https://www.instagram.com/reel/' + p[1] + '/embed';
     return null;

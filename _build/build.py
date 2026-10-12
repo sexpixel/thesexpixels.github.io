@@ -29,8 +29,8 @@ REEL_2026 = "vimeo:1232958213:ffbea294d7"
 REELS = [
     dict(id="reel-compositor", role="Nuke compositor", title="Compositing showreel", note="Showreel · 2026",
          line="The latest compositing reel.", video=REEL_2026, url="https://vimeo.com/1232958213/ffbea294d7"),
-    dict(id="reel-vfx-supervisor", role="VFX supervisor", title="VFX supervisor showreel", note="Showreel",
-         line="On-set and post supervision across film, episodic and commercials.", video=None, url=None),
+    dict(id="reel-vfx-supervisor", role="VFX supervisor", title="VFX supervisor showreel", note="Stand-in: compositing showreel 2026",
+         line="On-set and post supervision across film, episodic and commercials.", video=REEL_2026, url="https://vimeo.com/1232958213/ffbea294d7"),  # STAND-IN until the supervisor reel exists
     dict(id="reel-sizzle", role="Archive", title="Sizzle reel", note="02:30",
          line="Seventeen years of work in two and a half minutes.", video="youtube:SDAXjN_sOlE",
          url="https://youtu.be/SDAXjN_sOlE", thumb="https://i.ytimg.com/vi/SDAXjN_sOlE/hqdefault.jpg"),
@@ -509,7 +509,9 @@ write("about/index.html", about)
 # A player on top that plays every reel in the grid one after another; the grid below.
 # video: "vimeo:ID:HASH" or "youtube:ID" (advance on their own), or "instagram:REELCODE"
 # (Instagram gives no "ended" signal, so the player waits for Next). None = coming soon.
+REEL_2020 = "vimeo:389670596"
 FLEAPIT_REELS = [
+    dict(title="Showreel 2020", kind="Stand-in", video=REEL_2020),  # STAND-IN until the first Fleapit reel is ready
     dict(title="Uncommercials", kind="Uncommercial", video=None),
     dict(title="Coming attractions", kind="Trailer", video=None),
     dict(title="Idents & stings", kind="Ident", video=None),
@@ -528,7 +530,7 @@ def reel_cell(i, r):
         img = ""
         if r.get("thumb"): img = f'<img src="{r["thumb"]}" alt="" loading="lazy">'
         elif r["video"].startswith("vimeo:"):
-            vid, _, h = r["video"][6:].partition(":"); img = f'<img data-vimeo="https://vimeo.com/{vid}/{h}" alt="" hidden>'
+            vid, _, h = r["video"][6:].partition(":"); img = f'<img data-vimeo="https://vimeo.com/{vid}{"/" + h if h else ""}" alt="" hidden>'
         elif r["video"].startswith("youtube:"): img = f'<img src="https://i.ytimg.com/vi/{r["video"][8:]}/hqdefault.jpg" alt="" loading="lazy">'
         return f'''      <button class="fp-cell" type="button" data-i="{i}" data-src="{r["video"]}" data-title="{E(r["title"])}">{img}<span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])}</i></span><span class="play"></span></button>'''
     return f'''      <div class="fp-cell fp-soon"><span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])} · coming soon</i></span></div>'''
@@ -597,7 +599,7 @@ write("fleapit/index.html", '''<!doctype html>
 ''')
 
 # ---------------------------------------------------------------- vfx supervisor (player + grid; showreel first)
-SUP_REELS = [dict(title="VFX supervisor showreel", kind="Showreel", video=next((r["video"] for r in REELS if r["role"] == "VFX supervisor"), None))] + \
+SUP_REELS = [dict(title="VFX supervisor showreel", kind="Stand-in: compositing showreel 2026", video=next((r["video"] for r in REELS if r["role"] == "VFX supervisor"), None))] + \
     [dict(title=p["title"], kind=" · ".join(x for x in (p["role"], p["co"]) if x), video=p.get("video"))
      for p in PROJECTS if p["group"] == "VFX supervisor"]
 player_page("vfxsupervisor/index.html", "vfxsup", "VFX Supervisor", "VFX Supervisor", "SUP", "Showreels",
