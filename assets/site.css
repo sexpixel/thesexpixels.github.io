@@ -474,3 +474,9 @@ footer .avail{margin-left:auto}
   body.tv .heroui{opacity:1;pointer-events:auto}
   body.tv .hero{cursor:auto}
 }
+
+/* News: one story per row, picture on the left and the story beside it (stacked on narrow phones) */
+.cards.newslist{grid-template-columns:minmax(0,1fr);gap:0;border-top:1px solid var(--line)}
+.newslist .card{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:clamp(16px,3vw,40px);align-items:center;padding:clamp(18px,3vh,32px) 0;border-bottom:1px solid var(--line)}
+.newslist .card .thumb{margin:0}
+@media (max-width:560px) and (orientation:portrait){.newslist .card{grid-template-columns:minmax(0,1fr)}}

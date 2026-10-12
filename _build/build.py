@@ -736,7 +736,7 @@ news = head("News · Mark Pinheiro", "News and updates from Mark Pinheiro.") + f
 <main>
   <section class="page">
 {page_intro("03", "News", "News", "Updates: new reels, demos, jobs and experiments.")}
-    <div class="cards">
+    <div class="cards newslist">
 {news_cards}
     </div>
   </section>
