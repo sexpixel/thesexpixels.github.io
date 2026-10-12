@@ -10,7 +10,7 @@ GitHub Pages ignores folders that start with "_", so this folder is never publis
 import html, os, sys
 sys.path.insert(0, os.path.dirname(__file__))
 from skills_data import stages
-from work_data import PROJECTS, ROLE_GROUPS, FORMATS, FORMAT_SLUGS, expand
+from work_data import PROJECTS, ROLE_GROUPS, FORMATS, FORMAT_SLUGS, expand, in_format
 from news_data import NEWS
 from crops import CROPS, crop_of, crop_str
 
@@ -69,7 +69,7 @@ def header(current="", sub="VFX Supervisor"):
     def a(href, label, key):
         cur = ' aria-current="page"' if key == current else ""
         return f'<li><a href="{href}"{cur}>{label}</a></li>'
-    sub_items = "\n          ".join(f'<li><a href="/work/{FORMAT_SLUGS[f]}/">{" ".join(w.capitalize() for w in f.split())}</a></li>' for f in FORMATS)
+    sub_items = "\n          ".join(f'<li><a href="/work/{FORMAT_SLUGS[f]}/">{f if f == "PostVis" else " ".join(w.capitalize() for w in f.split())}</a></li>' for f in FORMATS)
     return f'''<header class="nav" id="nav">
   <a class="mark" href="/" aria-label="Mark Pinheiro{", " + sub if sub else ""}, home"><b>Mark Pinheiro</b>{f"<small>{sub}</small>" if sub else ""}</a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
@@ -269,7 +269,7 @@ write("index.html", home)
 
 # ---------------------------------------------------------------- work
 def slug(t): return "".join(c if c.isalnum() else "-" for c in t.lower()).strip("-")
-def fmt_title(f): return " ".join(w.capitalize() for w in f.split())
+def fmt_title(f): return f if f == "PostVis" else " ".join(w.capitalize() for w in f.split())
 def proj_tile(p):
     meta_top = " · ".join(x for x in (fmt_title(p["fmt"]), p["yr"]) if x)
     client = " · ".join(x for x in (p["role"], p["co"]) if x)
@@ -313,7 +313,7 @@ FILTER_JS = '''<script>
 # Overview: showreels, then one door per format
 doors = []
 for f in FORMATS:
-    n = sum(1 for p in PROJECTS if p["fmt"] == f)
+    n = sum(1 for p in PROJECTS if in_format(p, f))
     count = f"{n} project{'s' if n != 1 else ''}" if n else "Coming soon"
     doors.append(f'''      <a class="card" href="/work/{FORMAT_SLUGS[f]}/">
         {slate(count, fmt_title(f))}
@@ -353,10 +353,10 @@ write("work/index.html", work)
 
 # One page per format. Formats in PLAYER_FORMATS get the full-screen player layout (built further down,
 # after player_page); the rest keep this list layout.
-PLAYER_FORMATS = ["Feature film", "Episodic", "Commercial", "Feature animation"]
+PLAYER_FORMATS = ["Feature film", "Episodic", "PostVis", "Commercial", "Feature animation"]
 for i, f in enumerate(FORMATS, 1):
     if f in PLAYER_FORMATS: continue
-    items = [q for p in PROJECTS if p["fmt"] == f for q in expand(p)]
+    items = [q for p in PROJECTS if in_format(p, f) for q in expand(p)]
     groups = [g for g in ROLE_GROUPS if any(p["group"] == g for p in items)]
     chips = ""
     if len(groups) > 1:
@@ -733,12 +733,13 @@ player_page("vfxsupervisor/index.html", "vfxsup", "VFX Supervisor", "VFX Supervi
 FORMAT_LEDES = {
     "Feature film": "Feature film project reels: Nuke compositing, PostVis and VFX supervision. Play them all, or pick one from the grid.",
     "Episodic": "Episodic project reels: Nuke compositing, PostVis and VFX supervision. Play them all, or pick one from the grid.",
+    "PostVis": "PostVis across feature film and episodic: temp comps that carry the edit from shoot to final VFX. Play them all, or pick one from the grid.",
     "Commercial": "Commercial project reels: on-set supervision and compositing. Play them all, or pick one from the grid.",
     "Feature animation": "Feature animation project reels. Play them all, or pick one from the grid.",
 }
 for i, f in enumerate(FORMATS, 1):
     if f not in PLAYER_FORMATS: continue
-    items = [q for p in PROJECTS if p["fmt"] == f for q in expand(p)]
+    items = [q for p in PROJECTS if in_format(p, f) for q in expand(p)]
     reels = [dict(title=q["title"], kind=" · ".join(x for x in (q["role"], q["co"], q["yr"]) if x), video=q.get("video"))
              for q in items]
     reels = [r for r in reels if r["video"]] + [r for r in reels if not r["video"]]

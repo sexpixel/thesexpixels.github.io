@@ -516,3 +516,4 @@ iframe{color-scheme:normal}
 /* Play buttons on thumbnails: small, in the top right corner */
 .fp-cell .play,.thumb .play{top:10px;right:10px;left:auto;bottom:auto;width:28px;height:28px;margin:0}
 .fp-cell .play::before,.thumb .play::before{border-left-width:8px;border-top-width:5px;border-bottom-width:5px;margin-left:2px}
+@media (min-width:900px){.cards.four{grid-template-columns:repeat(5,minmax(0,1fr))}}
