@@ -215,7 +215,7 @@ home = head("Mark Pinheiro · Filmmaker / VFX / AI",
         <div class="meta">
           <span class="kicker">Filmmaker</span>
           <h3>The Fleapit</h3>
-          <p>Filmmaking experiments: uncommercials, fake trailers, idents and film essays.</p>
+          <p>Now showing. Please take your seats: the ads and trailers before the main feature.</p>
           <span class="go">Watch →</span>
         </div>
       </a>
@@ -554,13 +554,13 @@ write("about/index.html", about)
 # (Instagram gives no "ended" signal, so the player waits for Next). None = coming soon.
 REEL_2020 = "vimeo:389670596"
 FLEAPIT_REELS = [
-    dict(title="Showreel 2020", kind="Stand-in", video=REEL_2020),  # STAND-IN until the first Fleapit reel is ready
-    dict(title="Uncommercials", kind="Uncommercial", video=None),
+    dict(title="Showreel 2020", kind="Tonight's programme", video=REEL_2020),  # STAND-IN until the first Fleapit reel is ready
+    dict(title="A word from our advertisers", kind="Advertisement", video=None),
     dict(title="Coming attractions", kind="Trailer", video=None),
-    dict(title="Idents & stings", kind="Ident", video=None),
-    dict(title="Local-shop ads", kind="Cheap uncommercial", video=None),
-    dict(title="The short", kind="Short film", video=None),
-    dict(title="Film essays", kind="Film essay", video=None),
+    dict(title="Intermission", kind="Sting", video=None),
+    dict(title="Local advertisers", kind="Advertisement", video=None),
+    dict(title="Supporting feature", kind="Short film", video=None),
+    dict(title="Programme notes", kind="Notes", video=None),
 ]
 NUKE_REELS = [
     dict(title="Compositing showreel 2026", kind="Showreel", video=REEL_2026),
@@ -630,11 +630,11 @@ def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wid
     write(path, pg)
 
 player_page("thefleapit/index.html", "fleapit", "The Sex Pixels", 'The Fleapit<span class="dot">.</span>', "SE1", "Filmmaker",
-            "Filmmaking experiments: uncommercials, fake trailers, idents and film essays. Shot on iPhone, finished with VFX and AI.",
+            "Please take your seats. Before tonight's main feature: a word from our advertisers, coming attractions and the odd intermission.",
             FLEAPIT_REELS, False, "The first reel is in the edit",
             f'<a class="pill" href="{INSTAGRAM}" target="_blank" rel="noopener">Follow on Instagram ↗</a>',
             "The Fleapit · Mark Pinheiro",
-            "The Fleapit. SE1: Mark Pinheiro's filmmaking experiments. Uncommercials, fake trailers, idents and film essays.")
+            "The Fleapit. SE1. Please take your seats: a word from our advertisers and coming attractions, before tonight's main feature.")
 player_page("nukecompositor/index.html", "nuke", "Nuke Compositor", 'Nuke Compositor', "2D", "Showreels",
             "Compositing showreels and project reels. Play them all, or pick one from the grid.",
             NUKE_REELS, True, "", "", "Nuke Compositor · Mark Pinheiro",

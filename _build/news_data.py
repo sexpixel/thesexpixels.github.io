@@ -8,6 +8,6 @@ NEWS = [
                "Here's to the next twenty."]),
     dict(slug="new-website", date="2026-10-12", title="New website",
          body=["thesexpixels.com is back, rebuilt from scratch.",
-               "Showreels by role, project reels by format, a growing Skills and R&amp;D section built around the 21 disciplines on page 2 of my CV, and The Fleapit for my filmmaking experiments.",
+               "Showreels by role, project reels by format, a growing Skills and R&amp;D section built around the 21 disciplines on page 2 of my CV, and The Fleapit, where the ads and trailers play before the main feature.",
                "More reels, demos and posts to follow."]),
 ]
