@@ -239,7 +239,7 @@ home = head("Mark Pinheiro · Filmmaker / VFX / AI",
         {slate("Since 1995", "About")}
         <div class="meta">
           <span class="kicker">About</span>
-          <h3>History, awards &amp; kit</h3>
+          <h3>Kit, press &amp; laurels</h3>
           <span class="go">About →</span>
         </div>
       </a>
@@ -482,13 +482,12 @@ EDUCATION = [
 ]
 LINKS = [("IMDb", "https://www.imdb.com/name/nm1025041/"), ("LinkedIn", "https://www.linkedin.com/in/markpinheiro"),
          ("Vimeo", "https://vimeo.com/thesexpixels"), ("Instagram", INSTAGRAM)]
-hist = "\n".join(f'        <li><span class="y">{y}</span><span><b>{w}</b><span>{d}</span></span></li>' for y, w, d in HISTORY)
 awd = "\n".join(f'        <li><b>{n}</b>{f"<i>{k}</i>" if k else ""}<span>{E(d)}</span></li>' for n, k, d in AWARDS)
 eqp = "\n".join(f'        <div><dt>{E(k)}</dt><dd>{E(v)}</dd></div>' for k, v in EQUIPMENT)
 edu = "\n".join(f'        <li><span class="b">{E(b)}</span><span><b>{q}</b> · {w}</span></li>' for b, q, w in EDUCATION)
 lnk = " ".join(f'<a class="pill ghost" href="{u}" target="_blank" rel="noopener">{n} ↗</a>' for n, u in LINKS)
 about = head("About · Mark Pinheiro",
-             "Mark Pinheiro: filmmaker, Nuke compositor and VFX supervisor. History, awards and kit from twenty-six years in visual effects.") + f'''
+             "Mark Pinheiro: filmmaker, Nuke compositor and VFX supervisor. Software, equipment, press and laurels from twenty-six years in visual effects.") + f'''
 <body>
 
 {header("about")}
@@ -497,56 +496,43 @@ about = head("About · Mark Pinheiro",
   <section class="profile">
     <h1>Mark<br>Pinheiro</h1>
     <div class="roles"><span class="a">Filmmaker / VFX / AI</span><span>Nuke compositor &amp; VFX supervisor</span><span>London</span></div>
-    <div class="bio">
-      <div>
-        <p class="lede">A filmmaker at heart, with twenty-six years in visual effects.</p>
-        <p>Mark's first composite won a Promax Gold in 1995, and he has worked steadily in VFX since 2000. The 2000s brought the Escape Studios compositing course. The 2010s brought stereo on Scorsese's <em>Hugo</em>, his first feature, <em>Save The 365th Day</em>, and a decade of award-winning shows. The 2020s brought a Masters in screenwriting, and finally accepting the role of department head.</p>
-        <p>Today he still enjoys exploring methods and practices that use technology to simplify filmmaking. He is an <strong>agentic coder</strong>: every tool he builds is written with AI. He still designs courses for the NFTS, ECAM Madrid and Escape Studios, and works through his boutique studio, The Sex Pixels.</p>
-        <div class="linkrow">{lnk}</div>
-      </div>
-      <div>
-        <figure class="quote">
-          <blockquote>“Mark has an undeniably impressive portfolio and his understanding of the industry as a whole makes him a total catch.”</blockquote>
-          <figcaption>David Smith, CEO, Absolute · Televisual</figcaption>
-        </figure>
-        <figure class="quote">
-          <blockquote>“…he trained a large portion of London’s VFX community.”</blockquote>
-          <figcaption><a href="https://www.televisual.com/news/mark-pinheiro-joins-absolute-as-vfx-super/" style="text-decoration:none">Televisual, 2022 · on Escape Studios</a></figcaption>
-        </figure>
-      </div>
+    <div class="bio solo">
+      <p class="lede">A filmmaker at heart, with twenty-six years in visual effects.</p>
+      <p>Today he still enjoys exploring methods and practices that use technology to simplify filmmaking. He is an <strong>agentic coder</strong>: every tool he builds is written with AI. He designs courses for the NFTS, ECAM Madrid and Escape Studios, and works through his boutique studio, The Sex Pixels.</p>
+      <div class="linkrow">{lnk}</div>
     </div>
   </section>
 
-  <section id="history" style="padding-top:0">
-    <div class="rail"><span class="n">01</span>History</div>
-    <ol class="timeline">
-{hist}
-    </ol>
+  <section id="kit" style="padding-top:0">
+    <div class="rail"><span class="n">01</span>Software &amp; equipment</div>
+    <dl class="kit big">
+{eqp}
+    </dl>
   </section>
 
-  <section id="awards" style="padding-top:0">
-    <div class="rail"><span class="n">02</span>Successes</div>
+  <section id="press" style="padding-top:0">
+    <div class="rail"><span class="n">02</span>Press &amp; laurels</div>
+    <div class="press">
+      <figure class="quote">
+        <blockquote>“Mark has an undeniably impressive portfolio and his understanding of the industry as a whole makes him a total catch.”</blockquote>
+        <figcaption>David Smith, CEO, Absolute · <a href="https://www.televisual.com/news/mark-pinheiro-joins-absolute-as-vfx-super/">Televisual, 2022</a></figcaption>
+      </figure>
+      <figure class="quote">
+        <blockquote>“…he trained a large portion of London’s VFX community.”</blockquote>
+        <figcaption><a href="https://www.televisual.com/news/mark-pinheiro-joins-absolute-as-vfx-super/">Televisual, 2022</a> · on Escape Studios</figcaption>
+      </figure>
+    </div>
     <ul class="awardgrid">
 {awd}
     </ul>
     <div class="awards-note">Promax won outright; the others won by the shows and teams he was part of.</div>
   </section>
 
-  <section id="kit" style="padding-top:0">
-    <div class="about2">
-      <div>
-        <div class="rail"><span class="n">03</span>Software &amp; equipment</div>
-        <dl class="kit">
-{eqp}
-        </dl>
-      </div>
-      <div>
-        <div class="rail"><span class="n">04</span>Education</div>
-        <ul class="edu">
+  <section id="education" style="padding-top:0">
+    <div class="rail"><span class="n">03</span>Education</div>
+    <ul class="edu">
 {edu}
-        </ul>
-      </div>
-    </div>
+    </ul>
   </section>
 </main>
 
@@ -607,14 +593,14 @@ def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wid
 {header(key, sub)}
 
 <main>
-  <section class="hero stickyhero fp-player{" fit" if not wide else ""}{"" if has_any else " fp-empty"}" id="fp-player" aria-label="Player">
+  <section class="hero stickyhero fp-player{"" if has_any else " fp-empty"}" id="fp-player" aria-label="Player">
     <div class="fp-slot" id="fp-slot"></div>{idle}
+    <div class="herotitle herotop heroui">
+      <span class="lab"><b>{rail_n}</b> · {rail_label}</span>
+      <h1 class="herohead">{title_html}</h1>
+    </div>
     <div class="reelbar heroui">
-      <div class="herotitle">
-        <span class="lab"><b>{rail_n}</b> · {rail_label}</span>
-        <h1 class="herohead">{title_html}</h1>
-        <span class="fp-title" id="fp-title" aria-live="polite"></span>
-      </div>{ctrls}
+      <span class="fp-title" id="fp-title" aria-live="polite"></span>{ctrls}
     </div>
     <div class="scrollcue heroui" aria-hidden="true">Scroll for reels</div>
   </section>

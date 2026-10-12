@@ -48,6 +48,21 @@
     wake();
   }
 
+  // 1d. Homepage background reel: read the video's real shape so it covers the screen edge to edge.
+  var bg = document.querySelector('.hero > iframe[src*="player.vimeo.com"]');
+  if (bg) {
+    var s = document.createElement('script'); s.src = 'https://player.vimeo.com/api/player.js';
+    s.onload = function(){
+      try {
+        var pl = new window.Vimeo.Player(bg);
+        Promise.all([pl.getVideoWidth(), pl.getVideoHeight()]).then(function(d){
+          if (d[0] && d[1]) bg.parentNode.style.setProperty('--ar', d[0] / d[1]);
+        }).catch(function(){});
+      } catch (e) {}
+    };
+    document.head.appendChild(s);
+  }
+
   // 2. Full-screen player. Any element with data-video="vimeo:ID:HASH" or "youtube:ID" opens it.
   var box, frame, closeBtn, lastFocus;
   function build(){
