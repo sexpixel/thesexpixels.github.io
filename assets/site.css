@@ -392,3 +392,8 @@ body.tuner.noguides .heroui{opacity:0}
 .ctiles a{justify-content:flex-start}
 .ctiles a .t{margin-top:auto}
 .ctiles a:hover .ic{color:var(--accent-hi)}
+.coname{display:block;font-size:14px;margin-bottom:10px}
+.offices{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px 24px}
+.offices address{font-style:normal}
+.olabel{display:block;margin-bottom:4px;font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
+.coemail{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:13px}

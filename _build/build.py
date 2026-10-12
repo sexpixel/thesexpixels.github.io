@@ -769,12 +769,20 @@ contact = head("Contact · Mark Pinheiro", "Contact Mark Pinheiro: email, showre
       </div>
       <div>
         <span class="clabel">{icon("Company", "ic sm")}Company</span>
-        <address>
-          <b>The Sex Pixels Ltd.</b>
-          Fifth Floor, Mariner House<br>
-          62 Prince Street, Bristol BS1 4QD<br>
-          <a href="mailto:info@thesexpixels.com">info@thesexpixels.com</a>
-        </address>
+        <b class="coname">The Sex Pixels Ltd.</b>
+        <div class="offices">
+          <address><span class="olabel">Studio</span>
+            Old Bank Chambers, The Slip<br>
+            217 Grange Road, Bermondsey<br>
+            London SE1 3AA
+          </address>
+          <address><span class="olabel">Registered office</span>
+            Fifth Floor, Mariner House<br>
+            62 Prince Street<br>
+            Bristol BS1 4QD
+          </address>
+        </div>
+        <a class="coemail" href="mailto:info@thesexpixels.com">info@thesexpixels.com</a>
       </div>
     </div>
     <ul class="ctiles">
