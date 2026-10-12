@@ -765,8 +765,9 @@ write("contact/index.html", contact)
 # the settings for _build/crops.py.
 import json
 _seen, TUNE = set(), []
-for page_name, reels in (("Home", [dict(title="Compositing showreel 2026", video=REEL_2026)]), ("Nuke Compositor", NUKE_REELS),
-                         ("VFX Supervisor", SUP_REELS), ("The Fleapit.", FLEAPIT_REELS)):
+# The Fleapit's Showreel 2020 comes first: it is the reel that needs cropping.
+for page_name, reels in (("The Fleapit.", FLEAPIT_REELS), ("Home", [dict(title="Compositing showreel 2026", video=REEL_2026)]),
+                         ("Nuke Compositor", NUKE_REELS), ("VFX Supervisor", SUP_REELS)):
     for r in reels:
         v = r.get("video")
         if not v or v in _seen or v.startswith("instagram:"): continue
