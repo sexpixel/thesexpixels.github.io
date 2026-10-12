@@ -13,7 +13,7 @@ from skills_data import stages
 from work_data import PROJECTS, ROLE_GROUPS, FORMATS, FORMAT_SLUGS, expand, in_format, PHASES as WPHASES
 from news_data import NEWS
 from crops import CROPS, crop_of, crop_str
-from phase_tags import PHASE_TAGS
+from phase_tags import TAGS
 
 def crop_attr(spec):
     c = crop_str(spec)
@@ -475,7 +475,8 @@ write("skills/index.html", skills)
 def phase_slug(ph): return ph.lower()
 def reel_phases(r):
     """A reel's phases: Mark's tag for that video (from /tagger/) wins, then the project's default."""
-    return PHASE_TAGS.get(r.get("video") or "") or r.get("phases") or WPHASES
+    t = TAGS.get(r.get("video") or "")
+    return (t and t["phases"]) or r.get("phases") or WPHASES
 def phases_attr(r):
     return " ".join(phase_slug(x) for x in reel_phases(r))
 
@@ -662,6 +663,13 @@ write("about/index.html", about)
 # video: "vimeo:ID:HASH" or "youtube:ID" (advance on their own), or "instagram:REELCODE"
 # (Instagram gives no "ended" signal, so the player waits for Next). None = coming soon.
 REEL_2020 = "vimeo:389670596"
+# Every video the site knows, keyed by its spec, with its usual title and caption. The tags then decide
+# which pages each one appears on.
+CATALOGUE = {}
+for _p in PROJECTS:
+    for _q in expand(_p):
+        if _q.get("video"):
+            CATALOGUE.setdefault(_q["video"], dict(title=_q["title"], kind=" · ".join(x for x in (_q["role"], _q["co"], _q["yr"]) if x), video=_q["video"], phases=_q["phases"]))
 FLEAPIT_REELS = [
     dict(title="Showreel 2020", kind="Tonight's programme", video=REEL_2020),  # STAND-IN until the first Fleapit reel is ready
     dict(title="A word from our advertisers", kind="Advertisement", video=None),
@@ -693,7 +701,29 @@ def phase_strip(reels):
                     f'<span class="lg">{ph}</span><span class="sm" aria-hidden="true">{short[ph]}</span></button></li>')
     return '<ol class="phases" aria-label="Filter by production phase">' + "".join(btns) + '</ol>'
 
-def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wide, idle_empty, extra_links, page_title, desc):
+def _nice_role(x):
+    return " ".join(w.upper() if w[:1].isdigit() else w[:1].upper() + w[1:] for w in x.split())
+
+def tagged_reels(reels, page):
+    """The page's videos as Mark tagged them (When/Who/What): a tagged video stays only if its tags name this
+    page (a role or a format), and every other tagged video naming this page is added, in the tagger's order.
+    Untagged videos and coming-soon tiles keep their place."""
+    if not page: return reels
+    on = lambda v: page in TAGS[v]["roles"] or page in TAGS[v]["formats"]
+    vids = [r for r in reels if r.get("video")]
+    kept = [r for r in vids if r["video"] not in TAGS or on(r["video"])]
+    have = {r["video"] for r in kept}
+    extra = [dict(CATALOGUE[v]) for v in sorted(TAGS, key=lambda v: TAGS[v]["order"]) if on(v) and v not in have and v in CATALOGUE]
+    out = []
+    for r in kept + extra:   # the page's own order first (its showreel leads), then videos the tags add
+        o = TAGS.get(r["video"], {}).get("other")
+        if o and o.lower() not in (r.get("kind") or "").lower():   # an Other role (Stereographer, Director...) leads the caption
+            r = dict(r, kind=" · ".join(x for x in (_nice_role(o), r.get("kind")) if x))
+        out.append(r)
+    return out + [r for r in reels if not r.get("video")]
+
+def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wide, idle_empty, extra_links, page_title, desc, tag_page=None):
+    reels = tagged_reels(reels, tag_page)
     cells = "\n".join(reel_cell(i, r) for i, r in enumerate(reels))
     has_any = any(r["video"] for r in reels)
     idle = "" if has_any else f'''
@@ -741,16 +771,22 @@ def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wid
 '''
     write(path, pg)
 
+# Showreels aren't projects, so they join the catalogue here (the VFX supervisor reel, then the Nuke reels).
+_sup = next((r["video"] for r in REELS if r["role"] == "VFX supervisor"), None)
+if _sup: CATALOGUE.setdefault(_sup, dict(title="VFX supervisor showreel", kind="Stand-in", video=_sup))
+for _r in NUKE_REELS + FLEAPIT_REELS:   # Nuke first: its plain captions, not The Fleapit's in-world ones
+    if _r.get("video"): CATALOGUE.setdefault(_r["video"], dict(_r))
+
 player_page("thefleapit/index.html", "fleapit", "The Sex Pixels", 'The Fleapit<span class="dot">.</span>', "SE1", "Filmmaker",
             "A word from our advertisers.",
             FLEAPIT_REELS, False, "The first reel is in the edit",
             f'<a class="pill" href="{INSTAGRAM}" target="_blank" rel="noopener">Follow on Instagram ↗</a>',
             "The Fleapit · Mark Pinheiro",
-            "The Fleapit. SE1. A word from our advertisers.")
+            "The Fleapit. SE1. A word from our advertisers.", tag_page="Filmmaker")
 player_page("nukecompositor/index.html", "nuke", "Nuke Compositor", 'Nuke Compositor', "2D", "Showreels",
             "Compositing showreels and project reels. Play them all, or pick one from the grid.",
             NUKE_REELS, True, "", "", "Nuke Compositor · Mark Pinheiro",
-            "Mark Pinheiro's compositing showreels and project reels.")
+            "Mark Pinheiro's compositing showreels and project reels.", tag_page="Nuke Compositor")
 
 # Old address: /work/commercial/ is now /work/shorts/
 write("work/commercial/index.html", """<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><title>Shorts · Mark Pinheiro</title>
@@ -774,7 +810,7 @@ SUP_REELS = [dict(title="VFX supervisor showreel", kind="Stand-in", video=next((
 player_page("vfxsupervisor/index.html", "vfxsup", "VFX Supervisor", "VFX Supervisor", "SUP", "Showreels",
             "On-set and in-facility supervision across feature film, episodic and commercials. The showreel plays first; pick a project from the grid to play its reel.",
             SUP_REELS, True, "The supervisor showreel is in the edit", "", "VFX Supervisor · Mark Pinheiro",
-            "Mark Pinheiro's VFX supervision: showreel and project reels.")
+            "Mark Pinheiro's VFX supervision: showreel and project reels.", tag_page="VFX Supervisor")
 
 # ---------------------------------------------------------------- work format pages with the player
 FORMAT_LEDES = {
@@ -793,7 +829,7 @@ for i, f in enumerate(FORMATS, 1):
     title = fmt_title(f)
     player_page(f"work/{FORMAT_SLUGS[f]}/index.html", "work", None, title, f"01.{i}", "Work",
                 FORMAT_LEDES[f], reels, True, "Reels on their way", "",
-                f"{title} · Work · Mark Pinheiro", f"Mark Pinheiro's {f} work: project reels as Nuke compositor and VFX supervisor.")
+                f"{title} · Work · Mark Pinheiro", f"Mark Pinheiro's {f} work: project reels as Nuke compositor and VFX supervisor.", tag_page=f)
 
 # ---------------------------------------------------------------- news
 import datetime
