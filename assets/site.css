@@ -543,3 +543,40 @@ iframe{color-scheme:normal}
 .phases button:disabled{opacity:.35;cursor:default}
 @media (max-width:700px){.phases button{padding:7px 9px}}
 .fp-grid .fp-cell[hidden]{display:none}
+
+/* ---------- second menu row: production phases, Development → Distribution ---------- */
+.nav{flex-wrap:wrap;row-gap:0}
+@media (min-width:1280px){.nav nav{display:contents}}
+.phrow{flex:0 0 100%;display:flex;flex-wrap:wrap;list-style:none;margin:2px 0 -6px;padding:0}
+.phrow .p{position:relative}
+.phrow .p > button{display:flex;align-items:center;gap:8px;padding:8px 0;margin-right:14px;background:none;border:0;border-bottom:1px solid transparent;cursor:pointer;
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--soft)}
+.phrow .p > button .n{color:var(--accent)}
+.phrow .p:not(:last-child) > button::after{content:"\2192";font-family:var(--display);font-size:12px;letter-spacing:0;color:var(--dim);margin-left:16px}
+.phrow .p:hover > button,.phrow .p.open > button,.phrow .p:focus-within > button,.phrow .p.here > button{color:var(--fg);border-bottom-color:var(--accent)}
+.phrow .panel{position:absolute;top:100%;left:0;z-index:2;display:none;grid-template-columns:auto auto;gap:40px;width:max-content;padding:18px 20px;
+  background:rgba(17,16,18,.96);border:1px solid var(--edge);border-radius:6px}
+.phrow .p:hover > .panel,.phrow .p:focus-within > .panel,.phrow .p.open > .panel{display:grid}
+.phrow .p:last-child .panel{left:auto;right:0}
+.phrow .lab{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin:0 0 8px}
+.phrow .panel a{display:block;padding:3px 0;text-decoration:none;white-space:nowrap}
+.phrow .as a{font-family:var(--display);font-weight:800;font-size:15px;text-transform:uppercase;color:var(--fg)}
+.phrow .on a{font-family:var(--display);font-size:14px;color:var(--soft)}
+.phrow .panel a:hover{color:var(--accent-hi)}
+@media (max-width:1279px){
+  /* narrower screens: the phases live inside the Menu, under the roles */
+  .phrow{display:none}
+  .nav.open .phrow{display:block;margin:28px 0 0;padding:16px 0 0;border-top:1px solid var(--line)}
+  .nav.open .phrow .p > button{width:100%;font-size:12px;padding:12px 0;margin:0;border-bottom:1px solid var(--line)}
+  .nav.open .phrow .p > button::after{content:"+";margin-left:auto;color:var(--dim);font-size:16px;font-family:var(--mono)}
+  .nav.open .phrow .p.open > button::after{content:"−"}
+  .nav.open .phrow .p:hover > .panel,.nav.open .phrow .p:focus-within > .panel{display:none}
+  .nav.open .phrow .p.open > .panel{display:grid;position:static;width:auto;padding:12px 0 16px;background:none;border:0;gap:24px;grid-template-columns:1fr 1fr}
+  .nav.open .phrow .as a{font-size:18px}
+  .nav.open .phrow .on a{font-size:16px}
+}
+}
+.phrow .p > button{line-height:14px}
+.phrow .p:not(:last-child) > button::after{line-height:14px;margin-left:14px}
+@media (max-width:1279px){ .nav.open nav{clip-path:inset(84px 0 0 0)} }   /* the long menu scrolls under the name, not over it */
+.phrow .p:not(:last-child) > button::after{position:relative;top:-1px}.phrow{align-items:flex-start}

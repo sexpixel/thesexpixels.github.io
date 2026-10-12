@@ -72,6 +72,22 @@ def header(current="", sub="VFX Supervisor"):
             return f'<li class="role"><a href="{href}"{cur}><span class="ph">{phase}</span>{label}</a></li>'
         return f'<li><a href="{href}"{cur}>{label}</a></li>'
     sub_items = "\n          ".join(f'<li><a href="/work/{FORMAT_SLUGS[f]}/">{" ".join(w.capitalize() for w in f.split())}</a></li>' for f in FORMATS)
+    # Second row: the five production phases, Development → Distribution. Each opens a small panel:
+    # As (crew role) and On (format), linking to that page with the phase filter set.
+    def ph_item(n, name, roles, fmts):
+        sl = name.lower()
+        as_ = "".join(f'<a href="{h}?phase={sl}">{r}</a>' for r, h in roles)
+        on_ = "".join(f'<a href="/work/{FORMAT_SLUGS[f]}/?phase={sl}">{" ".join(w.capitalize() for w in f.split())}</a>' for f in fmts)
+        return (f'<li class="p" data-ph="{sl}"><button type="button" aria-expanded="false"><span class="n">{n:02d}</span>{name}</button>'
+                f'<div class="panel"><div class="as"><p class="lab">As</p>{as_}</div><div class="on"><p class="lab">On</p>{on_}</div></div></li>')
+    F, V, N = ("Filmmaker", "/thefleapit/"), ("VFX Supervisor", "/vfxsupervisor/"), ("Nuke Compositor", "/nukecompositor/")
+    phrow = "".join(ph_item(i + 1, *x) for i, x in enumerate([
+        ("Development",     [F],       ["Feature film", "Episodic", "Feature animation"]),
+        ("Pre-production",  [V, F],    ["Feature film", "Episodic", "Visualisation"]),
+        ("Production",      [V, F],    ["Feature film", "Episodic", "Feature animation"]),
+        ("Post-production", [N, V, F], ["Feature film", "Episodic", "Visualisation", "Shorts", "Feature animation"]),
+        ("Distribution",    [F],       ["Shorts", "Feature film", "Feature animation"]),
+    ]))
     return f'''<header class="nav" id="nav">
   <a class="mark" href="/" aria-label="Mark Pinheiro{", " + sub if sub else ""}, home"><b>Mark Pinheiro</b>{f"<small>{sub}</small>" if sub else ""}</a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
@@ -91,6 +107,7 @@ def header(current="", sub="VFX Supervisor"):
       {a("/about/", "About", "about")}
       {a("/contact/", "Contact", "contact")}
     </ul>
+    <ol class="phrow" aria-label="Production phases">{phrow}</ol>
   </nav>
 </header>'''
 

@@ -20,6 +20,21 @@
   }
 
 
+  // 1a. Phase row: tap a phase to open its panel (touch screens and the phone menu); the page's
+  // current ?phase= is underlined.
+  document.querySelectorAll('.phrow .p > button').forEach(function(b){
+    b.addEventListener('click', function(){
+      var li = b.parentNode, on = !li.classList.contains('open');
+      document.querySelectorAll('.phrow .p.open').forEach(function(x){ x.classList.remove('open'); x.firstChild.setAttribute('aria-expanded','false'); });
+      li.classList.toggle('open', on); b.setAttribute('aria-expanded', on ? 'true' : 'false');
+    });
+  });
+  document.addEventListener('click', function(e){
+    if (!e.target.closest('.phrow') && window.matchMedia('(min-width:1280px)').matches)
+      document.querySelectorAll('.phrow .p.open').forEach(function(x){ x.classList.remove('open'); });
+  });
+  try { var cph = new URL(location.href).searchParams.get('phase'); if (cph) { var h = document.querySelector('.phrow .p[data-ph="' + cph + '"]'); if (h) h.classList.add('here'); } } catch (e) {}
+
   // 1b. Menu button for narrower screens: opens the menu full screen.
   var btn = document.querySelector('.menu-btn');
   if (btn && nav) {
@@ -77,7 +92,8 @@
   window.TSPplaceTitle = function(){
     var t = document.querySelector('.herotop'), n = document.getElementById('nav'), mk = n && n.querySelector('.mark');
     if (!t || !mk) return;
-    var y = (mk.getBoundingClientRect().bottom - n.getBoundingClientRect().top + 4) + 'px', hero = t.closest('.hero');
+    var pr = n.querySelector('.phrow'), low = (pr && pr.offsetParent) ? pr : mk;   // under the phase row when it shows
+    var y = (low.getBoundingClientRect().bottom - n.getBoundingClientRect().top + 4) + 'px', hero = t.closest('.hero');
     t.style.top = y;
     // Upright phone: the page is stacked, so the name sits in the flow just under the menu bar.
     if (hero) hero.style.paddingTop = window.matchMedia('(orientation:portrait)').matches ? y : '';
