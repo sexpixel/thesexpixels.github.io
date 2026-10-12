@@ -4,7 +4,7 @@
 TAGS = {'vimeo:389670596': {'order': 0,
                      'title': 'Showreel 2020',
                      'phases': ['Post-production'],
-                     'roles': ['Filmmaker', 'VFX Supervisor', 'Nuke Compositor'],
+                     'roles': ['VFX Supervisor', 'Nuke Compositor'],
                      'formats': ['Feature film', 'Episodic']},
  'vimeo:1232958213:ffbea294d7': {'order': 1,
                                  'title': 'Compositing showreel 2026',
