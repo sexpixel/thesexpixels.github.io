@@ -8,7 +8,8 @@ PROJECTS = [
     dict(title="Gangs of London S4", role="On-set VFX supervisor", group="VFX supervisor", fmt="Episodic", co="The Sex Pixels", yr="2026"),
     dict(title="Salomon", role="On-set supervision and comp", group="VFX supervisor", fmt="Commercial", co="", yr="2025"),
     dict(title="Rogue Trooper", role="Senior compositor", group="Nuke compositor", fmt="Feature film", co="Liberty Films · Netflix", yr="2025"),
-    dict(title="The Ballad of a Small Player", role="VFX supervisor", group="VFX supervisor", fmt="Feature film", co="Netflix", yr=""),
+    dict(title="The Ballad of a Small Player", role="VFX supervisor", group="VFX supervisor", fmt="Feature film", co="Netflix", yr="",
+         clips=[("Official trailer", "youtube:z1B5W55TFyo"), ("Behind the scenes", "youtube:FGYPLc8bB9E")]),
     dict(title="Gangs of London S3", role="On-set VFX supervisor", group="VFX supervisor", fmt="Episodic", co="", yr=""),
     dict(title="Panda Plan", role="VFX supervisor", group="VFX supervisor", fmt="Feature film", co="Horizon VFX", yr=""),
     dict(title="I Am Nobody S2", role="VFX consultant", group="VFX supervisor", fmt="Episodic", co="Horizon VFX", yr=""),
@@ -50,6 +51,9 @@ def expand(p):
     for name, vid in p["clips"]:
         q = dict(p)
         q["title"] = p["title"] if name == p["title"] else f"{p['title']} · {name}"
-        q["video"] = f"vimeo:{vid}"; q["url"] = f"https://vimeo.com/{vid}"
+        if vid.startswith("youtube:"):
+            q["video"] = vid; q["url"] = f"https://youtu.be/{vid[8:]}"
+        else:
+            q["video"] = f"vimeo:{vid}"; q["url"] = f"https://vimeo.com/{vid}"
         out.append(q)
     return out

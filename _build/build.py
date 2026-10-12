@@ -274,7 +274,8 @@ def proj_tile(p):
     client = " · ".join(x for x in (p["role"], p["co"]) if x)
     attrs = f'data-group="{E(p["group"])}"'
     if p.get("video"):
-        img = f'<img data-vimeo="{p["url"]}" alt="" hidden>' if p["video"].startswith("vimeo") else ""
+        img = (f'<img data-vimeo="{p["url"]}" alt="" hidden>' if p["video"].startswith("vimeo") else
+               f'<img src="https://i.ytimg.com/vi/{p["video"][8:]}/hqdefault.jpg" alt="" loading="lazy">' if p["video"].startswith("youtube:") else "")
         return f'''      <a class="card" id="{slug(p["title"])}" href="{p["url"]}" data-video="{p["video"]}" {attrs}>
         <div class="thumb">{img}<span class="play"></span></div>
         <div class="meta">
