@@ -2,8 +2,8 @@
 # Each project: title, role label as credited, role group (filter), format (filter), company, year or "".
 # A project's reels go in clips=[("clip name", "vimeo id"), ...]; each clip becomes its own playable tile.
 ROLE_GROUPS = ["Nuke compositor", "VFX supervisor", "PostVis", "Director"]
-FORMATS = ["Feature film", "Episodic", "PostVis", "Shorts", "Feature animation"]
-FORMAT_SLUGS = {"Feature film": "feature-film", "Episodic": "episodic", "PostVis": "postvis", "Shorts": "shorts", "Feature animation": "feature-animation"}
+FORMATS = ["Feature film", "Episodic", "Visualisation", "Shorts", "Feature animation"]
+FORMAT_SLUGS = {"Feature film": "feature-film", "Episodic": "episodic", "Visualisation": "visualisation", "Shorts": "shorts", "Feature animation": "feature-animation"}
 PROJECTS = [
     dict(title="Gangs of London S4", role="On-set VFX supervisor", group="VFX supervisor", fmt="Episodic", co="The Sex Pixels", yr="2026"),
     dict(title="Salomon", role="On-set supervision and comp", group="VFX supervisor", fmt="Shorts", co="", yr="2025"),
@@ -63,6 +63,6 @@ def expand(p):
 
 
 def in_format(p, f):
-    """PostVis is its own format page, gathering every PostVis job; those jobs also stay on their
+    """Visualisation is its own format page, gathering every PostVis job; those jobs also stay on their
     Feature film or Episodic page."""
-    return p["group"] == "PostVis" if f == "PostVis" else p["fmt"] == f
+    return p["group"] == "PostVis" if f == "Visualisation" else p["fmt"] == f

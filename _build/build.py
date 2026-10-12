@@ -69,7 +69,7 @@ def header(current="", sub="VFX Supervisor"):
     def a(href, label, key):
         cur = ' aria-current="page"' if key == current else ""
         return f'<li><a href="{href}"{cur}>{label}</a></li>'
-    sub_items = "\n          ".join(f'<li><a href="/work/{FORMAT_SLUGS[f]}/">{f if f == "PostVis" else " ".join(w.capitalize() for w in f.split())}</a></li>' for f in FORMATS)
+    sub_items = "\n          ".join(f'<li><a href="/work/{FORMAT_SLUGS[f]}/">{" ".join(w.capitalize() for w in f.split())}</a></li>' for f in FORMATS)
     return f'''<header class="nav" id="nav">
   <a class="mark" href="/" aria-label="Mark Pinheiro{", " + sub if sub else ""}, home"><b>Mark Pinheiro</b>{f"<small>{sub}</small>" if sub else ""}</a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
@@ -233,7 +233,7 @@ home = head("Mark Pinheiro · Filmmaker / VFX / AI",
     <div class="rail"><span class="n">02</span><span id="explore-h">Explore</span></div>
     <div class="cards">
       <a class="card" href="/work/">
-        {slate("Feature film · Episodic · PostVis · Shorts", "Work")}
+        {slate("Feature film · Episodic · Visualisation · Shorts", "Work")}
         <div class="meta">
           <span class="kicker">Work</span>
           <h3>Project reels by format</h3>
@@ -269,7 +269,7 @@ write("index.html", home)
 
 # ---------------------------------------------------------------- work
 def slug(t): return "".join(c if c.isalnum() else "-" for c in t.lower()).strip("-")
-def fmt_title(f): return f if f == "PostVis" else " ".join(w.capitalize() for w in f.split())
+def fmt_title(f): return " ".join(w.capitalize() for w in f.split())
 def proj_tile(p):
     meta_top = " · ".join(x for x in (fmt_title(p["fmt"]), p["yr"]) if x)
     client = " · ".join(x for x in (p["role"], p["co"]) if x)
@@ -353,7 +353,7 @@ write("work/index.html", work)
 
 # One page per format. Formats in PLAYER_FORMATS get the full-screen player layout (built further down,
 # after player_page); the rest keep this list layout.
-PLAYER_FORMATS = ["Feature film", "Episodic", "PostVis", "Shorts", "Feature animation"]
+PLAYER_FORMATS = ["Feature film", "Episodic", "Visualisation", "Shorts", "Feature animation"]
 for i, f in enumerate(FORMATS, 1):
     if f in PLAYER_FORMATS: continue
     items = [q for p in PROJECTS if in_format(p, f) for q in expand(p)]
@@ -740,7 +740,7 @@ player_page("vfxsupervisor/index.html", "vfxsup", "VFX Supervisor", "VFX Supervi
 FORMAT_LEDES = {
     "Feature film": "Feature film project reels: Nuke compositing, PostVis and VFX supervision. Play them all, or pick one from the grid.",
     "Episodic": "Episodic project reels: Nuke compositing, PostVis and VFX supervision. Play them all, or pick one from the grid.",
-    "PostVis": "PostVis across feature film and episodic: temp comps that carry the edit from shoot to final VFX. Play them all, or pick one from the grid.",
+    "Visualisation": "PostVis across feature film and episodic: temp comps that carry the edit from shoot to final VFX. Play them all, or pick one from the grid.",
     "Shorts": "Short form: commercials, promos, titles and music videos. Play them all, or pick one from the grid.",
     "Feature animation": "Feature animation project reels. Play them all, or pick one from the grid.",
 }
