@@ -68,7 +68,7 @@ def expand(p):
 def in_format(p, f):
     """Visualisation is its own format page, gathering every PostVis job; those jobs also stay on their
     Feature film or Episodic page."""
-    return p["group"] == "PostVis" if f == "Visualisation" else p["fmt"] == f
+    return p["group"] in ("PostVis", "Previs") if f == "Visualisation" else p["fmt"] == f
 
 
 # Production phases (from the Indie Film Production Roadmap). DRAFT tags for Mark to check.
@@ -76,6 +76,7 @@ PHASES = ["Development", "Pre-production", "Production", "Post-production", "Dis
 GROUP_PHASES = {
     "Nuke compositor": ["Post-production"],
     "PostVis": ["Post-production"],
+    "Previs": ["Pre-production"],   # previs jobs: group="Previs" (they also appear on the Visualisation page)
     "VFX supervisor": ["Pre-production", "Production", "Post-production"],
     "Director": PHASES,
 }

@@ -759,7 +759,7 @@ player_page("vfxsupervisor/index.html", "vfxsup", "VFX Supervisor", "VFX Supervi
 FORMAT_LEDES = {
     "Feature film": "Feature film project reels: Nuke compositing, PostVis and VFX supervision. Play them all, or pick one from the grid.",
     "Episodic": "Episodic project reels: Nuke compositing, PostVis and VFX supervision. Play them all, or pick one from the grid.",
-    "Visualisation": "PostVis across feature film and episodic: temp comps that carry the edit from shoot to final VFX. Play them all, or pick one from the grid.",
+    "Visualisation": "Visualisation across the pipeline: previs in pre-production, PostVis in post. Play them all, or pick one from the grid.",
     "Shorts": "Short form: commercials, promos, titles and music videos. Play them all, or pick one from the grid.",
     "Feature animation": "Feature animation project reels. Play them all, or pick one from the grid.",
 }
