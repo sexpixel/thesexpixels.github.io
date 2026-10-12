@@ -13,6 +13,7 @@ from skills_data import stages
 from work_data import PROJECTS, ROLE_GROUPS, FORMATS, FORMAT_SLUGS, expand, in_format, PHASES as WPHASES
 from news_data import NEWS
 from crops import CROPS, crop_of, crop_str
+from phase_tags import PHASE_TAGS
 
 def crop_attr(spec):
     c = crop_str(spec)
@@ -472,8 +473,11 @@ skills = head("Skills · Mark Pinheiro",
 write("skills/index.html", skills)
 
 def phase_slug(ph): return ph.lower()
+def reel_phases(r):
+    """A reel's phases: Mark's tag for that video (from /tagger/) wins, then the project's default."""
+    return PHASE_TAGS.get(r.get("video") or "") or r.get("phases") or WPHASES
 def phases_attr(r):
-    return " ".join(phase_slug(x) for x in (r.get("phases") or WPHASES))
+    return " ".join(phase_slug(x) for x in reel_phases(r))
 
 def reel_cell(i, r):
     if r["video"]:
@@ -680,7 +684,7 @@ PHASES = WPHASES
 def phase_strip(reels):
     """The production phases as a filter: All, then Development → Distribution. Phases with no work on
     this page are shown but can't be picked."""
-    have = {ph for r in reels for ph in (r.get("phases") or WPHASES)}
+    have = {ph for r in reels for ph in reel_phases(r)}
     short = {"Development": "Dev", "Pre-production": "Pre", "Production": "Prod", "Post-production": "Post", "Distribution": "Dist"}
     btns = ['<li><button type="button" data-ph="all" aria-pressed="true"><span class="lg">All</span><span class="sm" aria-hidden="true">All</span></button></li>']
     for ph in PHASES:
@@ -962,5 +966,6 @@ var TUNE = {json.dumps(TUNE)};
 </html>
 """
 write("tuner/index.html", tuner)
+
 
 print("built: index, work, skills, thefleapit, nukecompositor, vfxsupervisor, news, about, contact, tuner")
