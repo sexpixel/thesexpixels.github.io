@@ -14,7 +14,7 @@
 <body>
 
 <header class="nav" id="nav">
-  <a class="mark" href="/" aria-label="Mark Pinheiro, VFX Supervisor, home"><b>Mark Pinheiro</b><small>VFX Supervisor</small></a>
+  <a class="mark" href="/" aria-label="Mark Pinheiro, home"><b>Mark Pinheiro</b></a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
   <nav aria-label="Main" id="menu">
     <ul>
@@ -39,31 +39,34 @@
 </header>
 
 <main>
-  <section class="page">
-    <a class="back" href="/work/">&larr; Work</a>
-    <div class="rail"><span class="n">01.4</span>Work</div>
-    <h1 class="pagetitle">Feature Animation</h1>
-    <div class="cards" id="tiles">
-      <a class="card" id="save-the-365th-day---trailer" href="https://vimeo.com/55357193" data-video="vimeo:55357193" data-group="Nuke compositor">
-        <div class="thumb"><img data-vimeo="https://vimeo.com/55357193" alt="" hidden><span class="play"></span></div>
-        <div class="meta">
-          <span class="kicker">Nuke compositor · Feature Animation · 2012</span>
-          <span class="client">Stereo compositor &amp; stereographer · ECCG China</span>
-          <h3>Save The 365th Day · Trailer</h3>
-          <span class="go">Play full screen →</span>
+  <section class="hero stickyhero fp-player" id="fp-player" aria-label="Player">
+    <div class="fp-slot" id="fp-slot"></div>
+    <div class="herotitle herotop heroui">
+      <span class="lab"><b>01.4</b> · Work</span>
+      <h1 class="herohead">Feature Animation</h1>
+    </div>
+    <div class="reelbar heroui">
+      <span class="fp-title" id="fp-title" aria-live="polite"></span>
+        <div class="fp-ctrls">
+          <button type="button" class="fp-btn" id="fp-prev" aria-label="Previous reel">◀</button>
+          <button type="button" class="fp-btn" id="fp-next" aria-label="Next reel">▶</button>
+          <button type="button" class="fp-btn" id="fp-sound" aria-pressed="false">Sound on</button>
+          <button type="button" class="fp-btn" id="fp-full">Full screen</button>
         </div>
-      </a>
-      <a class="card" id="save-the-365th-day---excerpt" href="https://vimeo.com/75682310" data-video="vimeo:75682310" data-group="Nuke compositor">
-        <div class="thumb"><img data-vimeo="https://vimeo.com/75682310" alt="" hidden><span class="play"></span></div>
-        <div class="meta">
-          <span class="kicker">Nuke compositor · Feature Animation · 2012</span>
-          <span class="client">Stereo compositor &amp; stereographer · ECCG China</span>
-          <h3>Save The 365th Day · Excerpt</h3>
-          <span class="go">Play full screen →</span>
-        </div>
-      </a>
+    </div>
+    <div class="scrollcue heroui" aria-hidden="true">Scroll for reels</div>
+  </section>
+
+  <div class="over">
+  <section class="fp-reels" aria-labelledby="reels-h">
+    <div class="rail"><span class="n">Reels</span><span id="reels-h">All</span></div>
+    <p class="pagelede">Feature animation project reels. Play them all, or pick one from the grid.</p>
+    <div class="fp-grid wide">
+      <button class="fp-cell" type="button" data-i="0" data-src="vimeo:55357193" data-title="Save The 365th Day · Trailer"><img data-vimeo="https://vimeo.com/55357193" alt="" hidden><span class="fp-cap"><b>Save The 365th Day · Trailer</b><i>Stereo compositor &amp; stereographer · ECCG China · 2012</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="1" data-src="vimeo:75682310" data-title="Save The 365th Day · Excerpt"><img data-vimeo="https://vimeo.com/75682310" alt="" hidden><span class="fp-cap"><b>Save The 365th Day · Excerpt</b><i>Stereo compositor &amp; stereographer · ECCG China · 2012</i></span><span class="play"></span></button>
     </div>
   </section>
+  </div>
 </main>
 
 <footer>
@@ -72,6 +75,6 @@
 </footer>
 
 <script src="/assets/site.js?v=e011ae5d"></script>
-
+<script src="/assets/playlist.js?v=ea2949d9"></script>
 </body>
 </html>

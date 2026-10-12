@@ -350,8 +350,11 @@ work = head("Work · Mark Pinheiro", "Mark Pinheiro's showreels and project reel
 '''
 write("work/index.html", work)
 
-# One page per format
+# One page per format. Formats in PLAYER_FORMATS get the full-screen player layout (built further down,
+# after player_page); the rest keep this list layout.
+PLAYER_FORMATS = ["Feature film", "Episodic", "Feature animation"]
 for i, f in enumerate(FORMATS, 1):
+    if f in PLAYER_FORMATS: continue
     items = [q for p in PROJECTS if p["fmt"] == f for q in expand(p)]
     groups = [g for g in ROLE_GROUPS if any(p["group"] == g for p in items)]
     chips = ""
@@ -670,6 +673,23 @@ player_page("vfxsupervisor/index.html", "vfxsup", "VFX Supervisor", "VFX Supervi
             "On-set and in-facility supervision across feature film, episodic and commercials. The showreel plays first; pick a project from the grid to play its reel.",
             SUP_REELS, True, "The supervisor showreel is in the edit", "", "VFX Supervisor · Mark Pinheiro",
             "Mark Pinheiro's VFX supervision: showreel and project reels.")
+
+# ---------------------------------------------------------------- work format pages with the player
+FORMAT_LEDES = {
+    "Feature film": "Feature film project reels: Nuke compositing, PostVis and VFX supervision. Play them all, or pick one from the grid.",
+    "Episodic": "Episodic project reels: Nuke compositing, PostVis and VFX supervision. Play them all, or pick one from the grid.",
+    "Feature animation": "Feature animation project reels. Play them all, or pick one from the grid.",
+}
+for i, f in enumerate(FORMATS, 1):
+    if f not in PLAYER_FORMATS: continue
+    items = [q for p in PROJECTS if p["fmt"] == f for q in expand(p)]
+    reels = [dict(title=q["title"], kind=" · ".join(x for x in (q["role"], q["co"], q["yr"]) if x), video=q.get("video"))
+             for q in items]
+    reels = [r for r in reels if r["video"]] + [r for r in reels if not r["video"]]
+    title = fmt_title(f)
+    player_page(f"work/{FORMAT_SLUGS[f]}/index.html", "work", None, title, f"01.{i}", "Work",
+                FORMAT_LEDES[f], reels, True, "Reels on their way", "",
+                f"{title} · Work · Mark Pinheiro", f"Mark Pinheiro's {f} work: project reels as Nuke compositor and VFX supervisor.")
 
 # ---------------------------------------------------------------- news
 import datetime

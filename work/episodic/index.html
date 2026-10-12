@@ -14,7 +14,7 @@
 <body>
 
 <header class="nav" id="nav">
-  <a class="mark" href="/" aria-label="Mark Pinheiro, VFX Supervisor, home"><b>Mark Pinheiro</b><small>VFX Supervisor</small></a>
+  <a class="mark" href="/" aria-label="Mark Pinheiro, home"><b>Mark Pinheiro</b></a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
   <nav aria-label="Main" id="menu">
     <ul>
@@ -39,218 +39,54 @@
 </header>
 
 <main>
-  <section class="page">
-    <a class="back" href="/work/">&larr; Work</a>
-    <div class="rail"><span class="n">01.2</span>Work</div>
-    <h1 class="pagetitle">Episodic</h1>
-    <div class="filters" role="group" aria-label="Filter by role">
-      <span class="flabel">Role</span>
-      <button type="button" data-v="all" aria-pressed="true">All</button>
-      <button type="button" data-v="Nuke compositor" aria-pressed="false">Nuke compositor</button>
-      <button type="button" data-v="VFX supervisor" aria-pressed="false">VFX supervisor</button>
-      <button type="button" data-v="PostVis" aria-pressed="false">PostVis</button>
+  <section class="hero stickyhero fp-player" id="fp-player" aria-label="Player">
+    <div class="fp-slot" id="fp-slot"></div>
+    <div class="herotitle herotop heroui">
+      <span class="lab"><b>01.2</b> · Work</span>
+      <h1 class="herohead">Episodic</h1>
     </div>
-    <div class="cards" id="tiles">
-      <div class="card" id="gangs-of-london-s4" data-group="VFX supervisor">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">Episodic · 2026</span><span class="no">Gangs of London S4</span></div></div>
-        <div class="meta">
-          <span class="kicker">VFX supervisor · Episodic · 2026</span>
-          <span class="client">On-set VFX supervisor · The Sex Pixels</span>
-          <h3>Gangs of London S4</h3>
-          <span class="go soon">Project reel in production</span>
+    <div class="reelbar heroui">
+      <span class="fp-title" id="fp-title" aria-live="polite"></span>
+        <div class="fp-ctrls">
+          <button type="button" class="fp-btn" id="fp-prev" aria-label="Previous reel">◀</button>
+          <button type="button" class="fp-btn" id="fp-next" aria-label="Next reel">▶</button>
+          <button type="button" class="fp-btn" id="fp-sound" aria-pressed="false">Sound on</button>
+          <button type="button" class="fp-btn" id="fp-full">Full screen</button>
         </div>
-      </div>
-      <div class="card" id="gangs-of-london-s3" data-group="VFX supervisor">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">Episodic</span><span class="no">Gangs of London S3</span></div></div>
-        <div class="meta">
-          <span class="kicker">VFX supervisor · Episodic</span>
-          <span class="client">On-set VFX supervisor</span>
-          <h3>Gangs of London S3</h3>
-          <span class="go soon">Project reel in production</span>
-        </div>
-      </div>
-      <div class="card" id="i-am-nobody-s2" data-group="VFX supervisor">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">Episodic</span><span class="no">I Am Nobody S2</span></div></div>
-        <div class="meta">
-          <span class="kicker">VFX supervisor · Episodic</span>
-          <span class="client">VFX consultant · Horizon VFX</span>
-          <h3>I Am Nobody S2</h3>
-          <span class="go soon">Project reel in production</span>
-        </div>
-      </div>
-      <a class="card" id="moon-knight---the-castle" href="https://vimeo.com/1014146296" data-video="vimeo:1014146296" data-group="PostVis">
-        <div class="thumb"><img data-vimeo="https://vimeo.com/1014146296" alt="" hidden><span class="play"></span></div>
-        <div class="meta">
-          <span class="kicker">PostVis · Episodic</span>
-          <span class="client">PostVis · Framestore FPS</span>
-          <h3>Moon Knight · The Castle</h3>
-          <span class="go">Play full screen →</span>
-        </div>
-      </a>
-      <a class="card" id="moon-knight---the-ice-cream-van-chase" href="https://vimeo.com/1014145891" data-video="vimeo:1014145891" data-group="PostVis">
-        <div class="thumb"><img data-vimeo="https://vimeo.com/1014145891" alt="" hidden><span class="play"></span></div>
-        <div class="meta">
-          <span class="kicker">PostVis · Episodic</span>
-          <span class="client">PostVis · Framestore FPS</span>
-          <h3>Moon Knight · The Ice Cream Van Chase</h3>
-          <span class="go">Play full screen →</span>
-        </div>
-      </a>
-      <a class="card" id="moon-knight---the-book-attack" href="https://vimeo.com/1014145603" data-video="vimeo:1014145603" data-group="PostVis">
-        <div class="thumb"><img data-vimeo="https://vimeo.com/1014145603" alt="" hidden><span class="play"></span></div>
-        <div class="meta">
-          <span class="kicker">PostVis · Episodic</span>
-          <span class="client">PostVis · Framestore FPS</span>
-          <h3>Moon Knight · The Book Attack</h3>
-          <span class="go">Play full screen →</span>
-        </div>
-      </a>
-      <a class="card" id="moon-knight---the-museum" href="https://vimeo.com/1014145227" data-video="vimeo:1014145227" data-group="PostVis">
-        <div class="thumb"><img data-vimeo="https://vimeo.com/1014145227" alt="" hidden><span class="play"></span></div>
-        <div class="meta">
-          <span class="kicker">PostVis · Episodic</span>
-          <span class="client">PostVis · Framestore FPS</span>
-          <h3>Moon Knight · The Museum</h3>
-          <span class="go">Play full screen →</span>
-        </div>
-      </a>
-      <a class="card" id="moon-knight---security-desk" href="https://vimeo.com/1014145040" data-video="vimeo:1014145040" data-group="PostVis">
-        <div class="thumb"><img data-vimeo="https://vimeo.com/1014145040" alt="" hidden><span class="play"></span></div>
-        <div class="meta">
-          <span class="kicker">PostVis · Episodic</span>
-          <span class="client">PostVis · Framestore FPS</span>
-          <h3>Moon Knight · Security Desk</h3>
-          <span class="go">Play full screen →</span>
-        </div>
-      </a>
-      <a class="card" id="moon-knight---storage-lockup" href="https://vimeo.com/1014144960" data-video="vimeo:1014144960" data-group="PostVis">
-        <div class="thumb"><img data-vimeo="https://vimeo.com/1014144960" alt="" hidden><span class="play"></span></div>
-        <div class="meta">
-          <span class="kicker">PostVis · Episodic</span>
-          <span class="client">PostVis · Framestore FPS</span>
-          <h3>Moon Knight · Storage Lockup</h3>
-          <span class="go">Play full screen →</span>
-        </div>
-      </a>
-      <a class="card" id="moon-knight---khonshu-mentors" href="https://vimeo.com/1014144736" data-video="vimeo:1014144736" data-group="PostVis">
-        <div class="thumb"><img data-vimeo="https://vimeo.com/1014144736" alt="" hidden><span class="play"></span></div>
-        <div class="meta">
-          <span class="kicker">PostVis · Episodic</span>
-          <span class="client">PostVis · Framestore FPS</span>
-          <h3>Moon Knight · Khonshu Mentors</h3>
-          <span class="go">Play full screen →</span>
-        </div>
-      </a>
-      <a class="card" id="moon-knight---pyramid-fight" href="https://vimeo.com/1014144315" data-video="vimeo:1014144315" data-group="PostVis">
-        <div class="thumb"><img data-vimeo="https://vimeo.com/1014144315" alt="" hidden><span class="play"></span></div>
-        <div class="meta">
-          <span class="kicker">PostVis · Episodic</span>
-          <span class="client">PostVis · Framestore FPS</span>
-          <h3>Moon Knight · Pyramid Fight</h3>
-          <span class="go">Play full screen →</span>
-        </div>
-      </a>
-      <a class="card" id="moon-knight---desert-magic" href="https://vimeo.com/1014144015" data-video="vimeo:1014144015" data-group="PostVis">
-        <div class="thumb"><img data-vimeo="https://vimeo.com/1014144015" alt="" hidden><span class="play"></span></div>
-        <div class="meta">
-          <span class="kicker">PostVis · Episodic</span>
-          <span class="client">PostVis · Framestore FPS</span>
-          <h3>Moon Knight · Desert Magic</h3>
-          <span class="go">Play full screen →</span>
-        </div>
-      </a>
-      <a class="card" id="moon-knight---the-asylum" href="https://vimeo.com/1014143259" data-video="vimeo:1014143259" data-group="PostVis">
-        <div class="thumb"><img data-vimeo="https://vimeo.com/1014143259" alt="" hidden><span class="play"></span></div>
-        <div class="meta">
-          <span class="kicker">PostVis · Episodic</span>
-          <span class="client">PostVis · Framestore FPS</span>
-          <h3>Moon Knight · The Asylum</h3>
-          <span class="go">Play full screen →</span>
-        </div>
-      </a>
-      <a class="card" id="moon-knight---the-realm" href="https://vimeo.com/1014143091" data-video="vimeo:1014143091" data-group="PostVis">
-        <div class="thumb"><img data-vimeo="https://vimeo.com/1014143091" alt="" hidden><span class="play"></span></div>
-        <div class="meta">
-          <span class="kicker">PostVis · Episodic</span>
-          <span class="client">PostVis · Framestore FPS</span>
-          <h3>Moon Knight · The Realm</h3>
-          <span class="go">Play full screen →</span>
-        </div>
-      </a>
-      <a class="card" id="lockwood---co---s01e03-the-druids" href="https://vimeo.com/1014146695" data-video="vimeo:1014146695" data-group="PostVis">
-        <div class="thumb"><img data-vimeo="https://vimeo.com/1014146695" alt="" hidden><span class="play"></span></div>
-        <div class="meta">
-          <span class="kicker">PostVis · Episodic</span>
-          <span class="client">PostVis · Framestore FPS</span>
-          <h3>Lockwood &amp; Co · S01E03 The Druids</h3>
-          <span class="go">Play full screen →</span>
-        </div>
-      </a>
-      <a class="card" id="the-rig---season-1" href="https://vimeo.com/1014300271" data-video="vimeo:1014300271" data-group="Nuke compositor">
-        <div class="thumb"><img data-vimeo="https://vimeo.com/1014300271" alt="" hidden><span class="play"></span></div>
-        <div class="meta">
-          <span class="kicker">Nuke compositor · Episodic</span>
-          <span class="client">Absolute Post</span>
-          <h3>The Rig · Season 1</h3>
-          <span class="go">Play full screen →</span>
-        </div>
-      </a>
-      <a class="card" id="the-buccaneers---s01e01-the-prairie-trail" href="https://vimeo.com/1014151720" data-video="vimeo:1014151720" data-group="Nuke compositor">
-        <div class="thumb"><img data-vimeo="https://vimeo.com/1014151720" alt="" hidden><span class="play"></span></div>
-        <div class="meta">
-          <span class="kicker">Nuke compositor · Episodic</span>
-          <span class="client">Absolute Post</span>
-          <h3>The Buccaneers · S01E01 The Prairie Trail</h3>
-          <span class="go">Play full screen →</span>
-        </div>
-      </a>
-      <a class="card" id="the-buccaneers---s01e01-the-wedding" href="https://vimeo.com/1014151499" data-video="vimeo:1014151499" data-group="Nuke compositor">
-        <div class="thumb"><img data-vimeo="https://vimeo.com/1014151499" alt="" hidden><span class="play"></span></div>
-        <div class="meta">
-          <span class="kicker">Nuke compositor · Episodic</span>
-          <span class="client">Absolute Post</span>
-          <h3>The Buccaneers · S01E01 The Wedding</h3>
-          <span class="go">Play full screen →</span>
-        </div>
-      </a>
-      <div class="card" id="1899" data-group="PostVis">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">Episodic</span><span class="no">1899</span></div></div>
-        <div class="meta">
-          <span class="kicker">PostVis · Episodic</span>
-          <span class="client">PostVis artist · Framestore FPS</span>
-          <h3>1899</h3>
-          <span class="go soon">Project reel in production</span>
-        </div>
-      </div>
-      <div class="card" id="walking-with-dinosaurs" data-group="Nuke compositor">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">Episodic</span><span class="no">Walking With Dinosaurs</span></div></div>
-        <div class="meta">
-          <span class="kicker">Nuke compositor · Episodic</span>
-          <span class="client">Compositor · Milk VFX</span>
-          <h3>Walking With Dinosaurs</h3>
-          <span class="go soon">Project reel in production</span>
-        </div>
-      </div>
-      <div class="card" id="the-crown-s2" data-group="Nuke compositor">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">Episodic</span><span class="no">The Crown S2</span></div></div>
-        <div class="meta">
-          <span class="kicker">Nuke compositor · Episodic</span>
-          <span class="client">Compositor</span>
-          <h3>The Crown S2</h3>
-          <span class="go soon">Project reel in production</span>
-        </div>
-      </div>
-      <div class="card" id="game-of-thrones-s6" data-group="VFX supervisor">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">Episodic</span><span class="no">Game of Thrones S6</span></div></div>
-        <div class="meta">
-          <span class="kicker">VFX supervisor · Episodic</span>
-          <span class="client">In-house VFX supervision team · Molinare</span>
-          <h3>Game of Thrones S6</h3>
-          <span class="go soon">Project reel in production</span>
-        </div>
-      </div>
+    </div>
+    <div class="scrollcue heroui" aria-hidden="true">Scroll for reels</div>
+  </section>
+
+  <div class="over">
+  <section class="fp-reels" aria-labelledby="reels-h">
+    <div class="rail"><span class="n">Reels</span><span id="reels-h">All</span></div>
+    <p class="pagelede">Episodic project reels: Nuke compositing, PostVis and VFX supervision. Play them all, or pick one from the grid.</p>
+    <div class="fp-grid wide">
+      <button class="fp-cell" type="button" data-i="0" data-src="vimeo:1014146296" data-title="Moon Knight · The Castle"><img data-vimeo="https://vimeo.com/1014146296" alt="" hidden><span class="fp-cap"><b>Moon Knight · The Castle</b><i>PostVis · Framestore FPS</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="1" data-src="vimeo:1014145891" data-title="Moon Knight · The Ice Cream Van Chase"><img data-vimeo="https://vimeo.com/1014145891" alt="" hidden><span class="fp-cap"><b>Moon Knight · The Ice Cream Van Chase</b><i>PostVis · Framestore FPS</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="2" data-src="vimeo:1014145603" data-title="Moon Knight · The Book Attack"><img data-vimeo="https://vimeo.com/1014145603" alt="" hidden><span class="fp-cap"><b>Moon Knight · The Book Attack</b><i>PostVis · Framestore FPS</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="3" data-src="vimeo:1014145227" data-title="Moon Knight · The Museum"><img data-vimeo="https://vimeo.com/1014145227" alt="" hidden><span class="fp-cap"><b>Moon Knight · The Museum</b><i>PostVis · Framestore FPS</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="4" data-src="vimeo:1014145040" data-title="Moon Knight · Security Desk"><img data-vimeo="https://vimeo.com/1014145040" alt="" hidden><span class="fp-cap"><b>Moon Knight · Security Desk</b><i>PostVis · Framestore FPS</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="5" data-src="vimeo:1014144960" data-title="Moon Knight · Storage Lockup"><img data-vimeo="https://vimeo.com/1014144960" alt="" hidden><span class="fp-cap"><b>Moon Knight · Storage Lockup</b><i>PostVis · Framestore FPS</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="6" data-src="vimeo:1014144736" data-title="Moon Knight · Khonshu Mentors"><img data-vimeo="https://vimeo.com/1014144736" alt="" hidden><span class="fp-cap"><b>Moon Knight · Khonshu Mentors</b><i>PostVis · Framestore FPS</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="7" data-src="vimeo:1014144315" data-title="Moon Knight · Pyramid Fight"><img data-vimeo="https://vimeo.com/1014144315" alt="" hidden><span class="fp-cap"><b>Moon Knight · Pyramid Fight</b><i>PostVis · Framestore FPS</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="8" data-src="vimeo:1014144015" data-title="Moon Knight · Desert Magic"><img data-vimeo="https://vimeo.com/1014144015" alt="" hidden><span class="fp-cap"><b>Moon Knight · Desert Magic</b><i>PostVis · Framestore FPS</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="9" data-src="vimeo:1014143259" data-title="Moon Knight · The Asylum"><img data-vimeo="https://vimeo.com/1014143259" alt="" hidden><span class="fp-cap"><b>Moon Knight · The Asylum</b><i>PostVis · Framestore FPS</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="10" data-src="vimeo:1014143091" data-title="Moon Knight · The Realm"><img data-vimeo="https://vimeo.com/1014143091" alt="" hidden><span class="fp-cap"><b>Moon Knight · The Realm</b><i>PostVis · Framestore FPS</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="11" data-src="vimeo:1014146695" data-title="Lockwood &amp; Co · S01E03 The Druids"><img data-vimeo="https://vimeo.com/1014146695" alt="" hidden><span class="fp-cap"><b>Lockwood &amp; Co · S01E03 The Druids</b><i>PostVis · Framestore FPS</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="12" data-src="vimeo:1014300271" data-title="The Rig · Season 1"><img data-vimeo="https://vimeo.com/1014300271" alt="" hidden><span class="fp-cap"><b>The Rig · Season 1</b><i>Absolute Post</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="13" data-src="vimeo:1014151720" data-title="The Buccaneers · S01E01 The Prairie Trail"><img data-vimeo="https://vimeo.com/1014151720" alt="" hidden><span class="fp-cap"><b>The Buccaneers · S01E01 The Prairie Trail</b><i>Absolute Post</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="14" data-src="vimeo:1014151499" data-title="The Buccaneers · S01E01 The Wedding"><img data-vimeo="https://vimeo.com/1014151499" alt="" hidden><span class="fp-cap"><b>The Buccaneers · S01E01 The Wedding</b><i>Absolute Post</i></span><span class="play"></span></button>
+      <div class="fp-cell fp-soon"><span class="fp-cap"><b>Gangs of London S4</b><i>On-set VFX supervisor · The Sex Pixels · 2026 · coming soon</i></span></div>
+      <div class="fp-cell fp-soon"><span class="fp-cap"><b>Gangs of London S3</b><i>On-set VFX supervisor · coming soon</i></span></div>
+      <div class="fp-cell fp-soon"><span class="fp-cap"><b>I Am Nobody S2</b><i>VFX consultant · Horizon VFX · coming soon</i></span></div>
+      <div class="fp-cell fp-soon"><span class="fp-cap"><b>1899</b><i>PostVis artist · Framestore FPS · coming soon</i></span></div>
+      <div class="fp-cell fp-soon"><span class="fp-cap"><b>Walking With Dinosaurs</b><i>Compositor · Milk VFX · coming soon</i></span></div>
+      <div class="fp-cell fp-soon"><span class="fp-cap"><b>The Crown S2</b><i>Compositor · coming soon</i></span></div>
+      <div class="fp-cell fp-soon"><span class="fp-cap"><b>Game of Thrones S6</b><i>In-house VFX supervision team · Molinare · coming soon</i></span></div>
     </div>
   </section>
+  </div>
 </main>
 
 <footer>
@@ -259,18 +95,6 @@
 </footer>
 
 <script src="/assets/site.js?v=e011ae5d"></script>
-<script>
-// Role filter, like the category filters on Framestore's work page.
-(function(){
-  var tiles = document.querySelectorAll('#tiles .card');
-  document.querySelectorAll('.filters button').forEach(function(b){
-    b.addEventListener('click', function(){
-      var v = b.getAttribute('data-v');
-      document.querySelectorAll('.filters button').forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
-      tiles.forEach(function(t){ t.hidden = !(v === 'all' || t.getAttribute('data-group') === v); });
-    });
-  });
-})();
-</script>
+<script src="/assets/playlist.js?v=ea2949d9"></script>
 </body>
 </html>
