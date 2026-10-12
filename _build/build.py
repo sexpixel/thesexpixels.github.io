@@ -565,7 +565,7 @@ about = head("About · Mark Pinheiro",
     <p class="awards-note">Promax won outright; the others won by the shows and teams he was part of.</p>
     <div class="bio solo">
       <p class="lede">A filmmaker at heart, with twenty-six years in visual effects.</p>
-      <p>Today he still enjoys exploring methods and practices that use technology to simplify filmmaking. He is an <strong>agentic coder</strong>: every tool he builds is written with AI. He works through his boutique studio, The Sex Pixels, and designs courses for the NFTS, ECAM Madrid and Escape Studios.</p>
+      <p>Today he still enjoys exploring methods and practices that use technology to simplify filmmaking. He works through his boutique studio, The Sex Pixels. He is an <strong>agentic coder</strong>: every tool he builds is written with AI. He also designs courses for the NFTS, ECAM Madrid and Escape Studios.</p>
       <div class="linkrow">{lnk}</div>
     </div>
   </section>
