@@ -67,8 +67,11 @@
     } else if (p[0] === 'youtube') {
       yt().then(function(){
         if (cur !== mine) return;
-        player = new window.YT.Player(box, { videoId: p[1], playerVars: { autoplay: 1, mute: sound ? 0 : 1, rel: 0, modestbranding: 1, playsinline: 1 },
-          events: { onReady: function(){ if (window.TSPcrop) window.TSPcrop(stage, slot.querySelector('iframe')); },
+        player = new window.YT.Player(box, { videoId: p[1], playerVars: { autoplay: 1, mute: sound ? 0 : 1, rel: 0, modestbranding: 1, playsinline: 1, cc_load_policy: 0, iv_load_policy: 3 },
+          events: { onReady: function(e){
+                      // Keep YouTube's captions off, even for viewers whose YouTube settings switch them on.
+                      try { e.target.unloadModule('captions'); e.target.unloadModule('cc'); } catch (x) {}
+                      if (window.TSPcrop) window.TSPcrop(stage, slot.querySelector('iframe')); },
                     onStateChange: function(e){ if (e.data === 0) next(); } } });
       }).catch(function(){});
     } else if (p[0] === 'instagram') {
