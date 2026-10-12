@@ -573,6 +573,9 @@ FLEAPIT_REELS = [
 NUKE_REELS = [
     dict(title="Compositing showreel 2026", kind="Showreel", video=REEL_2026),
     dict(title="Sizzle reel", kind="17 years in 02:30", video="youtube:SDAXjN_sOlE"),
+    # Compositing reels from Mark, 12 Oct. TITLES TO CONFIRM: rename once he says which project each is.
+    dict(title="Compositing reel 1", kind="Project reel", video="vimeo:1014139706"),
+    dict(title="Compositing reel 2", kind="Project reel", video="vimeo:1014143091"),
 ] + [dict(title=p["title"], kind=" · ".join(x for x in (p["role"], p["co"]) if x), video=p.get("video"))
      for p in PROJECTS if p["group"] == "Nuke compositor"]
 
