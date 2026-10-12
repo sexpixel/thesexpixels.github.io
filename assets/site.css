@@ -397,3 +397,12 @@ body.tuner.noguides .heroui{opacity:0}
 .offices address{font-style:normal}
 .olabel{display:block;margin-bottom:4px;font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
 .coemail{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:13px}
+/* Bigger contact icons and labels */
+.ic{width:clamp(48px,4.4vw,64px);height:clamp(48px,4.4vw,64px)}
+.ic.sm{width:22px;height:22px}
+.ctiles .k{font-size:clamp(13px,1.05vw,16px);letter-spacing:3px;color:var(--soft)}
+.clabel{font-size:clamp(12px,1vw,15px)!important;gap:10px}
+.ctiles a{gap:14px}
+/* Email, Based and Company: big icon above the label, matching the tiles */
+.ctop .clabel{flex-direction:column;align-items:flex-start;gap:12px}
+.ic.big{width:clamp(48px,4.4vw,64px);height:clamp(48px,4.4vw,64px)}

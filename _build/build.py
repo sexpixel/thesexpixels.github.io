@@ -759,16 +759,16 @@ contact = head("Contact · Mark Pinheiro", "Contact Mark Pinheiro: email, showre
 {page_intro("04", "Contact", "Let's talk")}
     <div class="ctop">
       <div>
-        <span class="clabel">{icon("Email", "ic sm")}Email</span>
+        <span class="clabel">{icon("Email", "ic big")}Email</span>
         <a class="email" href="mailto:mark@thesexpixels.com">mark@thesexpixels.com</a>
       </div>
       <div>
-        <span class="clabel">{icon("Based", "ic sm")}Based</span>
+        <span class="clabel">{icon("Based", "ic big")}Based</span>
         <p class="cbig">London</p>
         <p class="csmall">UK work eligibility · valid passport · available to travel worldwide</p>
       </div>
       <div>
-        <span class="clabel">{icon("Company", "ic sm")}Company</span>
+        <span class="clabel">{icon("Company", "ic big")}Company</span>
         <b class="coname">The Sex Pixels Ltd.</b>
         <div class="offices">
           <address><span class="olabel">Studio</span>
