@@ -49,13 +49,13 @@
         player = new window.Vimeo.Player(box, { url: 'https://vimeo.com/' + p[1] + (p[2] ? '/' + p[2] : ''), autoplay: true, muted: !sound,
           title: false, byline: false, portrait: false, dnt: true });
         player.on('ended', next);
-      });
+      }).catch(function(){});
     } else if (p[0] === 'youtube') {
       yt().then(function(){
         if (cur !== mine) return;
         player = new window.YT.Player(box, { videoId: p[1], playerVars: { autoplay: 1, mute: sound ? 0 : 1, rel: 0, modestbranding: 1, playsinline: 1 },
           events: { onStateChange: function(e){ if (e.data === 0) next(); } } });
-      });
+      }).catch(function(){});
     } else if (p[0] === 'instagram') {
       var f = document.createElement('iframe');
       f.src = 'https://www.instagram.com/reel/' + p[1] + '/embed'; f.title = c.getAttribute('data-title');
