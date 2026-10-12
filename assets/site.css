@@ -362,3 +362,4 @@ body.tuner.noguides .heroui{opacity:0}
 .tp-crop{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
 .tp-check{flex-direction:row!important;align-items:center;gap:8px!important;text-transform:none;letter-spacing:0;font-size:12px}
 .tp-check input{accent-color:var(--accent)}
+@media (max-height:500px){.scrollcue{display:none}}
