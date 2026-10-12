@@ -53,13 +53,14 @@
         // using the video's real shape, so 4:3, 16:9 and scope reels all fill edge to edge.
         var f = document.createElement('iframe');
         f.src = 'https://player.vimeo.com/video/' + p[1] + '?' + (p[2] ? 'h=' + p[2] + '&' : '') +
-          'autoplay=1&muted=' + (sound ? 0 : 1) + '&title=0&byline=0&portrait=0&dnt=1&playsinline=1';
+          'autoplay=1&texttrack=false&muted=' + (sound ? 0 : 1) + '&title=0&byline=0&portrait=0&dnt=1&playsinline=1';
         f.title = c.getAttribute('data-title');
         f.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
         slot.replaceChild(f, box);
         if (window.TSPcrop) window.TSPcrop(stage, f);
         player = new window.Vimeo.Player(f);
         player.on('ended', next);
+        if (player.disableTextTrack) player.disableTextTrack().catch(function(){});   // no subtitles
         Promise.all([player.getVideoWidth(), player.getVideoHeight()]).then(function(d){
           if (cur === mine && d[0] && d[1]) { stage.style.setProperty('--ar', d[0] / d[1]); if (window.TSPcrop) window.TSPcrop(stage, f); }
         }).catch(function(){});

@@ -52,7 +52,7 @@
     var f = document.createElement('iframe');
     f.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture'); f.title = r.title;
     if (p[0] === 'vimeo') {
-      f.src = 'https://player.vimeo.com/video/' + p[1] + '?' + (p[2] ? 'h=' + p[2] + '&' : '') + 'autoplay=1&muted=1&loop=1&controls=0&title=0&byline=0&portrait=0&dnt=1';
+      f.src = 'https://player.vimeo.com/video/' + p[1] + '?' + (p[2] ? 'h=' + p[2] + '&' : '') + 'autoplay=1&texttrack=false&muted=1&loop=1&controls=0&title=0&byline=0&portrait=0&dnt=1';
       slot.appendChild(f); apply();
       vimeo().then(function(){
         var pl = new window.Vimeo.Player(f), mine = cur;
@@ -61,7 +61,7 @@
         }).catch(function(){});
       }).catch(function(){});
     } else if (p[0] === 'youtube') {
-      f.src = 'https://www.youtube-nocookie.com/embed/' + p[1] + '?autoplay=1&mute=1&loop=1&playlist=' + p[1] + '&controls=0&rel=0&playsinline=1';
+      f.src = 'https://www.youtube-nocookie.com/embed/' + p[1] + '?autoplay=1&mute=1&loop=1&playlist=' + p[1] + '&controls=0&rel=0&playsinline=1&cc_load_policy=0&iv_load_policy=3';
       slot.appendChild(f); apply();
     }
   }

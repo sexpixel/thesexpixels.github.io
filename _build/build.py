@@ -168,7 +168,7 @@ home = head("Mark Pinheiro · Filmmaker / VFX / AI",
 <main id="top">
   <section class="hero stickyhero" aria-label="Showreel"{crop_attr(REEL_2026)}>
     <iframe
-      src="https://player.vimeo.com/video/1232958213?h=ffbea294d7&amp;background=1&amp;autoplay=1&amp;muted=1&amp;loop=1&amp;autopause=0&amp;controls=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;dnt=1"
+      src="https://player.vimeo.com/video/1232958213?h=ffbea294d7&amp;background=1&amp;texttrack=false&amp;autoplay=1&amp;muted=1&amp;loop=1&amp;autopause=0&amp;controls=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;dnt=1"
       title="Mark Pinheiro compositing showreel 2026, playing muted in the background"
       allow="autoplay; fullscreen; picture-in-picture"
       tabindex="-1"></iframe>
