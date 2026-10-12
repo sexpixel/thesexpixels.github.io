@@ -40,6 +40,9 @@
     titleEl.textContent = 'Now playing · ' + (i + 1) + ' / ' + cells.length + ' · ' + c.getAttribute('data-title');
     showSound();
     stage.style.removeProperty('--ar');
+    // Per-reel crop (set on the tuning page) pushes text in the black bars off screen.
+    var crop = (c.getAttribute('data-crop') || '1,0').split(',');
+    stage.style.setProperty('--zoom', crop[0]); stage.style.setProperty('--shift', crop[1]);
     stage.classList.add('playing'); stage.classList.toggle('tall', p[0] === 'instagram');
     clear();
     var box = document.createElement('div'); slot.appendChild(box);

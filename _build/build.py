@@ -12,6 +12,16 @@ sys.path.insert(0, os.path.dirname(__file__))
 from skills_data import stages
 from work_data import PROJECTS, ROLE_GROUPS, FORMATS, FORMAT_SLUGS, expand
 from news_data import NEWS
+from crops import CROPS, crop_of
+
+def crop_attr(spec):
+    c = crop_of(spec)
+    return f' data-crop="{c[0]},{c[1]}"' if c else ""
+
+def crop_style(spec):
+    c = crop_of(spec)
+    return f' style="--zoom:{c[0]};--shift:{c[1]}"' if c else ""
+
 
 E = html.escape
 
@@ -154,7 +164,7 @@ home = head("Mark Pinheiro · Filmmaker / VFX / AI",
 {header()}
 
 <main id="top">
-  <section class="hero stickyhero" aria-label="Showreel">
+  <section class="hero stickyhero" aria-label="Showreel"{crop_style(REEL_2026)}>
     <iframe
       src="https://player.vimeo.com/video/1232958213?h=ffbea294d7&amp;background=1&amp;autoplay=1&amp;muted=1&amp;loop=1&amp;autopause=0&amp;controls=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;dnt=1"
       title="Mark Pinheiro compositing showreel 2026, playing muted in the background"
@@ -572,7 +582,7 @@ def reel_cell(i, r):
         elif r["video"].startswith("vimeo:"):
             vid, _, h = r["video"][6:].partition(":"); img = f'<img data-vimeo="https://vimeo.com/{vid}{"/" + h if h else ""}" alt="" hidden>'
         elif r["video"].startswith("youtube:"): img = f'<img src="https://i.ytimg.com/vi/{r["video"][8:]}/hqdefault.jpg" alt="" loading="lazy">'
-        return f'''      <button class="fp-cell" type="button" data-i="{i}" data-src="{r["video"]}" data-title="{E(r["title"])}">{img}<span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])}</i></span><span class="play"></span></button>'''
+        return f'''      <button class="fp-cell" type="button" data-i="{i}" data-src="{r["video"]}" data-title="{E(r["title"])}"{crop_attr(r["video"])}>{img}<span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])}</i></span><span class="play"></span></button>'''
     return f'''      <div class="fp-cell fp-soon"><span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])} · coming soon</i></span></div>'''
 
 def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wide, idle_empty, extra_links, page_title, desc):
@@ -754,4 +764,56 @@ contact = head("Contact · Mark Pinheiro", "Contact Mark Pinheiro: email, showre
 </html>
 '''
 write("contact/index.html", contact)
-print("built: index, work, skills, thefleapit, nukecompositor, vfxsupervisor, news, about, contact")
+# ---------------------------------------------------------------- tuner (private, not linked)
+# Mark plays each reel behind a sample page heading and sets its crop; the page writes out
+# the settings for _build/crops.py.
+import json
+_seen, TUNE = set(), []
+for page_name, reels in (("Home", [dict(title="Compositing showreel 2026", video=REEL_2026)]), ("Nuke Compositor", NUKE_REELS),
+                         ("VFX Supervisor", SUP_REELS), ("The Fleapit.", FLEAPIT_REELS)):
+    for r in reels:
+        v = r.get("video")
+        if not v or v in _seen or v.startswith("instagram:"): continue
+        _seen.add(v); c = crop_of(v) or (1, 0)
+        TUNE.append(dict(title=r["title"], spec=v, page=page_name, zoom=c[0], shift=c[1]))
+tuner = head("Reel crop tuner · Mark Pinheiro", "Private: set the crop for each reel.", '<meta name="robots" content="noindex">\n') + f"""
+<body class="tuner">
+
+{header()}
+
+<main>
+  <section class="hero fp-player" id="fp-player" aria-label="Reel being tuned">
+    <div class="fp-slot" id="fp-slot"></div>
+    <div class="herotitle herotop heroui">
+      <span class="lab"><b>Sample</b> · page heading</span>
+      <h1 class="herohead" id="t-head">Nuke Compositor</h1>
+    </div>
+    <div class="reelbar heroui"><span class="fp-title" id="t-now"></span></div>
+  </section>
+</main>
+
+<aside class="tunepanel" id="t-panel" aria-label="Crop controls">
+  <div class="tp-row"><button type="button" class="fp-btn" id="t-prev" aria-label="Previous reel">◀</button>
+    <select id="t-pick" aria-label="Reel"></select>
+    <button type="button" class="fp-btn" id="t-next" aria-label="Next reel">▶</button></div>
+  <label>Zoom <output id="t-zv"></output><input type="range" id="t-zoom" min="1" max="1.8" step="0.01"></label>
+  <label>Move up / down <output id="t-sv"></output><input type="range" id="t-shift" min="-25" max="25" step="0.5"></label>
+  <div class="tp-row"><button type="button" class="fp-btn" id="t-reset">Reset this reel</button>
+    <button type="button" class="fp-btn" id="t-guides" aria-pressed="true">Headings on</button>
+    <button type="button" class="fp-btn" id="t-hide">Hide panel (H)</button></div>
+  <label>Settings to send Mark's Claude <textarea id="t-out" rows="6" readonly></textarea></label>
+  <button type="button" class="pill" id="t-copy">Copy settings</button>
+</aside>
+<button type="button" class="fp-btn tp-show" id="t-show" hidden>Show panel (H)</button>
+
+<script>
+var TUNE = {json.dumps(TUNE)};
+</script>
+<script src="/assets/tuner.js?v={_ver('assets/tuner.js')}"></script>
+<script src="/assets/site.js?v={_ver('assets/site.js')}"></script>
+</body>
+</html>
+"""
+write("tuner/index.html", tuner)
+
+print("built: index, work, skills, thefleapit, nukecompositor, vfxsupervisor, news, about, contact, tuner")

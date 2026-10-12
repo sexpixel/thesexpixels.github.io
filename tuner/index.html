@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reel crop tuner · Mark Pinheiro</title>
+<meta name="description" content="Private: set the crop for each reel.">
+<meta name="theme-color" content="#111012">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,75..125,400..900;1,75..125,400..900&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/assets/site.css?v=5502dc4d">
+</head>
+<body class="tuner">
+
+<header class="nav" id="nav">
+  <a class="mark" href="/" aria-label="Mark Pinheiro, VFX Supervisor, home"><b>Mark Pinheiro</b><small>VFX Supervisor</small></a>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+  <nav aria-label="Main" id="menu">
+    <ul>
+      <li><a href="/thefleapit/">Filmmaker</a></li>
+      <li><a href="/nukecompositor/">Nuke Compositor</a></li>
+      <li><a href="/vfxsupervisor/">VFX Supervisor</a></li>
+      <li class="sep" aria-hidden="true"></li>
+      <li class="has-sub"><a href="/work/">Work</a>
+        <ul class="sub">
+          <li><a href="/work/feature-film/">Feature Film</a></li>
+          <li><a href="/work/episodic/">Episodic</a></li>
+          <li><a href="/work/commercial/">Commercial</a></li>
+          <li><a href="/work/feature-animation/">Feature Animation</a></li>
+        </ul>
+      </li>
+      <li><a href="/skills/">Skills</a></li>
+      <li><a href="/news/">News</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="/contact/">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="hero fp-player" id="fp-player" aria-label="Reel being tuned">
+    <div class="fp-slot" id="fp-slot"></div>
+    <div class="herotitle herotop heroui">
+      <span class="lab"><b>Sample</b> · page heading</span>
+      <h1 class="herohead" id="t-head">Nuke Compositor</h1>
+    </div>
+    <div class="reelbar heroui"><span class="fp-title" id="t-now"></span></div>
+  </section>
+</main>
+
+<aside class="tunepanel" id="t-panel" aria-label="Crop controls">
+  <div class="tp-row"><button type="button" class="fp-btn" id="t-prev" aria-label="Previous reel">◀</button>
+    <select id="t-pick" aria-label="Reel"></select>
+    <button type="button" class="fp-btn" id="t-next" aria-label="Next reel">▶</button></div>
+  <label>Zoom <output id="t-zv"></output><input type="range" id="t-zoom" min="1" max="1.8" step="0.01"></label>
+  <label>Move up / down <output id="t-sv"></output><input type="range" id="t-shift" min="-25" max="25" step="0.5"></label>
+  <div class="tp-row"><button type="button" class="fp-btn" id="t-reset">Reset this reel</button>
+    <button type="button" class="fp-btn" id="t-guides" aria-pressed="true">Headings on</button>
+    <button type="button" class="fp-btn" id="t-hide">Hide panel (H)</button></div>
+  <label>Settings to send Mark's Claude <textarea id="t-out" rows="6" readonly></textarea></label>
+  <button type="button" class="pill" id="t-copy">Copy settings</button>
+</aside>
+<button type="button" class="fp-btn tp-show" id="t-show" hidden>Show panel (H)</button>
+
+<script>
+var TUNE = [{"title": "Compositing showreel 2026", "spec": "vimeo:1232958213:ffbea294d7", "page": "Home", "zoom": 1, "shift": 0}, {"title": "Sizzle reel", "spec": "youtube:SDAXjN_sOlE", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "Compositing reel 1", "spec": "vimeo:1014139706", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "Compositing reel 2", "spec": "vimeo:1014143091", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "Damsel \u00b7 The Knights Arrive", "spec": "vimeo:1014291965", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "Damsel \u00b7 The Knights: Rashomon", "spec": "vimeo:1014291669", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "Damsel \u00b7 The Fall", "spec": "vimeo:1014291582", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "The Family Plan \u00b7 The Tiki Bar Attack", "spec": "vimeo:1014294324", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "The Family Plan \u00b7 Car Pool Karaoke", "spec": "vimeo:1014294008", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "Wonka \u00b7 Giraffe, parts 1 & 2", "spec": "vimeo:1014150213", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "Wonka \u00b7 Giraffe, part 3", "spec": "vimeo:1014149873", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "Guardians of the Galaxy Vol. 3", "spec": "vimeo:1014147480", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "Moon Knight \u00b7 The Castle", "spec": "vimeo:1014146296", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "Moon Knight \u00b7 The Ice Cream Van Chase", "spec": "vimeo:1014145891", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "Moon Knight \u00b7 The Book Attack", "spec": "vimeo:1014145603", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "Moon Knight \u00b7 The Museum", "spec": "vimeo:1014145227", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "Moon Knight \u00b7 Security Desk", "spec": "vimeo:1014145040", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "Moon Knight \u00b7 Storage Lockup", "spec": "vimeo:1014144960", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "Moon Knight \u00b7 Khonshu Mentors", "spec": "vimeo:1014144736", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "Lockwood & Co \u00b7 S01E03 The Druids", "spec": "vimeo:1014146695", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "The Rig \u00b7 Season 1", "spec": "vimeo:1014300271", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "The Buccaneers \u00b7 S01E01 The Prairie Trail", "spec": "vimeo:1014151720", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "The Buccaneers \u00b7 S01E01 The Wedding", "spec": "vimeo:1014151499", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "Save The 365th Day \u00b7 Trailer", "spec": "vimeo:55357193", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "Save The 365th Day \u00b7 Excerpt", "spec": "vimeo:75682310", "page": "Nuke Compositor", "zoom": 1, "shift": 0}, {"title": "VFX supervisor showreel", "spec": "youtube:9KZPd8__8ys", "page": "VFX Supervisor", "zoom": 1, "shift": 0}, {"title": "Showreel 2020", "spec": "vimeo:389670596", "page": "The Fleapit.", "zoom": 1, "shift": 0}];
+</script>
+<script src="/assets/tuner.js?v=30cc9200"></script>
+<script src="/assets/site.js?v=7b86e766"></script>
+</body>
+</html>

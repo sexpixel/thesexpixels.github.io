@@ -34,7 +34,7 @@
   // captions and cursor fade away and the reel fills the screen like a TV. Any movement,
   // touch, key press or scroll brings them back.
   var hero = document.querySelector('.hero');
-  if (hero) {
+  if (hero && !document.body.classList.contains('tuner')) {
     var idle, IDLE_MS = 2500;
     var onHero = function(){ return window.scrollY < hero.offsetHeight * 0.6; };
     var wake = function(){
