@@ -10,7 +10,7 @@ GitHub Pages ignores folders that start with "_", so this folder is never publis
 import html, os, sys
 sys.path.insert(0, os.path.dirname(__file__))
 from skills_data import stages
-from work_data import PROJECTS, ROLE_GROUPS, FORMATS, FORMAT_SLUGS
+from work_data import PROJECTS, ROLE_GROUPS, FORMATS, FORMAT_SLUGS, expand
 from news_data import NEWS
 
 E = html.escape
@@ -339,7 +339,7 @@ write("work/index.html", work)
 
 # One page per format
 for i, f in enumerate(FORMATS, 1):
-    items = [p for p in PROJECTS if p["fmt"] == f]
+    items = [q for p in PROJECTS if p["fmt"] == f for q in expand(p)]
     groups = [g for g in ROLE_GROUPS if any(p["group"] == g for p in items)]
     chips = ""
     if len(groups) > 1:
@@ -576,8 +576,8 @@ NUKE_REELS = [
     # Compositing reels from Mark, 12 Oct. TITLES TO CONFIRM: rename once he says which project each is.
     dict(title="Compositing reel 1", kind="Project reel", video="vimeo:1014139706"),
     dict(title="Compositing reel 2", kind="Project reel", video="vimeo:1014143091"),
-] + [dict(title=p["title"], kind=" · ".join(x for x in (p["role"], p["co"]) if x), video=p.get("video"))
-     for p in PROJECTS if p["group"] == "Nuke compositor"]
+] + [dict(title=q["title"], kind=" · ".join(x for x in (q["role"], q["co"]) if x), video=q.get("video"))
+     for p in PROJECTS if p["group"] in ("Nuke compositor", "PostVis") for q in expand(p)]
 
 def reel_cell(i, r):
     if r["video"]:
@@ -658,8 +658,8 @@ write("fleapit/index.html", '''<!doctype html>
 
 # ---------------------------------------------------------------- vfx supervisor (player + grid; showreel first)
 SUP_REELS = [dict(title="VFX supervisor showreel", kind="Stand-in", video=next((r["video"] for r in REELS if r["role"] == "VFX supervisor"), None))] + \
-    [dict(title=p["title"], kind=" · ".join(x for x in (p["role"], p["co"]) if x), video=p.get("video"))
-     for p in PROJECTS if p["group"] == "VFX supervisor"]
+    [dict(title=q["title"], kind=" · ".join(x for x in (q["role"], q["co"]) if x), video=q.get("video"))
+     for p in PROJECTS if p["group"] == "VFX supervisor" for q in expand(p)]
 player_page("vfxsupervisor/index.html", "vfxsup", "VFX Supervisor", "VFX Supervisor", "SUP", "Showreels",
             "On-set and in-facility supervision across feature film, episodic and commercials. The showreel plays first; pick a project from the grid to play its reel.",
             SUP_REELS, True, "The supervisor showreel is in the edit", "", "VFX Supervisor · Mark Pinheiro",
