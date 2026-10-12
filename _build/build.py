@@ -10,7 +10,7 @@ GitHub Pages ignores folders that start with "_", so this folder is never publis
 import html, os, sys
 sys.path.insert(0, os.path.dirname(__file__))
 from skills_data import stages
-from work_data import PROJECTS, ROLE_GROUPS, FORMATS
+from work_data import PROJECTS, ROLE_GROUPS, FORMATS, FORMAT_SLUGS
 
 E = html.escape
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -58,6 +58,7 @@ def header(current=""):
     cur_f = ' aria-current="page"' if current == "fleapit" else ""
     reels = f'<li><a href="/fleapit/"{cur_f}>Filmmaker</a></li>\n      ' + "\n      ".join(
         f'<li><a {reel_link(r)}>{r["role"].title().replace("Vfx","VFX")}</a></li>' for r in REELS[:2])
+    sub_items = "\n          ".join(f'<li><a href="/work/{FORMAT_SLUGS[f]}/">{" ".join(w.capitalize() for w in f.split())}</a></li>' for f in FORMATS)
     return f'''<header class="nav" id="nav">
   <a class="mark" href="/" aria-label="Mark Pinheiro, VFX Supervisor, home"><b>Mark Pinheiro</b><small>VFX Supervisor</small></a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
@@ -65,7 +66,11 @@ def header(current=""):
     <ul>
       {reels}
       <li class="sep" aria-hidden="true"></li>
-      {a("/work/", "Work", "work")}
+      <li class="has-sub"><a href="/work/"{' aria-current="page"' if current == "work" else ""}>Work</a>
+        <ul class="sub">
+          {sub_items}
+        </ul>
+      </li>
       {a("/skills/", "Skills", "skills")}
       {a("/about/", "About", "about")}
       {a("/contact/", "Contact", "contact")}
@@ -194,18 +199,20 @@ write("index.html", home)
 
 # ---------------------------------------------------------------- work
 def slug(t): return "".join(c if c.isalnum() else "-" for c in t.lower()).strip("-")
+def fmt_title(f): return " ".join(w.capitalize() for w in f.split())
 def proj_tile(p):
-    meta_top = " · ".join(x for x in (p["fmt"], p["yr"]) if x)
+    meta_top = " · ".join(x for x in (fmt_title(p["fmt"]), p["yr"]) if x)
     client = " · ".join(x for x in (p["role"], p["co"]) if x)
-    attrs = f'data-group="{E(p["group"])}" data-fmt="{E(p["fmt"])}"'
+    attrs = f'data-group="{E(p["group"])}"'
     if p.get("video"):
+        img = f'<img data-vimeo="{p["url"]}" alt="" hidden>' if p["video"].startswith("vimeo") else ""
         return f'''      <a class="card" id="{slug(p["title"])}" href="{p["url"]}" data-video="{p["video"]}" {attrs}>
-        <div class="thumb">{f'<img data-vimeo="{p["url"]}" alt="" hidden>' if p["video"].startswith("vimeo") else ""}<span class="play"></span></div>
+        <div class="thumb">{img}<span class="play"></span></div>
         <div class="meta">
           <span class="kicker">{E(p["group"])} · {E(meta_top)}</span>
           <span class="client">{E(client)}</span>
           <h3>{E(p["title"])}</h3>
-          <span class="go">Play project reel →</span>
+          <span class="go">Play full screen →</span>
         </div>
       </a>'''
     return f'''      <div class="card" id="{slug(p["title"])}" {attrs}>
@@ -217,9 +224,34 @@ def proj_tile(p):
           <span class="go soon">Project reel in production</span>
         </div>
       </div>'''
-def chips(kind, values):
-    present = {p["group"] if kind == "group" else p["fmt"] for p in PROJECTS}
-    return "\n".join(f'      <button type="button" data-k="{kind}" data-v="{E(v)}" aria-pressed="false">{E(v)}</button>' for v in values if v in present)
+
+FILTER_JS = '''<script>
+// Role filter, like the category filters on Framestore's work page.
+(function(){
+  var tiles = document.querySelectorAll('#tiles .card');
+  document.querySelectorAll('.filters button').forEach(function(b){
+    b.addEventListener('click', function(){
+      var v = b.getAttribute('data-v');
+      document.querySelectorAll('.filters button').forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      tiles.forEach(function(t){ t.hidden = !(v === 'all' || t.getAttribute('data-group') === v); });
+    });
+  });
+})();
+</script>'''
+
+# Overview: showreels, then one door per format
+doors = []
+for f in FORMATS:
+    n = sum(1 for p in PROJECTS if p["fmt"] == f)
+    count = f"{n} project{'s' if n != 1 else ''}" if n else "Coming soon"
+    doors.append(f'''      <a class="card" href="/work/{FORMAT_SLUGS[f]}/">
+        {slate(count, fmt_title(f))}
+        <div class="meta">
+          <span class="kicker">Work · {E(count)}</span>
+          <h3>{E(fmt_title(f))}</h3>
+          <span class="go">View →</span>
+        </div>
+      </a>''')
 work = head("Work · Mark Pinheiro", "Mark Pinheiro's showreels and project reels as Nuke compositor and VFX supervisor.") + f'''
 <body>
 
@@ -234,48 +266,50 @@ work = head("Work · Mark Pinheiro", "Mark Pinheiro's showreels and project reel
     </div>
   </section>
 
-  <section id="projects" style="padding-top:0">
-    <div class="rail"><span class="n">B</span>Project reels</div>
-    <div class="filters" role="group" aria-label="Filter by role">
-      <span class="flabel">Role</span>
-      <button type="button" data-k="group" data-v="all" aria-pressed="true">All</button>
-{chips("group", ROLE_GROUPS)}
+  <section id="formats" style="padding-top:0">
+    <div class="rail"><span class="n">B</span>Project reels by format</div>
+    <div class="cards">
+{chr(10).join(doors)}
     </div>
-    <div class="filters" role="group" aria-label="Filter by format">
-      <span class="flabel">Format</span>
-      <button type="button" data-k="fmt" data-v="all" aria-pressed="true">All</button>
-{chips("fmt", FORMATS)}
-    </div>
-    <div class="cards" id="tiles">
-{chr(10).join(proj_tile(p) for p in PROJECTS)}
-    </div>
-    <p class="empty" id="empty" hidden>Nothing in this combination yet.</p>
   </section>
 </main>
 
 {FOOTER}
-<script>
-// Two filter rows (role, format) that combine, like Framestore's work filters.
-(function(){{
-  var sel = {{group:'all', fmt:'all'}}, tiles = document.querySelectorAll('#tiles .card'), empty = document.getElementById('empty');
-  document.querySelectorAll('.filters button').forEach(function(b){{
-    b.addEventListener('click', function(){{
-      var k = b.getAttribute('data-k'); sel[k] = b.getAttribute('data-v');
-      document.querySelectorAll('.filters button[data-k="' + k + '"]').forEach(function(x){{ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); }});
-      var shown = 0;
-      tiles.forEach(function(t){{
-        var ok = (sel.group === 'all' || t.getAttribute('data-group') === sel.group) && (sel.fmt === 'all' || t.getAttribute('data-fmt') === sel.fmt);
-        t.hidden = !ok; if (ok) shown++;
-      }});
-      empty.hidden = shown > 0;
-    }});
-  }});
-}})();
-</script>
 </body>
 </html>
 '''
 write("work/index.html", work)
+
+# One page per format
+for i, f in enumerate(FORMATS, 1):
+    items = [p for p in PROJECTS if p["fmt"] == f]
+    groups = [g for g in ROLE_GROUPS if any(p["group"] == g for p in items)]
+    chips = ""
+    if len(groups) > 1:
+        chips = '    <div class="filters" role="group" aria-label="Filter by role">\n      <span class="flabel">Role</span>\n      <button type="button" data-v="all" aria-pressed="true">All</button>\n' + \
+            "\n".join(f'      <button type="button" data-v="{E(g)}" aria-pressed="false">{E(g)}</button>' for g in groups) + "\n    </div>\n"
+    body = (f'    <div class="cards" id="tiles">\n{chr(10).join(proj_tile(p) for p in items)}\n    </div>' if items
+            else '    <p class="pagelede">Feature animation reels are on their way.</p>')
+    title = fmt_title(f)
+    pg = head(f"{title} · Work · Mark Pinheiro", f"Mark Pinheiro's {f} work: project reels as Nuke compositor and VFX supervisor.") + f'''
+<body>
+
+{header("work")}
+
+<main>
+  <section class="page">
+    <a class="back" href="/work/">&larr; Work</a>
+{page_intro(f"01.{i}", "Work", title)}
+{chips}{body}
+  </section>
+</main>
+
+{FOOTER}
+{FILTER_JS if chips else ""}
+</body>
+</html>
+'''
+    write(f"work/{FORMAT_SLUGS[f]}/index.html", pg)
 
 # ---------------------------------------------------------------- skills
 filters = "\n".join(f'      <button type="button" data-f="{n}" aria-pressed="false">{n} · {E(name)}</button>' for n, name, _ in stages)

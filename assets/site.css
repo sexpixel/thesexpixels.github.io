@@ -206,3 +206,17 @@ body.fleapit{--fp-ground:#141011;--fp-surface:#1e1819;--fp-ink:#f1e9df;--fp-mute
 .edu .b{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;text-align:center;padding:3px 0;border:1px solid var(--dim);border-radius:3px}
 .edu li > span:last-child{color:var(--soft)}
 .edu li b{color:var(--fg)}
+
+/* ---------- Work dropdown ---------- */
+.nav li.has-sub{position:relative}
+.nav ul.sub{position:absolute;top:100%;left:-18px;display:none;flex-direction:column;align-items:stretch;gap:0;min-width:230px;padding:8px 18px;
+  background:rgba(17,16,18,.97);border:1px solid var(--edge);border-radius:6px;box-shadow:0 18px 40px rgba(0,0,0,.4)}
+.nav li.has-sub:hover > ul.sub,.nav li.has-sub:focus-within > ul.sub{display:flex}
+.nav ul.sub a{display:block;padding:10px 0;border-bottom:1px solid var(--line)}
+.nav ul.sub li:last-child a{border-bottom:0}
+@media (max-width:1279px){
+  .nav.open ul.sub,.nav.open li.has-sub:hover > ul.sub{position:static;display:flex;min-width:0;padding:0 0 6px 22px;background:none;border:0;box-shadow:none}
+  .nav.open ul.sub a{font-size:clamp(18px,4.6vw,26px);font-weight:800;color:var(--soft);border:0;padding:4px 0}
+}
+.back{display:inline-block;margin-bottom:18px;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--soft);text-decoration:none;padding:10px 0}
+.back:hover{color:var(--accent-hi)}
