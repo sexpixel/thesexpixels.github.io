@@ -571,6 +571,7 @@ FLEAPIT_REELS = [
 ]
 NUKE_REELS = [
     dict(title="Compositing showreel 2026", kind="Showreel", video=REEL_2026),
+    dict(title="Showreel 2020", kind="Showreel", video=REEL_2020),
     dict(title="Sizzle reel", kind="17 years in 02:30", video="youtube:SDAXjN_sOlE"),
     # Compositing reels from Mark, 12 Oct. TITLES TO CONFIRM: rename once he says which project each is.
     dict(title="Compositing reel 1", kind="Project reel", video="vimeo:1014139706"),
