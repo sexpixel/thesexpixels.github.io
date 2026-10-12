@@ -9,12 +9,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,75..125,400..900;1,75..125,400..900&family=IBM+Plex+Mono:wght@400;600&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=3291e251">
+<link rel="stylesheet" href="/assets/site.css?v=013f80da">
 </head>
 <body>
 
 <header class="nav" id="nav">
-  <a class="mark" href="/" aria-label="Mark Pinheiro, VFX Supervisor, home"><b>Mark Pinheiro</b><small>VFX Supervisor</small></a>
+  <a class="mark" href="/" aria-label="Mark Pinheiro, home"><b>Mark Pinheiro</b></a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
   <nav aria-label="Main" id="menu">
     <ul>
@@ -39,8 +39,26 @@
 </header>
 
 <main>
+  <section class="hero stickyhero fp-player" id="fp-player" aria-label="In his own words: the documentary">
+    <div class="fp-slot" id="fp-slot"></div>
+    <div class="herotitle herotop heroui">
+      <span class="lab"><b>01</b> · In his own words</span>
+      <h1 class="herohead">About</h1>
+    </div>
+    <div class="reelbar heroui">
+      <span class="fp-title" id="fp-title" aria-live="polite"></span>
+        <div class="fp-ctrls">
+          <button type="button" class="fp-btn" id="fp-prev" aria-label="Previous chapter">◀</button>
+          <button type="button" class="fp-btn" id="fp-next" aria-label="Next chapter">▶</button>
+          <button type="button" class="fp-btn" id="fp-sound" aria-pressed="false">Sound on</button>
+          <button type="button" class="fp-btn" id="fp-full">Full screen</button>
+        </div>
+    </div>
+    <div class="scrollcue heroui" aria-hidden="true">Scroll</div>
+  </section>
+
+  <div class="over">
   <section class="profile">
-    <h1>Mark<br>Pinheiro</h1>
     <div class="roles"><span class="a">Filmmaker / VFX / AI</span><span>Nuke compositor &amp; VFX supervisor</span><span class="loc">London</span></div>
     <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="laurel" viewBox="0 0 40 124"><path d="M34,118 Q2,70 26,6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><ellipse cx="20.8" cy="104.5" rx="8.2" ry="3.5" transform="rotate(-153.0 20.8 104.5)" fill="currentColor"/><ellipse cx="29.0" cy="101.7" rx="6.6" ry="2.8" transform="rotate(-83.0 29.0 101.7)" fill="currentColor"/><ellipse cx="16.3" cy="92.3" rx="7.9" ry="3.3" transform="rotate(-146.3 16.3 92.3)" fill="currentColor"/><ellipse cx="24.4" cy="90.6" rx="6.3" ry="2.7" transform="rotate(-76.3 24.4 90.6)" fill="currentColor"/><ellipse cx="13.3" cy="79.8" rx="7.5" ry="3.2" transform="rotate(-139.3 13.3 79.8)" fill="currentColor"/><ellipse cx="21.1" cy="79.1" rx="6.0" ry="2.5" transform="rotate(-69.3 21.1 79.1)" fill="currentColor"/><ellipse cx="11.8" cy="67.0" rx="7.2" ry="3.0" transform="rotate(-132.4 11.8 67.0)" fill="currentColor"/><ellipse cx="19.3" cy="67.3" rx="5.7" ry="2.4" transform="rotate(-62.4 19.3 67.3)" fill="currentColor"/><ellipse cx="11.7" cy="54.0" rx="6.8" ry="2.9" transform="rotate(-125.8 11.7 54.0)" fill="currentColor"/><ellipse cx="18.8" cy="55.0" rx="5.5" ry="2.3" transform="rotate(-55.8 18.8 55.0)" fill="currentColor"/><ellipse cx="13.1" cy="40.7" rx="6.5" ry="2.8" transform="rotate(-119.6 13.1 40.7)" fill="currentColor"/><ellipse cx="19.6" cy="42.4" rx="5.2" ry="2.2" transform="rotate(-49.6 19.6 42.4)" fill="currentColor"/><ellipse cx="15.8" cy="27.1" rx="6.2" ry="2.6" transform="rotate(-113.8 15.8 27.1)" fill="currentColor"/><ellipse cx="21.8" cy="29.3" rx="4.9" ry="2.1" transform="rotate(-43.8 21.8 29.3)" fill="currentColor"/><ellipse cx="19.9" cy="13.1" rx="5.8" ry="2.5" transform="rotate(-108.6 19.9 13.1)" fill="currentColor"/><ellipse cx="25.4" cy="15.7" rx="4.7" ry="2.0" transform="rotate(-38.6 25.4 15.7)" fill="currentColor"/><ellipse cx="28.0" cy="1.0" rx="6" ry="2.6" transform="rotate(-69.4 28.0 1.0)" fill="currentColor"/></symbol></defs></svg>
     <ul class="laurels" aria-label="Laurels">
@@ -62,21 +80,16 @@
 
   <section id="story" style="padding-top:0">
     <div class="rail"><span class="n">01</span>In his own words · 2000–2014</div>
-    <p class="pagelede">Eight showreels, each narrated by Mark: the stages of a career in VFX, told as a short documentary. Press play and it runs chapter by chapter.</p>
-    <div class="doc-stage" id="doc-stage">
-      <img class="doc-poster" data-vimeo="https://vimeo.com/103943083" alt="" hidden>
-      <button type="button" class="doc-start" id="doc-start"><span class="play"></span><span><b>Play the documentary</b><i>8 chapters · with sound</i></span></button>
-    </div>
-    <div class="doc-now" id="doc-now" aria-live="polite"></div>
-    <div class="doc-chs">
-      <button type="button" class="doc-ch" data-i="0" data-id="103943083" data-title="2000–2004"><img data-vimeo="https://vimeo.com/103943083" alt="" hidden><span class="doc-n">01</span><b>2000–2004</b></button>
-      <button type="button" class="doc-ch" data-i="1" data-id="103945879" data-title="2004–2006"><img data-vimeo="https://vimeo.com/103945879" alt="" hidden><span class="doc-n">02</span><b>2004–2006</b></button>
-      <button type="button" class="doc-ch" data-i="2" data-id="103949083" data-title="2006–2008"><img data-vimeo="https://vimeo.com/103949083" alt="" hidden><span class="doc-n">03</span><b>2006–2008</b></button>
-      <button type="button" class="doc-ch" data-i="3" data-id="103933560" data-title="2007–2010"><img data-vimeo="https://vimeo.com/103933560" alt="" hidden><span class="doc-n">04</span><b>2007–2010</b></button>
-      <button type="button" class="doc-ch" data-i="4" data-id="103953638" data-title="2008–2010"><img data-vimeo="https://vimeo.com/103953638" alt="" hidden><span class="doc-n">05</span><b>2008–2010</b></button>
-      <button type="button" class="doc-ch" data-i="5" data-id="103959201" data-title="2010–2012"><img data-vimeo="https://vimeo.com/103959201" alt="" hidden><span class="doc-n">06</span><b>2010–2012</b></button>
-      <button type="button" class="doc-ch" data-i="6" data-id="103979619" data-title="2012–2013"><img data-vimeo="https://vimeo.com/103979619" alt="" hidden><span class="doc-n">07</span><b>2012–2013</b></button>
-      <button type="button" class="doc-ch" data-i="7" data-id="103982611" data-title="2013–2014"><img data-vimeo="https://vimeo.com/103982611" alt="" hidden><span class="doc-n">08</span><b>2013–2014</b></button>
+    <p class="pagelede">Eight showreels, each narrated by Mark: the stages of a career in VFX, told as a short documentary. It plays above, chapter by chapter; pick any chapter to jump to it, with sound.</p>
+    <div class="fp-grid wide">
+      <button class="fp-cell" type="button" data-i="0" data-src="vimeo:103943083" data-title="2000–2004"><img data-vimeo="https://vimeo.com/103943083" alt="" hidden><span class="fp-cap"><b>2000–2004</b><i>Chapter 1 of 8</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="1" data-src="vimeo:103945879" data-title="2004–2006"><img data-vimeo="https://vimeo.com/103945879" alt="" hidden><span class="fp-cap"><b>2004–2006</b><i>Chapter 2 of 8</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="2" data-src="vimeo:103949083" data-title="2006–2008"><img data-vimeo="https://vimeo.com/103949083" alt="" hidden><span class="fp-cap"><b>2006–2008</b><i>Chapter 3 of 8</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="3" data-src="vimeo:103933560" data-title="2007–2010"><img data-vimeo="https://vimeo.com/103933560" alt="" hidden><span class="fp-cap"><b>2007–2010</b><i>Chapter 4 of 8</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="4" data-src="vimeo:103953638" data-title="2008–2010"><img data-vimeo="https://vimeo.com/103953638" alt="" hidden><span class="fp-cap"><b>2008–2010</b><i>Chapter 5 of 8</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="5" data-src="vimeo:103959201" data-title="2010–2012"><img data-vimeo="https://vimeo.com/103959201" alt="" hidden><span class="fp-cap"><b>2010–2012</b><i>Chapter 6 of 8</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="6" data-src="vimeo:103979619" data-title="2012–2013"><img data-vimeo="https://vimeo.com/103979619" alt="" hidden><span class="fp-cap"><b>2012–2013</b><i>Chapter 7 of 8</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="7" data-src="vimeo:103982611" data-title="2013–2014"><img data-vimeo="https://vimeo.com/103982611" alt="" hidden><span class="fp-cap"><b>2013–2014</b><i>Chapter 8 of 8</i></span><span class="play"></span></button>
     </div>
   </section>
 
@@ -123,6 +136,7 @@
         <li><span class="b">BTEC</span><span><b>Business &amp; Finance</b> · SFX</span></li>
     </ul>
   </section>
+  </div>
 </main>
 
 <footer>
@@ -130,7 +144,7 @@
   <span class="avail">Available <b>now</b> worldwide</span>
 </footer>
 
-<script src="/assets/site.js?v=2cfe8233"></script>
-<script src="/assets/doc.js?v=1f3b7326"></script>
+<script src="/assets/site.js?v=88db6671"></script>
+<script src="/assets/playlist.js?v=380bc5a4"></script>
 </body>
 </html>

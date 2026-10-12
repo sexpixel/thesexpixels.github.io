@@ -168,7 +168,7 @@ home = head("Mark Pinheiro · Filmmaker / VFX / AI",
 <main id="top">
   <section class="hero stickyhero" aria-label="Showreel"{crop_attr(REEL_2026)}>
     <iframe
-      src="https://player.vimeo.com/video/1232958213?h=ffbea294d7&amp;background=1&amp;texttrack=false&amp;autoplay=1&amp;muted=1&amp;loop=1&amp;autopause=0&amp;controls=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;dnt=1"
+      src="https://player.vimeo.com/video/1232958213?h=ffbea294d7&amp;background=1&amp;transparent=0&amp;texttrack=false&amp;autoplay=1&amp;muted=1&amp;loop=1&amp;autopause=0&amp;controls=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;dnt=1"
       title="Mark Pinheiro compositing showreel 2026, playing muted in the background"
       allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
       referrerpolicy="strict-origin-when-cross-origin"
@@ -452,6 +452,17 @@ skills = head("Skills · Mark Pinheiro",
 '''
 write("skills/index.html", skills)
 
+def reel_cell(i, r):
+    if r["video"]:
+        img = ""
+        if r.get("thumb"): img = f'<img src="{r["thumb"]}" alt="" loading="lazy">'
+        elif r["video"].startswith("vimeo:"):
+            vid, _, h = r["video"][6:].partition(":"); img = f'<img data-vimeo="https://vimeo.com/{vid}{"/" + h if h else ""}" alt="" hidden>'
+        elif r["video"].startswith("youtube:"): img = f'<img src="https://i.ytimg.com/vi/{r["video"][8:]}/hqdefault.jpg" alt="" loading="lazy">'
+        return f'''      <button class="fp-cell" type="button" data-i="{i}" data-src="{r["video"]}" data-title="{E(r["title"])}"{crop_attr(r["video"])}>{img}<span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])}</i></span><span class="play"></span></button>'''
+    return f'''      <div class="fp-cell fp-soon"><span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])} · coming soon</i></span></div>'''
+
+
 # ---------------------------------------------------------------- about
 HISTORY = [
     ("1992–2004", "Stage & screen", "Staff writer for MTV, NBC Superchannel and UK Play; writer, director and actor; freelance cameraman on CD:UK; theatre with Soapbox Cabaret and Hydrae Theatre Company; idents for MTV, the BBC and the NFTS."),
@@ -502,10 +513,8 @@ DOC_CHAPTERS = [
     ("2000–2004", "103943083"), ("2004–2006", "103945879"), ("2006–2008", "103949083"), ("2007–2010", "103933560"),
     ("2008–2010", "103953638"), ("2010–2012", "103959201"), ("2012–2013", "103979619"), ("2013–2014", "103982611"),
 ]
-doc_cells = "\n".join(
-    f'      <button type="button" class="doc-ch" data-i="{i}" data-id="{vid}" data-title="{yrs}">'
-    f'<img data-vimeo="https://vimeo.com/{vid}" alt="" hidden><span class="doc-n">{i + 1:02d}</span><b>{yrs}</b></button>'
-    for i, (yrs, vid) in enumerate(DOC_CHAPTERS))
+doc_cells = "\n".join(reel_cell(i, dict(title=yrs, kind=f"Chapter {i + 1} of {len(DOC_CHAPTERS)}", video=f"vimeo:{vid}"))
+                      for i, (yrs, vid) in enumerate(DOC_CHAPTERS))
 LINKS = [("IMDb", "https://www.imdb.com/name/nm1025041/"), ("LinkedIn", "https://www.linkedin.com/in/markpinheiro"),
          ("Vimeo", "https://vimeo.com/thesexpixels"), ("Instagram", INSTAGRAM)]
 LAUREL_BRANCH = open(os.path.join(os.path.dirname(__file__), "laurel_branch.svg.txt")).read()
@@ -522,11 +531,29 @@ about = head("About · Mark Pinheiro",
              "Mark Pinheiro: filmmaker, Nuke compositor and VFX supervisor. Laurels, software, equipment and press from twenty-six years in visual effects.") + f'''
 <body>
 
-{header("about")}
+{header("about", None)}
 
 <main>
+  <section class="hero stickyhero fp-player" id="fp-player" aria-label="In his own words: the documentary">
+    <div class="fp-slot" id="fp-slot"></div>
+    <div class="herotitle herotop heroui">
+      <span class="lab"><b>01</b> · In his own words</span>
+      <h1 class="herohead">About</h1>
+    </div>
+    <div class="reelbar heroui">
+      <span class="fp-title" id="fp-title" aria-live="polite"></span>
+        <div class="fp-ctrls">
+          <button type="button" class="fp-btn" id="fp-prev" aria-label="Previous chapter">◀</button>
+          <button type="button" class="fp-btn" id="fp-next" aria-label="Next chapter">▶</button>
+          <button type="button" class="fp-btn" id="fp-sound" aria-pressed="false">Sound on</button>
+          <button type="button" class="fp-btn" id="fp-full">Full screen</button>
+        </div>
+    </div>
+    <div class="scrollcue heroui" aria-hidden="true">Scroll</div>
+  </section>
+
+  <div class="over">
   <section class="profile">
-    <h1>Mark<br>Pinheiro</h1>
     <div class="roles"><span class="a">Filmmaker / VFX / AI</span><span>Nuke compositor &amp; VFX supervisor</span><span class="loc">London</span></div>
     <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="laurel" viewBox="0 0 40 124">{LAUREL_BRANCH}</symbol></defs></svg>
     <ul class="laurels" aria-label="Laurels">
@@ -542,13 +569,8 @@ about = head("About · Mark Pinheiro",
 
   <section id="story" style="padding-top:0">
     <div class="rail"><span class="n">01</span>In his own words · 2000–2014</div>
-    <p class="pagelede">Eight showreels, each narrated by Mark: the stages of a career in VFX, told as a short documentary. Press play and it runs chapter by chapter.</p>
-    <div class="doc-stage" id="doc-stage">
-      <img class="doc-poster" data-vimeo="https://vimeo.com/{DOC_CHAPTERS[0][1]}" alt="" hidden>
-      <button type="button" class="doc-start" id="doc-start"><span class="play"></span><span><b>Play the documentary</b><i>8 chapters · with sound</i></span></button>
-    </div>
-    <div class="doc-now" id="doc-now" aria-live="polite"></div>
-    <div class="doc-chs">
+    <p class="pagelede">Eight showreels, each narrated by Mark: the stages of a career in VFX, told as a short documentary. It plays above, chapter by chapter; pick any chapter to jump to it, with sound.</p>
+    <div class="fp-grid wide">
 {doc_cells}
     </div>
   </section>
@@ -580,13 +602,14 @@ about = head("About · Mark Pinheiro",
 {edu}
     </ul>
   </section>
+  </div>
 </main>
 
 {FOOTER}
 </body>
 </html>
 '''
-about = about.replace("</body>", f'<script src="/assets/doc.js?v={_ver("assets/doc.js")}"></script>\n</body>', 1)
+about = about.replace("</body>", f'<script src="/assets/playlist.js?v={_ver("assets/playlist.js")}"></script>\n</body>', 1)
 write("about/index.html", about)
 
 # ---------------------------------------------------------------- player pages (The Fleapit, Nuke Compositor)
@@ -611,16 +634,6 @@ NUKE_REELS = [
     dict(title="Compositing reel 1", kind="Project reel", video="vimeo:1014139706"),
 ] + [dict(title=q["title"], kind=" · ".join(x for x in (q["role"], q["co"]) if x), video=q.get("video"))
      for p in PROJECTS if p["group"] in ("Nuke compositor", "PostVis") for q in expand(p)]
-
-def reel_cell(i, r):
-    if r["video"]:
-        img = ""
-        if r.get("thumb"): img = f'<img src="{r["thumb"]}" alt="" loading="lazy">'
-        elif r["video"].startswith("vimeo:"):
-            vid, _, h = r["video"][6:].partition(":"); img = f'<img data-vimeo="https://vimeo.com/{vid}{"/" + h if h else ""}" alt="" hidden>'
-        elif r["video"].startswith("youtube:"): img = f'<img src="https://i.ytimg.com/vi/{r["video"][8:]}/hqdefault.jpg" alt="" loading="lazy">'
-        return f'''      <button class="fp-cell" type="button" data-i="{i}" data-src="{r["video"]}" data-title="{E(r["title"])}"{crop_attr(r["video"])}>{img}<span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])}</i></span><span class="play"></span></button>'''
-    return f'''      <div class="fp-cell fp-soon"><span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])} · coming soon</i></span></div>'''
 
 def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wide, idle_empty, extra_links, page_title, desc):
     cells = "\n".join(reel_cell(i, r) for i, r in enumerate(reels))
