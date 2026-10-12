@@ -756,7 +756,7 @@ contact = head("Contact · Mark Pinheiro", "Contact Mark Pinheiro: email, showre
 
 <main>
   <section class="page contactpage">
-{page_intro("04", "Contact", "Let's talk")}
+{page_intro("04", "Contact", "Contact")}
     <div class="ctop">
       <div>
         <span class="clabel">{icon("Email", "ic big")}Email</span>
