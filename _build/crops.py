@@ -4,6 +4,7 @@
 # Set these with the tuning page at thesexpixels.com/tuner/.
 # "vimeo:ID" : dict(top=0, bottom=0, left=0, right=0, fill=False),
 CROPS = {
+    "youtube:9KZPd8__8ys": dict(top=13, bottom=0, left=0, right=0, fill=False),  # VFX supervisor showreel (stand-in), set by Mark 12 Oct 2026
     "vimeo:389670596": dict(top=12, bottom=0, left=0, right=0, fill=False),  # Showreel 2020 (The Fleapit), set by Mark 12 Oct 2026
 }
 
