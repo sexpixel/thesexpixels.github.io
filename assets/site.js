@@ -55,7 +55,7 @@
     var c = (stage.getAttribute('data-crop') || '').split(',').map(Number);
     var props = ['width', 'height', 'left', 'top', 'transform', 'clip-path'];
     if (c.length < 4 || !(c[0] || c[1] || c[2] || c[3])) { props.forEach(function(k){ frame.style.removeProperty(k); }); return; }
-    var t = c[0] / 100, b = c[1] / 100, l = c[2] / 100, r = c[3] / 100, fill = c[4] !== 0;
+    var t = c[0] / 100, b = c[1] / 100, l = c[2] / 100, r = c[3] / 100, fill = c[4] === 1;
     var ar = parseFloat(getComputedStyle(stage).getPropertyValue('--ar')) || 16 / 9;
     var vw = stage.clientWidth, vh = stage.clientHeight, fw = Math.max(0.05, 1 - l - r), fh = Math.max(0.05, 1 - t - b), W;
     if (fill) W = Math.max(vw / fw, vh * ar / fh); else W = Math.max(vw, vh * ar);

@@ -9,9 +9,13 @@
   var link = document.getElementById('c-link'), fill = document.getElementById('c-fill');
   var head = document.getElementById('t-head'), now = document.getElementById('t-now');
   var panel = document.getElementById('t-panel'), show = document.getElementById('t-show');
-  var KEY = 'tsp-crops-v2', saved = {};
-  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) {}
-  TUNE.forEach(function(r){ var v = saved[r.spec]; if (v) { SIDES.forEach(function(k){ r[k] = v[k] || 0; }); r.fill = v.fill !== false; } });
+  // v3: crop only by default (fill off). Crops made in v2 are kept, with fill switched off.
+  var KEY = 'tsp-crops-v3', saved = {};
+  try {
+    saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+    if (!saved) { saved = JSON.parse(localStorage.getItem('tsp-crops-v2') || '{}') || {}; Object.keys(saved).forEach(function(k){ saved[k].fill = false; }); }
+  } catch (e) { saved = {}; }
+  TUNE.forEach(function(r){ var v = saved[r.spec]; if (v) { SIDES.forEach(function(k){ r[k] = v[k] || 0; }); r.fill = v.fill === true; } });
   function save(){
     var o = {}; TUNE.forEach(function(r){ o[r.spec] = { top: r.top, bottom: r.bottom, left: r.left, right: r.right, fill: r.fill }; });
     try { localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {}
@@ -36,7 +40,7 @@
     stage.setAttribute('data-crop', [r.top, r.bottom, r.left, r.right, r.fill ? 1 : 0].join(','));
     window.TSPcrop(stage, slot.querySelector('iframe'));
     out.value = TUNE.filter(cropped).map(function(x){
-      return x.spec + ' = top ' + x.top + ', bottom ' + x.bottom + ', left ' + x.left + ', right ' + x.right + ', ' + (x.fill ? 'fill' : 'black edges') + '   # ' + x.title;
+      return x.spec + ' = top ' + x.top + ', bottom ' + x.bottom + ', left ' + x.left + ', right ' + x.right + ', ' + (x.fill ? 'fill screen' : 'crop only') + '   # ' + x.title;
     }).join('\n') || '(no reels cropped yet)';
   }
   function load(i){
@@ -74,7 +78,7 @@
   });
   fill.addEventListener('change', function(){ TUNE[cur].fill = fill.checked; apply(); save(); });
   document.getElementById('t-reset').addEventListener('click', function(){
-    var r = TUNE[cur]; SIDES.forEach(function(k){ r[k] = 0; }); r.fill = true; apply(); save();
+    var r = TUNE[cur]; SIDES.forEach(function(k){ r[k] = 0; }); r.fill = false; apply(); save();
   });
   var guides = document.getElementById('t-guides');
   guides.addEventListener('click', function(){

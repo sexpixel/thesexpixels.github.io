@@ -772,7 +772,7 @@ for page_name, reels in (("Home", [dict(title="Compositing showreel 2026", video
         if not v or v in _seen or v.startswith("instagram:"): continue
         _seen.add(v); c = crop_of(v) or {}
         TUNE.append(dict(title=r["title"], spec=v, page=page_name, top=c.get("top", 0), bottom=c.get("bottom", 0),
-                         left=c.get("left", 0), right=c.get("right", 0), fill=c.get("fill", True)))
+                         left=c.get("left", 0), right=c.get("right", 0), fill=c.get("fill", False)))
 tuner = head("Reel crop tuner · Mark Pinheiro", "Private: set the crop for each reel.", '<meta name="robots" content="noindex">\n') + f"""
 <body class="tuner">
 
@@ -800,7 +800,7 @@ tuner = head("Reel crop tuner · Mark Pinheiro", "Private: set the crop for each
     <label>Crop right <output id="v-right"></output><input type="range" id="c-right" min="0" max="35" step="0.1"></label>
   </div>
   <label class="tp-check"><input type="checkbox" id="c-link"> Link top &amp; bottom</label>
-  <label class="tp-check"><input type="checkbox" id="c-fill"> Fill screen (scale the cropped picture up)</label>
+  <label class="tp-check"><input type="checkbox" id="c-fill"> Fill screen (zooms the cropped picture up; off = crop only)</label>
   <div class="tp-row"><button type="button" class="fp-btn" id="t-reset">Reset this reel</button>
     <button type="button" class="fp-btn" id="t-guides" aria-pressed="true">Headings on</button>
     <button type="button" class="fp-btn" id="t-hide">Hide panel (H)</button></div>
