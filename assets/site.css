@@ -454,3 +454,4 @@ footer{background:var(--bg)}
 @media (orientation:portrait){
   .hero.fp-player .fp-slot iframe,.hero > iframe{width:100vw !important;height:calc(100vw / var(--ar,1.7778)) !important}
 }
+footer .avail{margin-left:auto}

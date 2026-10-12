@@ -790,7 +790,7 @@ CONTACT_LINKS = [
     ("Sizzle", "17 years in 02:30", "https://youtu.be/SDAXjN_sOlE"),
     ("Vimeo", "vimeo.com/thesexpixels", "https://vimeo.com/thesexpixels"),
     ("Instagram", "@t_h_e__p_i_x_x_x_e_l_s", INSTAGRAM),
-    ("IMDb", "nm1025041", "https://www.imdb.com/name/nm1025041/"),
+    ("IMDb", "imdb/markpinheiro", "https://www.imdb.com/name/nm1025041/"),
     ("LinkedIn", "in/markpinheiro", "https://www.linkedin.com/in/markpinheiro"),
 ]
 clinks = "\n".join(f'        <li><span class="k">{k}</span><a href="{u}" target="_blank" rel="noopener">{E(t)} ↗</a></li>' for k, t, u in CONTACT_LINKS)
