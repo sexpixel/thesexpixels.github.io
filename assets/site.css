@@ -508,3 +508,8 @@ iframe{color-scheme:normal}
 .linkrow .pill.iconpill{flex-direction:column;justify-content:center;gap:8px;border-radius:10px;padding:12px 16px;min-width:96px}
 .linkrow .iconpill .ic.xs{width:24px;height:24px}
 @media (max-width:520px){.linkrow{gap:6px}.linkrow .pill.iconpill{flex:1 1 0;min-width:0;padding:10px 4px;gap:6px;letter-spacing:1px}.linkrow .iconpill .ic.xs{width:20px;height:20px}}
+/* Bigger About link tiles */
+.linkrow .pill.iconpill{padding:20px 26px;min-width:150px;gap:12px;font-size:12px;letter-spacing:3px}
+.linkrow .iconpill .ic.xs{width:40px;height:40px}
+@media (max-width:520px){.linkrow .pill.iconpill{padding:14px 4px;min-width:0;gap:8px;font-size:10px;letter-spacing:1.2px}.linkrow .iconpill .ic.xs{width:30px;height:30px}}
+@media (max-width:380px){.linkrow .pill.iconpill{font-size:9px;letter-spacing:.6px}.linkrow .iconpill .ic.xs{width:26px;height:26px}}
