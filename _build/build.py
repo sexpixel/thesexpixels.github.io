@@ -82,15 +82,12 @@ def header(current="", sub="VFX Supervisor"):
         return (f'<li class="p" data-ph="{sl}"><button type="button" aria-expanded="false"><span class="n">{n:02d}</span>{name}</button>'
                 f'<div class="panel"><div class="as"><p class="lab">Who</p>{as_}</div><div class="on"><p class="lab">What</p>{on_}</div></div></li>')
     F, V, N = ("Filmmaker", "/thefleapit/"), ("VFX Supervisor", "/vfxsupervisor/"), ("Nuke Compositor", "/nukecompositor/")
-    phrow = "".join(ph_item(i + 1, *x) for i, x in enumerate([
-        # The Fleapit is Mark's creative direction: it spans every phase, so Filmmaker is in each panel
-        # and links to the Fleapit itself (no phase filter there).
-        ("Development",     [V, N],    ["Feature film", "Episodic", "Visualisation", "Feature animation"]),
-        ("Pre-production",  [V, N],    ["Feature film", "Episodic", "Visualisation", "Shorts", "Feature animation"]),
-        ("Production",      [V, N],    ["Feature film", "Episodic", "Visualisation", "Shorts", "Feature animation"]),
-        ("Post-production", [V, N],    ["Feature film", "Episodic", "Visualisation", "Shorts", "Feature animation"]),
-        ("Distribution",    [V, N],    ["Feature film", "Episodic", "Visualisation", "Feature animation"]),
-    ]))
+    # Each phase lists the roles and formats that have a video tagged with that phase (from the tagger).
+    def _has(ph, field, val): return any(ph in t["phases"] and val in t[field] for t in TAGS.values())
+    phrow = "".join(ph_item(i + 1, ph,
+                            [x for x in (V, N) if _has(ph, "roles", x[0])],
+                            [f for f in FORMATS if _has(ph, "formats", f)])
+                    for i, ph in enumerate(WPHASES))
     return f'''<header class="nav" id="nav">
   <a class="mark" href="/" aria-label="Mark Pinheiro{", " + sub if sub else ""}, home"><b>Mark Pinheiro</b>{f"<small>{sub}</small>" if sub else ""}</a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
