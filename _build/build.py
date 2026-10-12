@@ -589,29 +589,14 @@ write("fleapit/index.html", '''<!doctype html>
 <body><p>The Fleapit has moved to <a href="/thefleapit/" style="color:#e98aa9">thesexpixels.com/thefleapit</a>.</p></body></html>
 ''')
 
-# ---------------------------------------------------------------- vfx supervisor (tile layout, for comparison)
-sup_reels = [r for r in REELS if r["role"] == "VFX supervisor"]
-sup_projects = [p for p in PROJECTS if p["group"] == "VFX supervisor"]
-vfxsup = head("VFX Supervisor · Mark Pinheiro", "Mark Pinheiro's VFX supervision: showreel and project reels.") + f'''
-<body>
-
-{header("vfxsup", "VFX Supervisor")}
-
-<main>
-  <section class="page">
-{page_intro("SUP", "Showreels", "VFX Supervisor", "On-set and in-facility supervision across feature film, episodic and commercials.")}
-    <div class="cards">
-{chr(10).join(reel_tile(r) for r in sup_reels)}
-{chr(10).join(proj_tile(p) for p in sup_projects)}
-    </div>
-  </section>
-</main>
-
-{FOOTER}
-</body>
-</html>
-'''
-write("vfxsupervisor/index.html", vfxsup)
+# ---------------------------------------------------------------- vfx supervisor (player + grid; showreel first)
+SUP_REELS = [dict(title="VFX supervisor showreel", kind="Showreel", video=next((r["video"] for r in REELS if r["role"] == "VFX supervisor"), None))] + \
+    [dict(title=p["title"], kind=" · ".join(x for x in (p["role"], p["co"]) if x), video=p.get("video"))
+     for p in PROJECTS if p["group"] == "VFX supervisor"]
+player_page("vfxsupervisor/index.html", "vfxsup", "VFX Supervisor", "VFX Supervisor", "SUP", "Showreels",
+            "On-set and in-facility supervision across feature film, episodic and commercials. The showreel plays first; pick a project from the grid to play its reel.",
+            SUP_REELS, True, "The supervisor showreel is in the edit", "", "VFX Supervisor · Mark Pinheiro",
+            "Mark Pinheiro's VFX supervision: showreel and project reels.")
 
 # ---------------------------------------------------------------- news
 import datetime
@@ -683,23 +668,30 @@ contact = head("Contact · Mark Pinheiro", "Contact Mark Pinheiro: email, showre
 {header("contact")}
 
 <main>
-  <section class="page">
+  <section class="page contactpage">
 {page_intro("04", "Contact", "Let's talk")}
-    <div class="contact">
+    <div class="ctop">
       <div>
+        <span class="clabel">Email</span>
         <a class="email" href="mailto:mark@thesexpixels.com">mark@thesexpixels.com</a>
-        <p class="avail-line">London · UK work eligibility · valid passport, available to travel</p>
       </div>
-      <address>
-        <b>The Sex Pixels Ltd.</b>
-        Fifth Floor, Mariner House<br>
-        62 Prince Street, Bristol<br>
-        BS1 4QD<br>
-        <a href="mailto:info@thesexpixels.com">info@thesexpixels.com</a>
-      </address>
+      <div>
+        <span class="clabel">Based</span>
+        <p class="cbig">London</p>
+        <p class="csmall">UK work eligibility · valid passport · available to travel worldwide</p>
+      </div>
+      <div>
+        <span class="clabel">Company</span>
+        <address>
+          <b>The Sex Pixels Ltd.</b>
+          Fifth Floor, Mariner House<br>
+          62 Prince Street, Bristol BS1 4QD<br>
+          <a href="mailto:info@thesexpixels.com">info@thesexpixels.com</a>
+        </address>
+      </div>
     </div>
-    <ul class="clinks">
-{clinks}
+    <ul class="ctiles">
+{chr(10).join(f'      <li><a href="{u}" target="_blank" rel="noopener"><span class="k">{k}</span><span class="t">{E(t)}</span><span class="arr">↗</span></a></li>' for k, t, u in CONTACT_LINKS)}
     </ul>
   </section>
 </main>

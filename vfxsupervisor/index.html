@@ -39,84 +39,36 @@
 </header>
 
 <main>
-  <section class="page">
+  <section class="page fp-head">
     <div class="rail"><span class="n">SUP</span>Showreels</div>
     <h1 class="pagetitle">VFX Supervisor</h1>
-    <p class="pagelede">On-set and in-facility supervision across feature film, episodic and commercials.</p>
-    <div class="cards">
-      <div class="card" id="reel-vfx-supervisor">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">Showreel</span><span class="no">VFX</span></div></div>
-        <div class="meta">
-          <span class="kicker">VFX supervisor</span>
-          <span class="client">Showreel</span>
-          <h3>VFX supervisor showreel</h3>
-          <p>On-set and post supervision across film, episodic and commercials.</p>
-          <span class="go soon">Coming soon</span>
-        </div>
-      </div>
-      <div class="card" id="gangs-of-london-s4" data-group="VFX supervisor">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">Episodic · 2026</span><span class="no">Gangs of London S4</span></div></div>
-        <div class="meta">
-          <span class="kicker">VFX supervisor · Episodic · 2026</span>
-          <span class="client">On-set VFX supervisor · The Sex Pixels</span>
-          <h3>Gangs of London S4</h3>
-          <span class="go soon">Project reel in production</span>
-        </div>
-      </div>
-      <div class="card" id="salomon" data-group="VFX supervisor">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">Commercial · 2025</span><span class="no">Salomon</span></div></div>
-        <div class="meta">
-          <span class="kicker">VFX supervisor · Commercial · 2025</span>
-          <span class="client">On-set supervision and comp</span>
-          <h3>Salomon</h3>
-          <span class="go soon">Project reel in production</span>
-        </div>
-      </div>
-      <div class="card" id="the-ballad-of-a-small-player" data-group="VFX supervisor">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">Feature Film</span><span class="no">The Ballad of a Small Player</span></div></div>
-        <div class="meta">
-          <span class="kicker">VFX supervisor · Feature Film</span>
-          <span class="client">VFX supervisor · Netflix</span>
-          <h3>The Ballad of a Small Player</h3>
-          <span class="go soon">Project reel in production</span>
-        </div>
-      </div>
-      <div class="card" id="gangs-of-london-s3" data-group="VFX supervisor">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">Episodic</span><span class="no">Gangs of London S3</span></div></div>
-        <div class="meta">
-          <span class="kicker">VFX supervisor · Episodic</span>
-          <span class="client">On-set VFX supervisor</span>
-          <h3>Gangs of London S3</h3>
-          <span class="go soon">Project reel in production</span>
-        </div>
-      </div>
-      <div class="card" id="panda-plan" data-group="VFX supervisor">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">Feature Film</span><span class="no">Panda Plan</span></div></div>
-        <div class="meta">
-          <span class="kicker">VFX supervisor · Feature Film</span>
-          <span class="client">VFX supervisor · Horizon VFX</span>
-          <h3>Panda Plan</h3>
-          <span class="go soon">Project reel in production</span>
-        </div>
-      </div>
-      <div class="card" id="i-am-nobody-s2" data-group="VFX supervisor">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">Episodic</span><span class="no">I Am Nobody S2</span></div></div>
-        <div class="meta">
-          <span class="kicker">VFX supervisor · Episodic</span>
-          <span class="client">VFX consultant · Horizon VFX</span>
-          <h3>I Am Nobody S2</h3>
-          <span class="go soon">Project reel in production</span>
-        </div>
-      </div>
-      <div class="card" id="game-of-thrones-s6" data-group="VFX supervisor">
-        <div class="thumb" aria-hidden="true"><div class="slate"><span class="st">Episodic</span><span class="no">Game of Thrones S6</span></div></div>
-        <div class="meta">
-          <span class="kicker">VFX supervisor · Episodic</span>
-          <span class="client">In-house VFX supervision team · Molinare</span>
-          <h3>Game of Thrones S6</h3>
-          <span class="go soon">Project reel in production</span>
-        </div>
-      </div>
+    <p class="pagelede">On-set and in-facility supervision across feature film, episodic and commercials. The showreel plays first; pick a project from the grid to play its reel.</p>
+  </section>
+
+  <section class="fp-stage" aria-label="Player">
+    <div class="fp-player fp-empty" id="fp-player">
+      <div class="fp-slot" id="fp-slot"></div>
+      <div class="fp-idle"><span class="fp-now">Now showing</span><span class="fp-big">The supervisor showreel is in the edit</span></div>
+    </div>
+    <div class="fp-bar" hidden>
+      <button type="button" class="fp-btn" id="fp-prev" aria-label="Previous reel">◀</button>
+      <span class="fp-title" id="fp-title" aria-live="polite"></span>
+      <button type="button" class="fp-btn" id="fp-next" aria-label="Next reel">▶</button>
+      <button type="button" class="fp-btn" id="fp-full">Full screen</button>
+    </div>
+  </section>
+
+  <section class="fp-reels" aria-labelledby="reels-h">
+    <div class="rail"><span class="n">Reels</span><span id="reels-h">All</span></div>
+    <div class="fp-grid wide">
+      <div class="fp-cell fp-soon"><span class="fp-cap"><b>VFX supervisor showreel</b><i>Showreel · coming soon</i></span></div>
+      <div class="fp-cell fp-soon"><span class="fp-cap"><b>Gangs of London S4</b><i>On-set VFX supervisor · The Sex Pixels · coming soon</i></span></div>
+      <div class="fp-cell fp-soon"><span class="fp-cap"><b>Salomon</b><i>On-set supervision and comp · coming soon</i></span></div>
+      <div class="fp-cell fp-soon"><span class="fp-cap"><b>The Ballad of a Small Player</b><i>VFX supervisor · Netflix · coming soon</i></span></div>
+      <div class="fp-cell fp-soon"><span class="fp-cap"><b>Gangs of London S3</b><i>On-set VFX supervisor · coming soon</i></span></div>
+      <div class="fp-cell fp-soon"><span class="fp-cap"><b>Panda Plan</b><i>VFX supervisor · Horizon VFX · coming soon</i></span></div>
+      <div class="fp-cell fp-soon"><span class="fp-cap"><b>I Am Nobody S2</b><i>VFX consultant · Horizon VFX · coming soon</i></span></div>
+      <div class="fp-cell fp-soon"><span class="fp-cap"><b>Game of Thrones S6</b><i>In-house VFX supervision team · Molinare · coming soon</i></span></div>
     </div>
   </section>
 </main>
@@ -127,5 +79,6 @@
 </footer>
 
 <script src="/assets/site.js"></script>
+<script src="/assets/playlist.js"></script>
 </body>
 </html>
