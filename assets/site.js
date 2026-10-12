@@ -148,6 +148,11 @@
     if (el && open(el.getAttribute('data-video'))) e.preventDefault();
   });
 
+  // 2b. A thumbnail that fails to load is hidden (some browsers draw a white frame round a broken image).
+  document.addEventListener('error', function(e){
+    var t = e.target; if (t && t.tagName === 'IMG') t.hidden = true;
+  }, true);
+
   // 3. Vimeo stills for unlisted videos (they have no fixed image address, so ask Vimeo).
   document.querySelectorAll('img[data-vimeo]').forEach(function(img){
     fetch('https://vimeo.com/api/oembed.json?width=1280&url=' + encodeURIComponent(img.getAttribute('data-vimeo')))
