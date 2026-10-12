@@ -77,17 +77,18 @@ def header(current="", sub="VFX Supervisor"):
     # Who (crew role) and What (format), linking to that page with the phase filter set.
     def ph_item(n, name, roles, fmts):
         sl = name.lower()
-        as_ = "".join(f'<a href="{h}?phase={sl}">{r}</a>' for r, h in roles)
+        as_ = '<a href="/thefleapit/">Filmmaker</a>' + "".join(f'<a href="{h}?phase={sl}">{r}</a>' for r, h in roles)
         on_ = "".join(f'<a href="/work/{FORMAT_SLUGS[f]}/?phase={sl}">{" ".join(w.capitalize() for w in f.split())}</a>' for f in fmts)
         return (f'<li class="p" data-ph="{sl}"><button type="button" aria-expanded="false"><span class="n">{n:02d}</span>{name}</button>'
                 f'<div class="panel"><div class="as"><p class="lab">Who</p>{as_}</div><div class="on"><p class="lab">What</p>{on_}</div></div></li>')
     F, V, N = ("Filmmaker", "/thefleapit/"), ("VFX Supervisor", "/vfxsupervisor/"), ("Nuke Compositor", "/nukecompositor/")
     phrow = "".join(ph_item(i + 1, *x) for i, x in enumerate([
-        # The Fleapit is Mark's personal work and has no phases, so Filmmaker isn't listed here.
+        # The Fleapit is Mark's creative direction: it spans every phase, so Filmmaker is in each panel
+        # and links to the Fleapit itself (no phase filter there).
         ("Development",     [V, N],    ["Feature film", "Episodic", "Visualisation", "Feature animation"]),
         ("Pre-production",  [V, N],    ["Feature film", "Episodic", "Visualisation", "Shorts", "Feature animation"]),
         ("Production",      [V, N],    ["Feature film", "Episodic", "Visualisation", "Shorts", "Feature animation"]),
-        ("Post-production", [N, V],    ["Feature film", "Episodic", "Visualisation", "Shorts", "Feature animation"]),
+        ("Post-production", [V, N],    ["Feature film", "Episodic", "Visualisation", "Shorts", "Feature animation"]),
         ("Distribution",    [V, N],    ["Feature film", "Episodic", "Visualisation", "Feature animation"]),
     ]))
     return f'''<header class="nav" id="nav">
@@ -95,7 +96,7 @@ def header(current="", sub="VFX Supervisor"):
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
   <nav aria-label="Main" id="menu">
     <ul>
-      {a("/thefleapit/", "Filmmaker", "fleapit", "Personal work")}
+      {a("/thefleapit/", "Filmmaker", "fleapit", "All phases")}
       {a("/vfxsupervisor/", "VFX Supervisor", "vfxsup", "Pre-production")}
       {a("/nukecompositor/", "Nuke Compositor", "nuke", "Post-production")}
       <li class="sep" aria-hidden="true"></li>
@@ -783,7 +784,7 @@ player_page("thefleapit/index.html", "fleapit", "The Sex Pixels", 'The Fleapit<s
             FLEAPIT_REELS, False, "The first reel is in the edit",
             f'<a class="pill" href="{INSTAGRAM}" target="_blank" rel="noopener">Follow on Instagram ↗</a>',
             "The Fleapit · Mark Pinheiro",
-            "The Fleapit. SE1. A word from our advertisers.", phases=False)   # personal work: no phase filter, not driven by the tags
+            "The Fleapit. SE1. A word from our advertisers.", phases=False)   # creative direction across every phase: no filter, not driven by the tags
 player_page("nukecompositor/index.html", "nuke", "Nuke Compositor", 'Nuke Compositor', "2D", "Showreels",
             "Compositing showreels and project reels. Play them all, or pick one from the grid.",
             NUKE_REELS, True, "", "", "Nuke Compositor · Mark Pinheiro",
