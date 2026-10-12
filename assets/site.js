@@ -54,6 +54,8 @@
     if (!stage || !frame) return;
     var c = (stage.getAttribute('data-crop') || '').split(',').map(Number);
     var props = ['width', 'height', 'left', 'top', 'transform', 'clip-path'];
+    var title = stage.querySelector('.herotop');
+    if (title) title.style.removeProperty('top');
     if (c.length < 4 || !(c[0] || c[1] || c[2] || c[3])) { props.forEach(function(k){ frame.style.removeProperty(k); }); return; }
     var t = c[0] / 100, b = c[1] / 100, l = c[2] / 100, r = c[3] / 100, fill = c[4] === 1;
     var ar = parseFloat(getComputedStyle(stage).getPropertyValue('--ar')) || 16 / 9;
@@ -63,6 +65,13 @@
     var set = function(k, v){ frame.style.setProperty(k, v, 'important'); };
     set('width', W + 'px'); set('height', H + 'px'); set('left', (vw / 2 - cx) + 'px'); set('top', (vh / 2 - cy) + 'px');
     set('transform', 'none'); set('clip-path', 'inset(' + c[0] + '% ' + c[3] + '% ' + c[1] + '% ' + c[2] + '%)');
+    // With a top crop, sit the page name in the black strip: its bottom on the crop line,
+    // but never up under the menu.
+    if (title && t > 0 && !fill) {
+      var nav = document.getElementById('nav'), navBottom = nav ? nav.offsetHeight : 0;
+      var barBottom = (vh / 2 - cy) + H * t;
+      title.style.top = Math.max(navBottom, barBottom - title.offsetHeight) + 'px';
+    }
   };
   window.addEventListener('resize', function(){
     document.querySelectorAll('[data-crop]').forEach(function(st){
