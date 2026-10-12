@@ -1,642 +1,245 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en-GB">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Sex Pixels - Preparing for the future of filmmaking</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Sex Pixels · Visual effects</title>
+<meta name="description" content="The Sex Pixels Ltd: boutique visual effects studio led by Mark Pinheiro, Nuke compositor and VFX supervisor. Preparing for the future of filmmaking.">
+<meta name="theme-color" content="#111012">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,75..125,400..900;1,75..125,400..900&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#111012; --panel:#1a181b; --edge:#2c292d; --line:#2e2b2e;
+  --fg:#eeeae4; --soft:#d6d1ca; --dim:#8f8a84;
+  --accent:#d4497c; --accent-hi:#e98aa9; --ink:#140a0d;
+  --display:'Archivo',Arial,sans-serif; --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  --gutter:clamp(16px,4vw,56px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--display);font-size:16px;line-height:1.5;overflow-x:hidden}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #000;
-            color: #fff;
-            overflow-x: hidden;
-            line-height: 1.4;
-            font-weight: 300;
-        }
+/* ---------- nav: hides on scroll down, returns on scroll up ---------- */
+.nav{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:18px var(--gutter);transition:transform .45s cubic-bezier(.6,0,.2,1),background .3s;
+  background:linear-gradient(180deg,rgba(17,16,18,.75),rgba(17,16,18,0))}
+.nav.solid{background:rgba(17,16,18,.94);backdrop-filter:blur(12px)}
+.nav.hide{transform:translateY(-100%)}
+.mark{font-weight:900;font-size:18px;letter-spacing:-.2px;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.mark span{color:var(--accent)}
+.nav ul{display:flex;gap:clamp(14px,3vw,40px);list-style:none;margin:0;padding:0}
+.nav ul a{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;color:var(--soft);
+  display:inline-block;padding:12px 0}
+.nav ul a:hover{color:var(--accent-hi)}
 
-        /* Cursor enhancement */
-        body {
-            cursor: none;
-        }
+/* ---------- hero: the reel, full bleed, no text over it ---------- */
+.hero{position:relative;height:100svh;min-height:420px;overflow:hidden;background:#000}
+.hero iframe{position:absolute;top:50%;left:50%;width:max(100vw,177.78svh);height:max(56.25vw,100svh);transform:translate(-50%,-50%);border:0;pointer-events:none}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(17,16,18,0) 60%,var(--bg) 100%)}
+.reelbar{position:absolute;z-index:2;left:var(--gutter);right:var(--gutter);bottom:clamp(20px,4vh,40px);display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.reelbar .lab{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--soft)}
+.reelbar .lab b{color:var(--accent);font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 18px;border-radius:999px;background:var(--accent);color:var(--ink);
+  font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.pill:hover{background:var(--accent-hi)}
+.pill i{width:0;height:0;border-left:8px solid currentColor;border-top:5px solid transparent;border-bottom:5px solid transparent}
 
-        .custom-cursor {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            background: rgba(255, 138, 21, 0.8);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.1s ease;
-            mix-blend-mode: difference;
-        }
+/* ---------- sections ---------- */
+main section{padding:clamp(56px,10vh,112px) var(--gutter);max-width:1360px;margin:0 auto}
+.rail{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin:0 0 28px}
+.rail .n{color:var(--dim)}
+.rail::after{content:"";flex:1;height:1px;background:var(--line)}
+h2{margin:0 0 32px;font-weight:900;font-size:clamp(40px,7.5vw,104px);line-height:.9;letter-spacing:-.03em;text-transform:uppercase;font-stretch:88%}
 
-        /* Navigation - DNEG Premium Style */
-        .navigation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 25px 50px;
-            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
-            backdrop-filter: blur(20px);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+/* work cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px}
+.card{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--edge);border-radius:6px;overflow:hidden;text-decoration:none;
+  transition:border-color .25s,transform .25s}
+.card:hover{border-color:var(--accent);transform:translateY(-3px)}
+.thumb{position:relative;aspect-ratio:16/9;background:#0b0a0c;border-bottom:1px solid var(--line);overflow:hidden}
+.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.9)}
+.card .body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card .kicker{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent)}
+.card h3{margin:0;font-weight:900;font-size:22px;line-height:1.05;text-transform:uppercase;letter-spacing:-.3px}
+.card p{margin:0;color:var(--soft);font-size:14px;line-height:1.5}
+.card .go{margin-top:auto;padding-top:10px;border-top:1px solid var(--line);font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
+.card:hover .go{color:var(--accent-hi)}
 
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
+/* the pipeline card's drawn thumbnail: folders sliding between structures */
+.tree{position:absolute;inset:0;padding:18px 22px;display:flex;flex-direction:column;gap:7px;font-family:var(--mono);font-size:11px;font-weight:600;color:var(--fg)}
+.tree div{display:flex;align-items:center;gap:8px;white-space:nowrap;animation:shift 9s cubic-bezier(.6,0,.2,1) infinite}
+.tree span{width:14px;height:9px;border-radius:1.5px;background:var(--c);position:relative;flex:none}
+.tree span::before{content:"";position:absolute;left:0;top:-3px;width:6px;height:3px;border-radius:1.5px 1.5px 0 0;background:var(--c)}
+.tree div:nth-child(2){animation-delay:.15s}.tree div:nth-child(3){animation-delay:.3s}.tree div:nth-child(4){animation-delay:.45s}.tree div:nth-child(5){animation-delay:.6s}.tree div:nth-child(6){animation-delay:.75s}
+@keyframes shift{0%,40%{transform:translateX(var(--a,0))}50%,90%{transform:translateX(var(--b,0))}100%{transform:translateX(var(--a,0))}}
+@media (prefers-reduced-motion:reduce){.tree div{animation:none}}
 
-        .logo {
-            font-size: 28px;
-            font-weight: 100;
-            letter-spacing: 4px;
-            color: #fff;
-            text-transform: uppercase;
-            position: relative;
-        }
+/* about */
+.about{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);align-items:start}
+@media (max-width:860px){.about{grid-template-columns:minmax(0,1fr)}}
+.lede{font-size:clamp(19px,2vw,24px);line-height:1.4;margin:0 0 18px;color:var(--fg);max-width:34ch}
+.about p{color:var(--soft);margin:0 0 14px;max-width:58ch}
+.quote{margin:0;padding:22px 24px;background:var(--panel);border:1px solid var(--edge);border-radius:6px}
+.quote blockquote{margin:0;font-style:italic;font-size:clamp(18px,1.8vw,22px);line-height:1.4;text-wrap:balance}
+.quote figcaption{margin-top:14px;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent)}
+.awards{margin:22px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.awards li{font-weight:900;font-size:14px;text-transform:uppercase;padding:6px 12px;border:1px solid var(--edge);border-radius:999px}
+.awards-note{margin-top:10px;font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--dim)}
 
-        .logo::after {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: linear-gradient(90deg, #FF8A15, transparent);
-            transition: width 1s ease;
-        }
+/* contact */
+.contact{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);align-items:end}
+@media (max-width:860px){.contact{grid-template-columns:minmax(0,1fr)}}
+.email{display:inline-block;font-weight:900;font-size:clamp(26px,4vw,60px);line-height:1;letter-spacing:-.03em;text-decoration:none;overflow-wrap:anywhere;
+  border-bottom:3px solid var(--accent);padding-bottom:6px}
+.email:hover{color:var(--accent-hi)}
+address{font-style:normal;font-family:var(--mono);font-size:13px;line-height:1.7;color:var(--soft)}
+address b{display:block;font-family:var(--display);font-weight:800;font-size:14px;letter-spacing:.5px;text-transform:uppercase;color:var(--fg);margin-bottom:4px}
 
-        .logo:hover::after {
-            width: 100%;
-        }
+footer{padding:28px var(--gutter) 36px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
+footer .avail{display:flex;align-items:center;gap:12px;letter-spacing:6px;color:var(--fg);font-weight:600}
+footer .avail b{background:var(--accent);color:var(--ink);padding:1px 4px 1px 8px;font-weight:600}
 
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 60px;
-        }
-
-        .nav-menu a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 300;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            padding: 10px 0;
-        }
-
-        .nav-menu a::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -10px;
-            right: -10px;
-            bottom: 0;
-            background: rgba(255, 138, 21, 0.1);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-            border-radius: 2px;
-        }
-
-        .nav-menu a:hover::before {
-            transform: scaleX(1);
-        }
-
-        .nav-menu a:hover {
-            color: #FF8A15;
-            transform: translateY(-2px);
-        }
-
-        /* Hero Section - Cinematic DNEG Style */
-        .hero {
-            position: relative;
-            height: 100vh;
-            width: 100%;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-        }
-
-        .hero-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 120%;
-            height: 120%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(255, 138, 21, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(22, 33, 62, 0.3) 0%, transparent 50%),
-                linear-gradient(135deg, #000 0%, #0a0a0a 40%, #1a1a2e 100%);
-            animation: slowFloat 20s ease-in-out infinite;
-        }
-
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(45deg, rgba(0,0,0,0.4) 0%, transparent 50%, rgba(0,0,0,0.2) 100%);
-            z-index: 2;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 3;
-            max-width: 900px;
-            padding: 0 50px;
-            margin-left: 0;
-        }
-
-        .hero-eyebrow {
-            font-size: 11px;
-            font-weight: 400;
-            letter-spacing: 3px;
-            color: #FF8A15;
-            text-transform: uppercase;
-            margin-bottom: 30px;
-            opacity: 0;
-            animation: fadeInUp 1s ease 0.3s forwards;
-        }
-
-        .hero-title {
-            font-size: 7rem;
-            font-weight: 100;
-            letter-spacing: -2px;
-            line-height: 0.9;
-            margin-bottom: 40px;
-            opacity: 0;
-            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: fadeInUp 1.2s ease 0.6s forwards;
-        }
-
-        .hero-subtitle {
-            font-size: 1.8rem;
-            font-weight: 200;
-            letter-spacing: 1px;
-            margin-bottom: 60px;
-            opacity: 0;
-            color: rgba(255, 255, 255, 0.9);
-            animation: fadeInUp 1s ease 1.2s forwards;
-            max-width: 600px;
-        }
-
-        .hero-description {
-            font-size: 1.1rem;
-            font-weight: 300;
-            line-height: 1.8;
-            margin-bottom: 80px;
-            opacity: 0;
-            color: rgba(255, 255, 255, 0.7);
-            animation: fadeInUp 1s ease 1.6s forwards;
-            max-width: 500px;
-        }
-
-        .hero-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 15px;
-            padding: 18px 40px;
-            background: linear-gradient(135deg, rgba(255, 138, 21, 0.1) 0%, rgba(255, 138, 21, 0.05) 100%);
-            border: 1px solid rgba(255, 138, 21, 0.3);
-            color: #FF8A15;
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 400;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0;
-            animation: fadeInUp 1s ease 2s forwards;
-            backdrop-filter: blur(20px);
-        }
-
-        .hero-cta:hover {
-            background: rgba(255, 138, 21, 0.15);
-            border-color: #FF8A15;
-            transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(255, 138, 21, 0.2);
-        }
-
-        .hero-cta::after {
-            content: '→';
-            font-size: 16px;
-            transition: transform 0.3s ease;
-        }
-
-        .hero-cta:hover::after {
-            transform: translateX(5px);
-        }
-
-        /* Video Section - Cinematic */
-        .video-container {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 60%;
-            height: 100%;
-            z-index: 1;
-            overflow: hidden;
-        }
-
-        .video-container iframe {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transform: scale(1.01);
-        }
-
-        /* Floating elements */
-        .floating-element {
-            position: absolute;
-            border: 1px solid rgba(255, 138, 21, 0.2);
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .floating-element:nth-child(1) {
-            width: 100px;
-            height: 100px;
-            top: 20%;
-            right: 15%;
-            animation-delay: 0s;
-        }
-
-        .floating-element:nth-child(2) {
-            width: 60px;
-            height: 60px;
-            top: 60%;
-            right: 25%;
-            animation-delay: 2s;
-        }
-
-        .floating-element:nth-child(3) {
-            width: 80px;
-            height: 80px;
-            top: 80%;
-            right: 35%;
-            animation-delay: 4s;
-        }
-
-        /* Company Badge - Premium */
-        .company-badge {
-            position: fixed;
-            bottom: 50px;
-            right: 50px;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(30px);
-            padding: 30px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 138, 21, 0.2);
-            z-index: 100;
-            opacity: 0.8;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            max-width: 320px;
-        }
-
-        .company-badge:hover {
-            opacity: 1;
-            border-color: rgba(255, 138, 21, 0.6);
-            transform: translateY(-5px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-        }
-
-        .company-badge h3 {
-            color: #FF8A15;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-
-        .company-badge p {
-            font-size: 0.85rem;
-            line-height: 1.6;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 300;
-        }
-
-        .company-badge .tagline {
-            font-style: italic;
-            color: rgba(255, 138, 21, 0.8);
-            margin-top: 20px;
-            font-size: 0.8rem;
-            letter-spacing: 0.5px;
-            border-top: 1px solid rgba(255, 138, 21, 0.2);
-            padding-top: 15px;
-        }
-
-        /* Demo Reel Caption */
-        .demo-caption {
-            position: absolute;
-            bottom: 120px;
-            right: 50px;
-            z-index: 3;
-            opacity: 0;
-            animation: fadeInUp 1s ease 2.5s forwards;
-            text-align: right;
-            max-width: 300px;
-        }
-
-        .demo-caption h4 {
-            color: #FF8A15;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            font-weight: 400;
-        }
-
-        .demo-caption p {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.7);
-            font-weight: 300;
-            line-height: 1.6;
-        }
-
-        /* Premium scroll indicator */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 40px;
-            left: 50px;
-            z-index: 3;
-            opacity: 0;
-            animation: fadeIn 2s ease 3.5s forwards;
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-        }
-
-        .scroll-indicator::before {
-            content: '';
-            display: block;
-            width: 1px;
-            height: 60px;
-            background: linear-gradient(to bottom, #FF8A15, transparent);
-            margin: 0 auto 15px;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        .scroll-indicator::after {
-            content: 'SCROLL TO EXPLORE';
-            display: block;
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            color: rgba(255, 255, 255, 0.5);
-            font-weight: 300;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(60px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slowFloat {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(-10px, -10px) rotate(1deg); }
-            66% { transform: translate(10px, -5px) rotate(-1deg); }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 1024px) {
-            .hero-content {
-                padding: 0 30px;
-            }
-            
-            .video-container {
-                width: 50%;
-            }
-            
-            .hero-title {
-                font-size: 5rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .navigation {
-                padding: 20px 25px;
-            }
-
-            .nav-menu {
-                display: none;
-            }
-
-            .hero-title {
-                font-size: 3.5rem;
-                letter-spacing: -1px;
-            }
-
-            .hero-subtitle {
-                font-size: 1.3rem;
-            }
-
-            .hero-description {
-                font-size: 1rem;
-            }
-
-            .hero-content {
-                padding: 0 25px;
-                max-width: 100%;
-            }
-
-            .video-container {
-                display: none;
-            }
-
-            .company-badge {
-                position: static;
-                margin: 30px 25px;
-                opacity: 1;
-            }
-
-            .demo-caption {
-                position: static;
-                margin: 30px 25px;
-                text-align: left;
-                opacity: 1;
-            }
-
-            .scroll-indicator {
-                left: 25px;
-            }
-        }
-    </style>
+@media (max-width:560px){
+  .nav ul{gap:14px}
+  .nav ul li.opt{display:none}
+  .mark{font-size:15px}
+}
+</style>
 </head>
 <body>
-    <div class="custom-cursor"></div>
 
-    <!-- Navigation -->
-    <nav class="navigation">
-        <div class="nav-container">
-            <div class="logo">The Sex Pixels</div>
-            <ul class="nav-menu">
-                <li><a href="#work">Work</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+<header class="nav" id="nav">
+  <a class="mark" href="#top" aria-label="The Sex Pixels, back to top">The Sex Pixels<span>.</span></a>
+  <nav aria-label="Main">
+    <ul>
+      <li><a href="#work">Work</a></li>
+      <li class="opt"><a href="#studio">Studio</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="hero" aria-label="Showreel" style="padding:0;max-width:none">
+    <iframe
+      src="https://www.youtube-nocookie.com/embed/S0dXndn0OBo?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=S0dXndn0OBo,WuXgmtTcd04&amp;controls=0&amp;rel=0&amp;modestbranding=1&amp;iv_load_policy=3&amp;playsinline=1&amp;disablekb=1"
+      title="The Sex Pixels showreels, playing muted in the background"
+      allow="autoplay; encrypted-media; picture-in-picture"
+      tabindex="-1"></iframe>
+    <div class="reelbar">
+      <span class="lab"><b>Showreel</b> · 2026 · 2025</span>
+      <a class="pill" href="https://www.youtube.com/watch?v=S0dXndn0OBo" target="_blank" rel="noopener"><i></i>Watch with sound</a>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="rail"><span class="n">01</span>Work</div>
+    <h2>Work</h2>
+    <div class="cards">
+      <a class="card" href="https://www.youtube.com/watch?v=S0dXndn0OBo" target="_blank" rel="noopener">
+        <div class="thumb"><img src="https://i.ytimg.com/vi/S0dXndn0OBo/hqdefault.jpg" alt="" loading="lazy"></div>
+        <div class="body">
+          <span class="kicker">Reel · 2026</span>
+          <h3>Showreel 2026</h3>
+          <p>The latest compositing and supervision reel.</p>
+          <span class="go">Watch on YouTube →</span>
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-background"></div>
-        <div class="hero-overlay"></div>
-        
-        <!-- Floating Elements -->
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-
-        <div class="hero-content">
-            <div class="hero-eyebrow">Award-Winning Visual Effects</div>
-            <h1 class="hero-title">Crafting Tomorrow's Cinema</h1>
-            <p class="hero-subtitle">Preparing for the future of filmmaking</p>
-            <p class="hero-description">
-                From concept to screen, we deliver vendor-quality visual effects with a storyteller's perspective. 
-                Where traditional craft meets innovative vision.
-            </p>
-            <a href="#work" class="hero-cta">View Our Work</a>
+      </a>
+      <a class="card" href="/pipeline/">
+        <div class="thumb" aria-hidden="true">
+          <div class="tree">
+            <div style="--c:#eeeae4"><span></span>/jobs/Production_Name/</div>
+            <div style="--c:#b8b2ab;--a:18px;--b:0px"><span></span>00_Production_Tracking</div>
+            <div style="--c:#39d7ff;--a:18px;--b:36px"><span></span>editorial</div>
+            <div style="--c:#d4497c;--a:18px;--b:36px"><span></span>vfx</div>
+            <div style="--c:#ff7aa6;--a:36px;--b:54px"><span></span>SEQ010 / SH010</div>
+            <div style="--c:#5fe0c8;--a:18px;--b:0px"><span></span>Deliverables</div>
+          </div>
         </div>
-
-        <!-- Video Container -->
-        <div class="video-container">
-            <iframe 
-                src="https://www.youtube.com/embed/S0dXndn0OBo?autoplay=1&mute=1&loop=1&playlist=S0dXndn0OBo,WuXgmtTcd04&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3"
-                frameborder="0" 
-                allow="autoplay; encrypted-media" 
-                allowfullscreen
-                style="width: 100%; height: 100%;">
-            </iframe>
+        <div class="body">
+          <span class="kicker">Card 00.1 · Production methodologies</span>
+          <h3>Scale dictates structure</h3>
+          <p>Five production formats, five folder structures. Step through to see what moves between them, and why.</p>
+          <span class="go">Open the demo →</span>
         </div>
-
-        <!-- Company Badge -->
-        <div class="company-badge">
-            <h3>The Sex Pixels Ltd.</h3>
-            <p>
-                Fifth Floor, Mariner House<br>
-                62 Prince Street, Bristol<br>
-                BS1 4QD<br><br>
-                
-                <strong>info@thesexpixels.com</strong>
-            </p>
-            <p class="tagline">Preparing for the future of filmmaking</p>
+      </a>
+      <a class="card" href="https://youtu.be/SDAXjN_sOlE" target="_blank" rel="noopener">
+        <div class="thumb"><img src="https://i.ytimg.com/vi/SDAXjN_sOlE/hqdefault.jpg" alt="" loading="lazy"></div>
+        <div class="body">
+          <span class="kicker">Reel · 02:30</span>
+          <h3>Sizzle reel</h3>
+          <p>Seventeen years of work in two and a half minutes.</p>
+          <span class="go">Watch on YouTube →</span>
         </div>
+      </a>
+    </div>
+  </section>
 
-        <!-- Demo Reel Caption -->
-        <div class="demo-caption">
-            <h4>Showreel 2026</h4>
-            <p>A curated selection showcasing our latest work across film, television, and commercial projects.</p>
-        </div>
+  <section id="studio">
+    <div class="rail"><span class="n">02</span>Studio</div>
+    <h2>Preparing for the future of filmmaking</h2>
+    <div class="about">
+      <div>
+        <p class="lede">The Sex Pixels is a boutique visual effects studio led by Mark Pinheiro, Nuke compositor and VFX supervisor.</p>
+        <p>Twenty-six years in VFX, from on-set supervision and previz through compositing to final delivery, across feature film, episodic, commercials and music promos.</p>
+        <p>The studio pairs traditional VFX craft with ethical AI.</p>
+      </div>
+      <div>
+        <figure class="quote">
+          <blockquote>“Mark has an undeniably impressive portfolio and his understanding of the industry as a whole makes him a total catch.”</blockquote>
+          <figcaption>David Smith, CEO, Absolute · Televisual</figcaption>
+        </figure>
+        <ul class="awards" aria-label="Awards">
+          <li>Promax</li><li>UK MVA</li><li>Oscar ×2</li><li>BAFTA ×2</li><li>Emmy ×2</li><li>VES</li><li>HPA</li>
+        </ul>
+        <div class="awards-note">Won outright, or as part of the show's team</div>
+      </div>
+    </div>
+  </section>
 
-        <!-- Scroll Indicator -->
-        <div class="scroll-indicator"></div>
-    </section>
+  <section id="contact">
+    <div class="rail"><span class="n">03</span>Contact</div>
+    <div class="contact">
+      <div>
+        <h2 style="margin-bottom:24px">Let's talk</h2>
+        <a class="email" href="mailto:info@thesexpixels.com">info@thesexpixels.com</a>
+      </div>
+      <address>
+        <b>The Sex Pixels Ltd.</b>
+        Fifth Floor, Mariner House<br>
+        62 Prince Street, Bristol<br>
+        BS1 4QD
+      </address>
+    </div>
+  </section>
+</main>
 
-    <script>
-        // Custom cursor
-        const cursor = document.querySelector('.custom-cursor');
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
+<footer>
+  <span>© The Sex Pixels Ltd.</span>
+  <span class="avail">Available <b>now</b> worldwide</span>
+</footer>
 
-        // Cursor interactions
-        document.querySelectorAll('a, button').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.style.transform = 'scale(2)';
-                cursor.style.backgroundColor = 'rgba(255, 138, 21, 0.6)';
-            });
-            el.addEventListener('mouseleave', () => {
-                cursor.style.transform = 'scale(1)';
-                cursor.style.backgroundColor = 'rgba(255, 138, 21, 0.8)';
-            });
-        });
-
-        // Enhanced parallax
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero-background');
-            const elements = document.querySelectorAll('.floating-element');
-            
-            if (hero) {
-                hero.style.transform = `translateY(${scrolled * 0.3}px)`;
-            }
-            
-            elements.forEach((el, index) => {
-                const speed = 0.1 + (index * 0.05);
-                el.style.transform = `translateY(${scrolled * speed}px)`;
-            });
-        });
-
-        // Navigation enhancement
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('.navigation');
-            if (window.scrollY > 100) {
-                nav.style.background = 'rgba(0, 0, 0, 0.95)';
-                nav.style.backdropFilter = 'blur(30px)';
-            } else {
-                nav.style.background = 'linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)';
-                nav.style.backdropFilter = 'blur(20px)';
-            }
-        });
-
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-    </script>
+<script>
+// Nav hides when scrolling down, comes back when scrolling up (Framestore-style).
+(function(){
+  var nav = document.getElementById('nav'), last = window.scrollY, ticking = false;
+  function update(){
+    var y = window.scrollY;
+    nav.classList.toggle('solid', y > 40);
+    if (y > last && y > 120) nav.classList.add('hide');
+    else if (y < last - 4 || y <= 120) nav.classList.remove('hide');
+    last = y; ticking = false;
+  }
+  window.addEventListener('scroll', function(){ if(!ticking){ requestAnimationFrame(update); ticking = true; } }, {passive:true});
+  nav.addEventListener('focusin', function(){ nav.classList.remove('hide'); });
+})();
+</script>
 </body>
 </html>

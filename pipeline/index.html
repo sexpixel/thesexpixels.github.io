@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Scale Dictates Structure: five VFX production directory structures, from feature film to commercial animation, by Mark Pinheiro.">
 <title>Scale Dictates Structure</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800;900&family=IBM+Plex+Mono:wght@400;600&display=swap">
 <style>
 /* Layout: one fixed stage where the same folders re-seat themselves per pipeline; caption beside it, all five trees at rest below. Single dark look, taken from the CV. */
 :root{
   color-scheme:dark;
-  --bg:#111012; --panel:#161416; --line:#2e2b2e; --fg:#eeeae4; --dim:#8f8a84; --soft:#d6d1ca; --accent:#ff3d7f; --ink:#140a0d;
+  --bg:#111012; --panel:#161416; --line:#2e2b2e; --fg:#eeeae4; --dim:#8f8a84; --soft:#d6d1ca; --accent:#d4497c; --ink:#140a0d;
   --display:'Archivo',Arial,sans-serif; --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
   --row:30px; --ind:18px;
 }
@@ -90,6 +91,22 @@ button{font:inherit;color:inherit;cursor:pointer}
 .revbar{margin-top:8px;border:1px dashed var(--accent);padding:9px 12px;font-family:var(--mono);font-size:11px;color:var(--soft)}
 .revbar b{color:var(--accent);font-weight:600;letter-spacing:1.5px}
 @media (prefers-reduced-motion:reduce){.fnode{transition:none}}
+.fnode{cursor:pointer}
+.fnode.on.out{opacity:.42;filter:grayscale(1);border-top-color:#4a464a;border-style:dashed}
+.fnode .rv.ox{border-color:var(--dim);color:var(--dim)}
+.fedge.dim{stroke-dasharray:3 4;opacity:.45}
+.flab.dim{opacity:.5}
+.whylist li.out{opacity:.6;border-left-style:dashed;border-left-color:#4a464a}
+.fnode.sel{outline:2px solid var(--c);outline-offset:2px}
+.fnode .fpath{display:block;margin-top:6px;font-family:var(--mono);font-size:9px;line-height:1.3;color:var(--dim);overflow-wrap:anywhere}
+.whylist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:760px){.whylist{grid-template-columns:minmax(0,1fr)}}
+.whylist li{display:flex;gap:10px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--c);padding:10px 12px;transition:border-color .3s,background .3s}
+.whylist li.sel{background:#201d21;border-color:var(--c)}
+.whylist .wn{flex:none;font-family:var(--mono);font-size:10px;font-weight:600;color:var(--c);padding-top:2px}
+.whylist b{display:block;font-weight:800;font-size:12.5px;text-transform:uppercase}
+.whylist code{display:block;margin-top:2px;font-family:var(--mono);font-size:10.5px;color:var(--dim);overflow-wrap:anywhere}
+.whylist p{margin:6px 0 0;font-size:13px;line-height:1.45;color:var(--soft)}
 .ctl:disabled{opacity:.35;cursor:default}
 
 .all{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
@@ -110,11 +127,12 @@ button{font:inherit;color:inherit;cursor:pointer}
 .foot{font-size:12.5px;color:var(--dim);max-width:70ch;margin:0}
 @media (prefers-reduced-motion:reduce){.node{transition:none}}
 </style>
-<style>body{margin:0}</style>
+<style>body{margin:0}.home{align-self:flex-start;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--soft);text-decoration:none;padding:12px 0;margin:-12px 0}.home:hover{color:#e98aa9}.home:focus-visible{outline:2px solid var(--fg);outline-offset:2px}</style>
 </head>
 <body>
 
 <div class="wrap">
+  <a class="home" href="/">&larr; The Sex Pixels</a>
   <header>
     <div class="rail">Card 00.1 · Production methodologies · Proof of concept</div>
     <h1>Scale dictates structure</h1>
@@ -168,9 +186,11 @@ button{font:inherit;color:inherit;cursor:pointer}
 
   <section>
     <h2>Production flow</h2>
-    <p class="foot" id="flowIntro">How the work moves from start to finish. Each line is a handoff and names what passes along it. Follows the format tabs above.</p>
+    <p class="foot" id="flowIntro">How the work moves from start to finish. Each line is a handoff and names what passes along it. Greyed cards are stages the VFX team is not part of. Each card shows the folder that stage works in, and the list below explains why that folder sits where it does. Follows the format tabs above.</p>
     <div class="flowwrap"><div class="flow" id="flow"><svg id="flowsvg" aria-hidden="true"></svg></div></div>
     <div class="revbar" id="revbar"></div>
+    <div class="lbl2" style="margin-top:6px">Why each folder sits where it does · tap a card to find it</div>
+    <ol class="whylist" id="whylist"></ol>
   </section>
 
   <section>
@@ -741,7 +761,8 @@ const FL = {
    ['editorial','vfx','timing'],['vfx','comp','EXR passes'],['comp','fa_conform','final shots'],['editorial','fa_conform','locked picture'],
    ['fa_conform','colour','conformed timeline'],['editorial','audio','locked cut'],['colour','deliv','graded picture'],['audio','deliv','mix stems']]}
 };
-const flow = $('flow'), fsvg = $('flowsvg'), fels = {}, COLW = 240, ROWH = 172;
+const outside = (name, id) => ((WHY[name]||{})[id]||[''])[0] === 'No folder in the job';
+const flow = $('flow'), fsvg = $('flowsvg'), fels = {}, COLW = 240, ROWH = 196;
 Object.values(FL).forEach(g => g.nodes.forEach(n => {
   if(fels[n[0]]) return;
   const d = document.createElement('div'); d.className = 'fnode'; d.style.setProperty('--c', C[n[0]] || '#8f8a84');
@@ -752,7 +773,9 @@ function drawEdges(g){
   const fr = flow.getBoundingClientRect(), box = id => { const r = fels[id].getBoundingClientRect(); return {l:r.left-fr.left, r:r.right-fr.left, t:r.top-fr.top, b:r.bottom-fr.top}; };
   const col = {}; g.nodes.forEach(n => col[n[0]] = n[3]);
   let out = '<defs><marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#6d6862"/></marker></defs>';
+  const nm = Object.keys(FL).find(k => FL[k] === g);
   g.edges.forEach(([a, b, lab]) => {
+    const dim = outside(nm, a) || outside(nm, b);
     const A = box(a), B = box(b); let p, lx, ly;
     if(col[b] > col[a]){
       const x1 = A.r, y1 = (A.t+A.b)/2, x2 = B.l, y2 = (B.t+B.b)/2, k = Math.max(30, (x2-x1)/2);
@@ -763,7 +786,7 @@ function drawEdges(g){
       p = `M${x1},${y1} C${x1},${(y1+y2)/2} ${x2},${(y1+y2)/2} ${x2},${y2}`; lx = x1 + (down ? 6 : -6); ly = (y1+y2)/2 + 3;
     }
     const anchor = col[b] > col[a] ? 'middle' : (B.t > A.b ? 'start' : 'end');
-    out += `<path class="fedge" d="${p}" marker-end="url(#ah)"/><text class="flab" x="${lx}" y="${ly}" text-anchor="${anchor}">${lab}</text>`;
+    out += `<path class="fedge${dim ? ' dim' : ''}" d="${p}" marker-end="url(#ah)"/><text class="flab${dim ? ' dim' : ''}" x="${lx}" y="${ly}" text-anchor="${anchor}">${lab}</text>`;
   });
   fsvg.innerHTML = out;
 }
@@ -772,7 +795,8 @@ function renderFlow(name){
   const seen = {}; let maxc = 0, maxr = 0;
   g.nodes.forEach(([id, n, title, c, r, steps, rv]) => {
     const el = fels[id]; seen[id] = 1; maxc = Math.max(maxc, c); maxr = Math.max(maxr, r);
-    el.innerHTML = `<span class="fn">${String(n).padStart(2,'0')}</span><span class="ft">${title}</span><ul>${steps.map(x => '<li>' + x + '</li>').join('')}</ul>` + (rv ? '<span class="rv">REVIEW</span>' : '');
+    const out = outside(name, id); el.classList.toggle('out', out);
+    el.innerHTML = `<span class="fn">${String(n).padStart(2,'0')}</span><span class="ft">${title}</span><ul>${steps.map(x => '<li>' + x + '</li>').join('')}</ul>` + ((WHY[name]||{})[id] ? '<span class="fpath">' + WHY[name][id][0] + '</span>' : '') + (out ? '<span class="rv ox">OUTSIDE VFX</span>' : rv ? '<span class="rv">REVIEW</span>' : '');
     if(!el.classList.contains('on')){ el.style.transition = 'none'; el.style.left = c*COLW + 'px'; el.style.top = r*ROWH + 'px'; void el.offsetWidth; el.style.transition = ''; }
     el.style.left = c*COLW + 'px'; el.style.top = r*ROWH + 'px'; el.classList.add('on');
   });
@@ -781,8 +805,83 @@ function renderFlow(name){
   $('revbar').innerHTML = '<b>REVIEWS</b> &nbsp;' + g.review + '. Nodes marked REVIEW are signed off before work moves on.';
   cancelAnimationFrame(flowRAF); const t0 = performance.now();
   const tick = () => { drawEdges(g); if(performance.now() - t0 < 900) flowRAF = requestAnimationFrame(tick); };
-  tick(); flowName = name;
+  tick(); flowName = name; renderWhy(name);
 }
+
+// ---- why each folder sits where it does: WHY[format][node id] = [folder, reason]
+const WHY = {
+ 'Feature film': {
+  ca_dev:['No folder in the job','Development happens at the production company before a post house is booked, so the job has no development folder. What carries into the job is the VFX breakdown and the bids, filed in 00_Production_Tracking.'],
+  ca_previz:['previz/SEQ010/SH010','Filed by sequence, because previz is planned and approved a sequence at a time. Each shot copies the vfx shot layout (plates, 3D, 2D, DMP), so a previz camera or layout can go straight into the final shot without being renamed.'],
+  assets:['/ASSETS/Characters/Dogs/Alsatian','Outside the job altogether, at studio level, so an asset outlives the production. It is filed by type, then kind, then the asset itself, so the same dog can be found and reused on the next show. Shots link to it rather than copy it, so a fix made once reaches every shot.'],
+  dit:['DIT','Its own folder beside editorial, holding offloads, camera reports and show LUTs. It records what was shot and how. VFX can trace any plate back to its camera data without ever holding the rushes.'],
+  postvis:['postvis/SEQ010/SH010','A department of its own at editorial level, because it serves the cut rather than the final shot. It uses the same shot layout as vfx, so a postvis temp can become the starting point of the final comp.'],
+  editorial:['editorial/SEQ010/EDL','Holds edit decisions only: the EDLs and turnovers for each sequence. Footage stays with the edit department, and VFX only ever receives the plates editorial pulls. That keeps rushes out of the show\'s VFX folders.'],
+  vfx:['vfx/SEQ010/SH010','Sequence, then shot, because that is how shots are bid, tracked and reviewed. Each shot is self-contained: its plates, then 3D and 2D grouped by department, with DMP alongside. It can be handed to another artist or vendor as one folder. Every step splits into work and publish, so nobody builds on a file that is still changing.'],
+  fa_conform:['No folder in the job','The conform happens in the online suite or at the DI facility, outside the VFX job. VFX feeds it from each shot\'s publish folder, which is why publish is the only place anyone else picks files up from.'],
+  colour:['Colour_Grading','At show level beside VFX, not inside the shots, because the grade runs across the whole conformed film. Inside, it is organised by shot, so any regrade can be traced back to the shot it belongs to.'],
+  audio:['No folder in the job','Sound post is a separate facility working from the locked cut, so it has no folder in the VFX job. Picture and sound only meet again at mastering.'],
+  deliv:['Deliverables/client, transcodes','At show level, not per shot, because what leaves the building is the film or a batch of shots. Each client delivery gets a dated folder, so any delivery can be reproduced. Transcodes live here because they are made from the masters, never from work files.']},
+ 'Episodic': {
+  ca_dev:['No folder in the job','The showrunner\'s team writes the season before post is booked. Bids and schedules cover the whole season, so they live at show level in 00_Production_Tracking rather than inside an episode.'],
+  ca_previz:['EP101/previz/SEQ010/SH010','Inside the episode, because each shooting block plans its own hero sequences on its own schedule. It uses the same shot layout as vfx, so previz carries forward into the shot.'],
+  assets:['/ASSETS/','Unchanged from the feature and above every episode. The cast and standing sets come back all season, so each is built once and every episode links to the same build. A fix made in episode 3 is already in episode 8.'],
+  dit:['EP101/DIT','Per episode, because episodes are shot in blocks. Camera reports and LUTs are found by episode, not by shoot date.'],
+  postvis:['EP101/postvis','Beside editorial inside the episode, because each episode\'s cut needs its own temps.'],
+  editorial:['EP101/editorial/SEQ010/EDL','One turnover per episode. Keeping the EDLs inside the episode means a re-turnover for episode 2 cannot overwrite episode 1.'],
+  vfx:['EP101/vfx/SEQ010/SH010','Episode, then sequence, then shot. You may be booked on a single episode, so the episode folder is the unit of work: everything you need sits under it, and access can be given one episode at a time.'],
+  fa_conform:['No folder in the job','Each episode is conformed in the online suite, outside the VFX job, from each shot\'s publish folder.'],
+  colour:['EP101/Colour_Grading','Inside each episode, because each one is graded and delivered on its own date. The show LUT lives in DIT, so every episode starts from the same look.'],
+  audio:['No folder in the job','A separate sound facility mixes each episode from its locked cut.'],
+  deliv:['EP101/Deliverables','At episode level, because the platform takes delivery one episode at a time. One episode can ship while the next is still in comp.']},
+ 'Commercial': {
+  preprod:['01_Pre-Production/script, storyboard, previz','The agency\'s script and boards arrive before the shoot, and previz plans the VFX shots. Numbered 01, so the folder order reads as the order of the job.'],
+  dit:['02_Footage_Raws, 03_DIT','Unlike the feature, the rushes live inside the job. The same small team edits, grades and finishes, so there is no separate edit house to hold them. DIT sits next to them with the camera reports and LUTs.'],
+  editorial:['04_Projs_Editorial','One project with many cutdowns. The 60", 30" and social versions are all cut from the same project, so they share one folder rather than one per version.'],
+  assets:['05_VFX/assets','The studio library shrinks to one folder inside the job. A commercial has a handful of hero builds, such as the product or a character, that every shot shares but that rarely outlive the campaign. Lookdev is done once here, not once per shot.'],
+  audio:['07_Audio_VO_Mix','Inside the job, because VO takes, the licensed track and the mix are often turned around in a day. Keeping them beside the picture means a master can be rebuilt without chasing a sound house.'],
+  fa_conform:['No folder of its own','The online happens inside the edit project, which is why 04_Projs_Editorial holds the job\'s timeline from offline to online.'],
+  colour:['08_Colour_Grading','Its own numbered folder after review. It is often graded in the edit suite, and each master can carry its own grade.'],
+  vfx:['05_VFX/shots/SH010','No sequence level: a spot has a few dozen shots, not thousands. Each shot keeps the feature\'s split of plates, 3D and 2D, so a freelancer can join for a day and find everything. GFX sits beside 2D and 3D because titles and legal text are made per shot.'],
+  deliv:['09_Exports_Client_Review/Client_Review, Master, Deliverables','Three folders, because three different things leave the building: dated client review versions with notes, one master per length of spot, and the social formats cut from each master by aspect ratio. Keeping them apart stops a review file going to air.']},
+ 'Commercial animation': {
+  ca_dev:['01_Development/script, storyboard','Kept small: just the script and boards the studio needs to start. Anything bigger belongs to the agency.'],
+  preprod:['02_Pre-Production/animatic, previz, design_assets','With no shoot, pre-production is where the spot is really made. Every design is approved here before production opens, so no shot is ever built on a look that has not been signed off.'],
+  ca_vo:['02_Pre-Production/voiceover','Scratch and guide VO sit in pre-production because the animation is timed to the voice. The final VO mix is made later, in post audio.'],
+  vfx:['03_Production/assets, shots/SH010, Review','Assets first, then shots, under one stage folder. Assets are built once for the job and every shot links to them. Each shot keeps 3D and 2D, and vector layers are a file type inside comp/work rather than a department. Review sits here because shots are signed off before they move to post.'],
+  colour:['04_Post-Production/Colour_Grading','In post, once the renders are approved, so the whole spot is graded in one pass.'],
+  audio:['04_Post-Production/audio','Sound design, music and the final mix are grouped in post because they are built against the finished picture.'],
+  ca_sgrade:['04_Post-Production/Stereo_Mastering','Its own folder beside grading, because stereo deliverables need their own checks and their own masters.'],
+  ca_rc:['04_Post-Production/Master','Masters are made in post, one folder for each version of the spot, so every length has a home.'],
+  deliv:['05_Distribution/clearance, Deliverables','What happens after mastering: broadcast clearance and the social formats cut from each master. A separate stage marks the point where the spot leaves the studio.']},
+ 'Feature animation': {
+  ca_dev:['01_Development/01 to 10','Ten numbered folders following the roadmap from concept to release strategy. An animation studio often originates the film itself, so unlike live action, development lives in the job.'],
+  preprod:['02_Pre-Production/01 to 14','Fourteen steps in roadmap order, translated for animation: voice casting replaces actor casting, and pipeline tests replace camera tests. Design (07) is approved before anything is built.'],
+  assets:['03_Production/assets/Characters, Environments, Props','The first thing in production, split by type. Thousands of shots use the same characters and sets, so each is built once and referenced. One update reaches every shot.'],
+  editorial:['04_Post-Production/01_editorial','The cut runs from the animatic onwards but is filed in post, with one folder per stage, from assembly to picture lock. No earlier cut is ever overwritten.'],
+  vfx:['03_Production/shots/SEQ_010/SH_010_01','Sequence, then shot, then one folder per department. Layout, animation, FX and lighting work on the same shot in parallel without touching each other\'s files. Renders get their own folder of EXR passes for each shot.'],
+  comp:['04_Post-Production/03_comp','In post rather than in the shot. In animation, comp is the final layering of render passes after lighting, not a shot department.'],
+  fa_conform:['04_Post-Production/04_conform','Its own folder, because the studio conforms its own picture against the locked cut.'],
+  colour:['04_Post-Production/06_colour','After the conform, so the grade and the output colour space are set on the finished film.'],
+  audio:['04_Post-Production/05_sound','Five folders, one per sound stage, from dialogue edit to final mix, so each can be revised without touching the rest.'],
+  deliv:['04_Post-Production/09 to 11, 05_Distribution','Mastering, QC and archive close post. Distribution is a stage of its own because the release campaign runs for months after the film is finished.']}
+};
+let flowSel = null;
+function renderWhy(name){
+  const g = FL[name], w = WHY[name] || {};
+  $('whylist').innerHTML = g.nodes.map(([id, n, title]) => {
+    const x = w[id]; if(!x) return '';
+    return '<li id="why_' + id + '"' + (outside(name, id) ? ' class="out"' : '') + ' style="--c:' + (C[id] || '#8f8a84') + '"><span class="wn">' + String(n).padStart(2,'0') + '</span><div><b>' + title + '</b><code>' + x[0] + '</code><p>' + x[1] + '</p></div></li>';
+  }).join('');
+  flowSel = null;
+}
+function pickNode(id){
+  document.querySelectorAll('.fnode.sel, #whylist li.sel').forEach(e => e.classList.remove('sel'));
+  if(flowSel === id){ flowSel = null; return; }
+  flowSel = id; fels[id].classList.add('sel');
+  const li = $('why_' + id); if(li){ li.classList.add('sel'); li.scrollIntoView({block:'nearest', behavior:'smooth'}); }
+}
+Object.keys(fels).forEach(id => { fels[id].onclick = () => pickNode(id); });
 
 // ---- the case for each structure
 const CASE = {
