@@ -409,3 +409,23 @@ body.tuner.noguides .heroui{opacity:0}
 .roles .loc{color:var(--dim)}
 .herotop{text-align:left}
 .fp-empty > .herotop{align-items:flex-start;text-align:left;padding:0}
+
+/* About: "In his own words" documentary player */
+.doc-stage{position:relative;aspect-ratio:16/9;background:#000;border-radius:6px;overflow:hidden}
+.doc-stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.doc-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
+.doc-start{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:18px;background:linear-gradient(180deg,rgba(17,16,18,.1),rgba(17,16,18,.6));border:0;color:var(--fg);cursor:pointer;font:inherit}
+.doc-start .play{position:static;width:72px;height:72px;margin:0;border-radius:50%;background:var(--accent);display:grid;place-items:center;flex:none}
+.doc-start .play::after{content:"";border-left:20px solid var(--ink);border-top:12px solid transparent;border-bottom:12px solid transparent;margin-left:5px}
+.doc-start b{display:block;font-weight:900;font-size:clamp(22px,2.6vw,40px);text-transform:uppercase;letter-spacing:-.02em;line-height:1;text-align:left}
+.doc-start i{display:block;margin-top:6px;font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--soft);text-align:left}
+.doc-start:hover .play{background:var(--accent-hi)}
+.doc-now{min-height:20px;margin:12px 0;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent)}
+.doc-chs{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px}
+@media (max-width:900px){.doc-chs{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.doc-ch{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--panel);border:1px solid var(--edge);border-radius:4px;color:var(--fg);cursor:pointer;padding:0;font:inherit;text-align:left}
+.doc-ch img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55;transition:opacity .25s}
+.doc-ch:hover img,.doc-ch.on img{opacity:.9}
+.doc-ch.on{border-color:var(--accent)}
+.doc-ch .doc-n{position:absolute;top:6px;left:8px;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:1px;color:var(--accent)}
+.doc-ch b{position:absolute;left:8px;bottom:6px;font-weight:900;font-size:clamp(11px,.95vw,14px);text-shadow:0 1px 8px rgba(0,0,0,.8)}

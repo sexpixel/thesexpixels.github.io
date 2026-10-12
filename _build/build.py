@@ -496,6 +496,15 @@ EDUCATION = [
     ("BTEC", "Art &amp; Design", "Chelsea College of Art &amp; Design"),
     ("BTEC", "Business &amp; Finance", "SFX"),
 ]
+# The commentated showreels: Mark narrates each stage of his career (Vimeo showcase 3003648).
+DOC_CHAPTERS = [
+    ("2000–2004", "103943083"), ("2004–2006", "103945879"), ("2006–2008", "103949083"), ("2007–2010", "103933560"),
+    ("2008–2010", "103953638"), ("2010–2012", "103959201"), ("2012–2013", "103979619"), ("2013–2014", "103982611"),
+]
+doc_cells = "\n".join(
+    f'      <button type="button" class="doc-ch" data-i="{i}" data-id="{vid}" data-title="{yrs}">'
+    f'<img data-vimeo="https://vimeo.com/{vid}" alt="" hidden><span class="doc-n">{i + 1:02d}</span><b>{yrs}</b></button>'
+    for i, (yrs, vid) in enumerate(DOC_CHAPTERS))
 LINKS = [("IMDb", "https://www.imdb.com/name/nm1025041/"), ("LinkedIn", "https://www.linkedin.com/in/markpinheiro"),
          ("Vimeo", "https://vimeo.com/thesexpixels"), ("Instagram", INSTAGRAM)]
 LAUREL_BRANCH = open(os.path.join(os.path.dirname(__file__), "laurel_branch.svg.txt")).read()
@@ -530,15 +539,28 @@ about = head("About · Mark Pinheiro",
     </div>
   </section>
 
+  <section id="story" style="padding-top:0">
+    <div class="rail"><span class="n">01</span>In his own words · 2000–2014</div>
+    <p class="pagelede">Eight showreels, each narrated by Mark: the stages of a career in VFX, told as a short documentary. Press play and it runs chapter by chapter.</p>
+    <div class="doc-stage" id="doc-stage">
+      <img class="doc-poster" data-vimeo="https://vimeo.com/{DOC_CHAPTERS[0][1]}" alt="" hidden>
+      <button type="button" class="doc-start" id="doc-start"><span class="play"></span><span><b>Play the documentary</b><i>8 chapters · with sound</i></span></button>
+    </div>
+    <div class="doc-now" id="doc-now" aria-live="polite"></div>
+    <div class="doc-chs">
+{doc_cells}
+    </div>
+  </section>
+
   <section id="kit" style="padding-top:0">
-    <div class="rail"><span class="n">01</span>Software &amp; equipment</div>
+    <div class="rail"><span class="n">02</span>Software &amp; equipment</div>
     <dl class="kit big">
 {eqp}
     </dl>
   </section>
 
   <section id="press" style="padding-top:0">
-    <div class="rail"><span class="n">02</span>Press</div>
+    <div class="rail"><span class="n">03</span>Press</div>
     <div class="press">
       <figure class="quote">
         <blockquote>“Mark has an undeniably impressive portfolio and his understanding of the industry as a whole makes him a total catch.”</blockquote>
@@ -552,7 +574,7 @@ about = head("About · Mark Pinheiro",
   </section>
 
   <section id="education" style="padding-top:0">
-    <div class="rail"><span class="n">03</span>Education</div>
+    <div class="rail"><span class="n">04</span>Education</div>
     <ul class="edu">
 {edu}
     </ul>
@@ -563,6 +585,7 @@ about = head("About · Mark Pinheiro",
 </body>
 </html>
 '''
+about = about.replace("</body>", f'<script src="/assets/doc.js?v={_ver("assets/doc.js")}"></script>\n</body>', 1)
 write("about/index.html", about)
 
 # ---------------------------------------------------------------- player pages (The Fleapit, Nuke Compositor)
