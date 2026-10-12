@@ -498,3 +498,9 @@ iframe{color-scheme:normal}
 @media (max-width:520px){.linkrow .pill{padding:9px 11px;font-size:9px;letter-spacing:1.5px}}
 @media (max-width:380px){.linkrow{gap:5px}.linkrow .pill{padding:8px 8px;letter-spacing:.8px}}
 .linkrow{overflow-x:auto;scrollbar-width:none}.linkrow::-webkit-scrollbar{display:none}.linkrow .pill{flex:none}
+/* About links carry the same icons as the contact page */
+.iconpill{display:inline-flex;align-items:center;gap:8px}
+.ic.xs{width:18px;height:18px}
+@media (max-width:520px){.iconpill{gap:5px}.ic.xs{width:14px;height:14px}}
+@media (max-width:520px){.linkrow{gap:5px}.linkrow .pill.iconpill{padding:8px 9px;letter-spacing:1px}}
+@media (max-width:380px){.linkrow .pill.iconpill{padding:7px 7px;letter-spacing:.6px;gap:4px}.linkrow .ic.xs{width:12px;height:12px}}
