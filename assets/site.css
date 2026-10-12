@@ -406,3 +406,4 @@ body.tuner.noguides .heroui{opacity:0}
 /* Email, Based and Company: big icon above the label, matching the tiles */
 .ctop .clabel{flex-direction:column;align-items:flex-start;gap:12px}
 .ic.big{width:clamp(48px,4.4vw,64px);height:clamp(48px,4.4vw,64px)}
+.roles .loc{color:var(--dim)}

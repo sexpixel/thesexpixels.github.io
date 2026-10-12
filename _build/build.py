@@ -514,7 +514,7 @@ about = head("About · Mark Pinheiro",
 <main>
   <section class="profile">
     <h1>Mark<br>Pinheiro</h1>
-    <div class="roles"><span class="a">Filmmaker / VFX / AI</span><span>Nuke compositor &amp; VFX supervisor</span><span>London</span></div>
+    <div class="roles"><span class="a">Filmmaker / VFX / AI</span><span>Nuke compositor &amp; VFX supervisor</span><span class="loc">London</span></div>
     <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="laurel" viewBox="0 0 40 124">{LAUREL_BRANCH}</symbol></defs></svg>
     <ul class="laurels" aria-label="Laurels">
 {lau}
