@@ -5,11 +5,11 @@ ROLE_GROUPS = ["Nuke compositor", "VFX supervisor", "PostVis", "Director"]
 FORMATS = ["Feature film", "Episodic", "Visualisation", "Shorts", "Feature animation"]
 FORMAT_SLUGS = {"Feature film": "feature-film", "Episodic": "episodic", "Visualisation": "visualisation", "Shorts": "shorts", "Feature animation": "feature-animation"}
 PROJECTS = [
-    dict(title="Gangs of London S4", role="On-set VFX supervisor", group="VFX supervisor", fmt="Episodic", co="The Sex Pixels", yr="2026"),
+    dict(title="Gangs of London S4", role="On-set VFX supervisor", group="VFX supervisor", fmt="Episodic", co="The Sex Pixels", yr="2026", phases=["Pre-production", "Production"]),
     dict(title="Salomon", role="On-set supervision and comp", group="VFX supervisor", fmt="Shorts", co="", yr="2025"),
     dict(title="Rogue Trooper", role="Senior compositor", group="Nuke compositor", fmt="Feature film", co="Liberty Films · Netflix", yr="2025"),
     dict(title="The Ballad of a Small Player", role="VFX supervisor", group="VFX supervisor", fmt="Feature film", co="Netflix", yr="",
-         clips=[("Official trailer", "youtube:z1B5W55TFyo"), ("Behind the scenes", "youtube:FGYPLc8bB9E")]),
+         clips=[("Official trailer", "youtube:z1B5W55TFyo", ["Distribution"]), ("Behind the scenes", "youtube:FGYPLc8bB9E", ["Production"])]),
     dict(title="Gangs of London S3", role="On-set VFX supervisor", group="VFX supervisor", fmt="Episodic", co="", yr=""),
     dict(title="Panda Plan", role="VFX supervisor", group="VFX supervisor", fmt="Feature film", co="Horizon VFX", yr=""),
     dict(title="I Am Nobody S2", role="VFX consultant", group="VFX supervisor", fmt="Episodic", co="Horizon VFX", yr=""),
@@ -41,7 +41,7 @@ PROJECTS = [
     dict(title="Captain Marvel", role="Senior compositor", group="Nuke compositor", fmt="Feature film", co="Trixter", yr=""),
     dict(title="The Crown S2", role="Compositor", group="Nuke compositor", fmt="Episodic", co="", yr=""),
     dict(title="Save The 365th Day", role="Stereo compositor & stereographer", group="Nuke compositor", fmt="Feature animation", co="ECCG China", yr="2012",
-         clips=[("Trailer", "55357193"), ("Excerpt", "75682310")]),
+         clips=[("Trailer", "55357193", ["Distribution"]), ("Excerpt", "75682310", ["Post-production"])]),
     dict(title="Game of Thrones S6", role="In-house VFX supervision team", group="VFX supervisor", fmt="Episodic", co="Molinare", yr=""),
 ]
 
@@ -49,10 +49,13 @@ PROJECTS = [
 def expand(p):
     """One tile per clip; a project with no clips stays one 'coming soon' tile."""
     if not p.get("clips"):
-        return [p]
+        return [dict(p, phases=phases_of(p))]
+    p = dict(p, phases=phases_of(p))
     out = []
-    for name, vid in p["clips"]:
+    for clip in p["clips"]:
+        name, vid = clip[0], clip[1]
         q = dict(p)
+        if len(clip) > 2: q["phases"] = clip[2]
         q["title"] = p["title"] if name == p["title"] else f"{p['title']} · {name}"
         if vid.startswith("youtube:"):
             q["video"] = vid; q["url"] = f"https://youtu.be/{vid[8:]}"
@@ -66,3 +69,16 @@ def in_format(p, f):
     """Visualisation is its own format page, gathering every PostVis job; those jobs also stay on their
     Feature film or Episodic page."""
     return p["group"] == "PostVis" if f == "Visualisation" else p["fmt"] == f
+
+
+# Production phases (from the Indie Film Production Roadmap). DRAFT tags for Mark to check.
+PHASES = ["Development", "Pre-production", "Production", "Post-production", "Distribution"]
+GROUP_PHASES = {
+    "Nuke compositor": ["Post-production"],
+    "PostVis": ["Post-production"],
+    "VFX supervisor": ["Pre-production", "Production", "Post-production"],
+    "Director": PHASES,
+}
+def phases_of(p):
+    """A project's phases: its own list if set, otherwise its role group's."""
+    return p.get("phases") or GROUP_PHASES.get(p.get("group"), ["Post-production"])

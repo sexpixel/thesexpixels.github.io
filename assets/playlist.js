@@ -2,8 +2,10 @@
 // Vimeo and YouTube reels advance by themselves when they end. Instagram allows no
 // "ended" signal, so on an Instagram reel the player waits for the Next button.
 (function(){
-  var cells = [].slice.call(document.querySelectorAll('.fp-cell[data-src]'));
-  if (!cells.length) return;
+  var allCells = [].slice.call(document.querySelectorAll('.fp-cell[data-src]'));
+  if (!allCells.length) return;
+  var noneHere = false;
+  var cells = allCells;   // the reels that play: all of them, or just those in the chosen production phase
   var stage = document.getElementById('fp-player'), slot = document.getElementById('fp-slot'), titleEl = document.getElementById('fp-title');
   var cur = -1, player = null, sound = false, vimeoReady, ytReady;
   var soundBtn = document.getElementById('fp-sound');
@@ -44,7 +46,7 @@
     cur = i;
     var c = cells[i], spec = c.getAttribute('data-src'), p = spec.split(':'), mine = i;
     cells.forEach(function(x, k){ x.classList.toggle('on', k === i); });
-    titleEl.textContent = 'Now playing · ' + (i + 1) + ' / ' + cells.length + ' · ' + c.getAttribute('data-title');
+    titleEl.textContent = (noneHere ? 'No reels in this phase yet · ' : '') + 'Now playing · ' + (i + 1) + ' / ' + cells.length + ' · ' + c.getAttribute('data-title');
     showSound();
     stage.style.removeProperty('--ar');
     // Per-reel crop (set on the tuning page) pushes text in the black bars off screen.
@@ -107,9 +109,27 @@
     }
   }
 
-  cells.forEach(function(c, k){
-    c.addEventListener('click', function(){ sound = true; play(k); stage.scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+  allCells.forEach(function(c){
+    c.addEventListener('click', function(){ sound = true; play(Math.max(0, cells.indexOf(c))); stage.scrollIntoView({ behavior: 'smooth', block: 'center' }); });
   });
+
+  // Production-phase filter: All, Development … Distribution. Filters the grid and the playlist.
+  var phaseBtns = [].slice.call(document.querySelectorAll('.phases button[data-ph]'));
+  var tiles = [].slice.call(document.querySelectorAll('.fp-grid .fp-cell'));
+  function inPhase(el, ph){ return ph === 'all' || (' ' + (el.getAttribute('data-phases') || '') + ' ').indexOf(' ' + ph + ' ') >= 0; }
+  function setPhase(ph, restart){
+    phaseBtns.forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-ph') === ph ? 'true' : 'false'); });
+    tiles.forEach(function(t){ t.hidden = !inPhase(t, ph); });
+    cells = allCells.filter(function(c){ return inPhase(c, ph); });
+    noneHere = !cells.length;   // the phase has projects listed but no reels yet: keep playing everything
+    if (noneHere) cells = allCells;
+    try { var u = new URL(location.href); if (ph === 'all') u.searchParams.delete('phase'); else u.searchParams.set('phase', ph); history.replaceState(null, '', u); } catch (e) {}
+    if (restart) play(0);
+  }
+  phaseBtns.forEach(function(b){ b.addEventListener('click', function(){ if (!b.disabled) setPhase(b.getAttribute('data-ph'), true); }); });
+  var wanted = null;
+  try { wanted = new URL(location.href).searchParams.get('phase'); } catch (e) {}
+  if (wanted && phaseBtns.some(function(b){ return b.getAttribute('data-ph') === wanted && !b.disabled; })) setPhase(wanted, false);
   var start = document.getElementById('fp-start');
   if (start) start.addEventListener('click', function(){ sound = true; play(0); });
   document.getElementById('fp-prev').addEventListener('click', function(){ sound = true; play(cur - 1); });

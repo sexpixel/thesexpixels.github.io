@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,75..125,400..900;1,75..125,400..900&family=IBM+Plex+Mono:wght@400;600&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=96fbf31b">
+<link rel="stylesheet" href="/assets/site.css?v=fced7f8e">
 </head>
 <body>
 
@@ -18,7 +18,7 @@
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
   <nav aria-label="Main" id="menu">
     <ul>
-      <li class="role"><a href="/thefleapit/" aria-current="page"><span class="ph">Development</span>Filmmaker</a></li>
+      <li class="role"><a href="/thefleapit/" aria-current="page"><span class="ph">All phases</span>Filmmaker</a></li>
       <li class="role"><a href="/vfxsupervisor/"><span class="ph">Pre-production</span>VFX Supervisor</a></li>
       <li class="role"><a href="/nukecompositor/"><span class="ph">Post-production</span>Nuke Compositor</a></li>
       <li class="sep" aria-hidden="true"></li>
@@ -44,7 +44,7 @@
     <div class="fp-slot" id="fp-slot"></div>
     <div class="herotitle herotop heroui">
       <span class="lab"><b>SE1</b> · Filmmaker</span>
-      <h1 class="herohead">The Fleapit<span class="dot">.</span></h1><ol class="phases" aria-label="Where this sits in the production pipeline"><li class="on"><span class="lg">Development</span><span class="sm" aria-hidden="true">Dev</span></li><li><span class="lg">Pre-production</span><span class="sm" aria-hidden="true">Pre</span></li><li><span class="lg">Production</span><span class="sm" aria-hidden="true">Prod</span></li><li><span class="lg">Post-production</span><span class="sm" aria-hidden="true">Post</span></li><li><span class="lg">Distribution</span><span class="sm" aria-hidden="true">Dist</span></li></ol>
+      <h1 class="herohead">The Fleapit<span class="dot">.</span></h1><ol class="phases" aria-label="Filter by production phase"><li><button type="button" data-ph="all" aria-pressed="true"><span class="lg">All</span><span class="sm" aria-hidden="true">All</span></button></li><li><button type="button" data-ph="development" aria-pressed="false"><span class="lg">Development</span><span class="sm" aria-hidden="true">Dev</span></button></li><li><button type="button" data-ph="pre-production" aria-pressed="false"><span class="lg">Pre-production</span><span class="sm" aria-hidden="true">Pre</span></button></li><li><button type="button" data-ph="production" aria-pressed="false"><span class="lg">Production</span><span class="sm" aria-hidden="true">Prod</span></button></li><li><button type="button" data-ph="post-production" aria-pressed="false"><span class="lg">Post-production</span><span class="sm" aria-hidden="true">Post</span></button></li><li><button type="button" data-ph="distribution" aria-pressed="false"><span class="lg">Distribution</span><span class="sm" aria-hidden="true">Dist</span></button></li></ol>
     </div>
     <div class="reelbar heroui">
       <span class="fp-title" id="fp-title" aria-live="polite"></span>
@@ -63,13 +63,13 @@
     <div class="rail"><span class="n">Reels</span><span id="reels-h">All</span></div>
     <p class="pagelede">A word from our advertisers.</p>
     <div class="fp-grid">
-      <button class="fp-cell" type="button" data-i="0" data-src="vimeo:389670596" data-title="Showreel 2020" data-crop="12,0,0,0,0"><img data-vimeo="https://vimeo.com/389670596" alt="" hidden><span class="fp-cap"><b>Showreel 2020</b><i>Tonight&#x27;s programme</i></span><span class="play"></span></button>
-      <div class="fp-cell fp-soon"><span class="fp-cap"><b>A word from our advertisers</b><i>Advertisement · coming soon</i></span></div>
-      <div class="fp-cell fp-soon"><span class="fp-cap"><b>Coming attractions</b><i>Trailer · coming soon</i></span></div>
-      <div class="fp-cell fp-soon"><span class="fp-cap"><b>Intermission</b><i>Sting · coming soon</i></span></div>
-      <div class="fp-cell fp-soon"><span class="fp-cap"><b>Local advertisers</b><i>Advertisement · coming soon</i></span></div>
-      <div class="fp-cell fp-soon"><span class="fp-cap"><b>Supporting feature</b><i>Short film · coming soon</i></span></div>
-      <div class="fp-cell fp-soon"><span class="fp-cap"><b>Programme notes</b><i>Notes · coming soon</i></span></div>
+      <button class="fp-cell" type="button" data-i="0" data-src="vimeo:389670596" data-title="Showreel 2020" data-phases="development pre-production production post-production distribution" data-crop="12,0,0,0,0"><img data-vimeo="https://vimeo.com/389670596" alt="" hidden><span class="fp-cap"><b>Showreel 2020</b><i>Tonight&#x27;s programme</i></span><span class="play"></span></button>
+      <div class="fp-cell fp-soon" data-phases="development pre-production production post-production distribution"><span class="fp-cap"><b>A word from our advertisers</b><i>Advertisement · coming soon</i></span></div>
+      <div class="fp-cell fp-soon" data-phases="development pre-production production post-production distribution"><span class="fp-cap"><b>Coming attractions</b><i>Trailer · coming soon</i></span></div>
+      <div class="fp-cell fp-soon" data-phases="development pre-production production post-production distribution"><span class="fp-cap"><b>Intermission</b><i>Sting · coming soon</i></span></div>
+      <div class="fp-cell fp-soon" data-phases="development pre-production production post-production distribution"><span class="fp-cap"><b>Local advertisers</b><i>Advertisement · coming soon</i></span></div>
+      <div class="fp-cell fp-soon" data-phases="development pre-production production post-production distribution"><span class="fp-cap"><b>Supporting feature</b><i>Short film · coming soon</i></span></div>
+      <div class="fp-cell fp-soon" data-phases="development pre-production production post-production distribution"><span class="fp-cap"><b>Programme notes</b><i>Notes · coming soon</i></span></div>
     </div>
   </section>
   </div>
@@ -81,6 +81,6 @@
 </footer>
 
 <script src="/assets/site.js?v=88db6671"></script>
-<script src="/assets/playlist.js?v=380bc5a4"></script>
+<script src="/assets/playlist.js?v=3b657c36"></script>
 </body>
 </html>

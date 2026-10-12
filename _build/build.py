@@ -10,7 +10,7 @@ GitHub Pages ignores folders that start with "_", so this folder is never publis
 import html, os, sys
 sys.path.insert(0, os.path.dirname(__file__))
 from skills_data import stages
-from work_data import PROJECTS, ROLE_GROUPS, FORMATS, FORMAT_SLUGS, expand, in_format
+from work_data import PROJECTS, ROLE_GROUPS, FORMATS, FORMAT_SLUGS, expand, in_format, PHASES as WPHASES
 from news_data import NEWS
 from crops import CROPS, crop_of, crop_str
 
@@ -77,7 +77,7 @@ def header(current="", sub="VFX Supervisor"):
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
   <nav aria-label="Main" id="menu">
     <ul>
-      {a("/thefleapit/", "Filmmaker", "fleapit", "Development")}
+      {a("/thefleapit/", "Filmmaker", "fleapit", "All phases")}
       {a("/vfxsupervisor/", "VFX Supervisor", "vfxsup", "Pre-production")}
       {a("/nukecompositor/", "Nuke Compositor", "nuke", "Post-production")}
       <li class="sep" aria-hidden="true"></li>
@@ -454,6 +454,10 @@ skills = head("Skills · Mark Pinheiro",
 '''
 write("skills/index.html", skills)
 
+def phase_slug(ph): return ph.lower()
+def phases_attr(r):
+    return " ".join(phase_slug(x) for x in (r.get("phases") or WPHASES))
+
 def reel_cell(i, r):
     if r["video"]:
         img = ""
@@ -461,8 +465,8 @@ def reel_cell(i, r):
         elif r["video"].startswith("vimeo:"):
             vid, _, h = r["video"][6:].partition(":"); img = f'<img data-vimeo="https://vimeo.com/{vid}{"/" + h if h else ""}" alt="" hidden>'
         elif r["video"].startswith("youtube:"): img = f'<img src="https://i.ytimg.com/vi/{r["video"][8:]}/hqdefault.jpg" alt="" loading="lazy">'
-        return f'''      <button class="fp-cell" type="button" data-i="{i}" data-src="{r["video"]}" data-title="{E(r["title"])}"{crop_attr(r["video"])}>{img}<span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])}</i></span><span class="play"></span></button>'''
-    return f'''      <div class="fp-cell fp-soon"><span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])} · coming soon</i></span></div>'''
+        return f'''      <button class="fp-cell" type="button" data-i="{i}" data-src="{r["video"]}" data-title="{E(r["title"])}" data-phases="{phases_attr(r)}"{crop_attr(r["video"])}>{img}<span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])}</i></span><span class="play"></span></button>'''
+    return f'''      <div class="fp-cell fp-soon" data-phases="{phases_attr(r)}"><span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])} · coming soon</i></span></div>'''
 
 
 # Simple line icons for the contact page (original drawings, not the brands' own logos).
@@ -647,20 +651,26 @@ FLEAPIT_REELS = [
     dict(title="Programme notes", kind="Notes", video=None),
 ]
 NUKE_REELS = [
-    dict(title="Compositing showreel 2026", kind="Showreel", video=REEL_2026),
-    dict(title="Showreel 2020", kind="Showreel", video=REEL_2020),
-    dict(title="Sizzle reel", kind="17 years in 02:30", video="youtube:SDAXjN_sOlE"),
+    dict(title="Compositing showreel 2026", kind="Showreel", video=REEL_2026, phases=["Post-production"]),
+    dict(title="Showreel 2020", kind="Showreel", video=REEL_2020, phases=["Post-production"]),
+    dict(title="Sizzle reel", kind="17 years in 02:30", video="youtube:SDAXjN_sOlE", phases=["Post-production"]),
     # From Mark, 12 Oct. TITLE TO CONFIRM (1014143091, once 'Compositing reel 2', is Moon Knight: The Realm).
-    dict(title="Compositing reel 1", kind="Project reel", video="vimeo:1014139706"),
-] + [dict(title=q["title"], kind=" · ".join(x for x in (q["role"], q["co"]) if x), video=q.get("video"))
+    dict(title="Compositing reel 1", kind="Project reel", video="vimeo:1014139706", phases=["Post-production"]),
+] + [dict(title=q["title"], kind=" · ".join(x for x in (q["role"], q["co"]) if x), video=q.get("video"), phases=q["phases"])
      for p in PROJECTS if p["group"] in ("Nuke compositor", "PostVis") for q in expand(p)]
 
-PHASES = ["Development", "Pre-production", "Production", "Post-production", "Distribution"]
-ROLE_PHASES = {"fleapit": ["Development"], "vfxsup": ["Pre-production", "Production"], "nuke": ["Post-production"]}
-def phase_strip(lit):
+PHASES = WPHASES
+def phase_strip(reels):
+    """The production phases as a filter: All, then Development → Distribution. Phases with no work on
+    this page are shown but can't be picked."""
+    have = {ph for r in reels for ph in (r.get("phases") or WPHASES)}
     short = {"Development": "Dev", "Pre-production": "Pre", "Production": "Prod", "Post-production": "Post", "Distribution": "Dist"}
-    cells = "".join(('<li class="on">' if p in lit else '<li>') + f'<span class="lg">{p}</span><span class="sm" aria-hidden="true">{short[p]}</span></li>' for p in PHASES)
-    return f'<ol class="phases" aria-label="Where this sits in the production pipeline">{cells}</ol>'
+    btns = ['<li><button type="button" data-ph="all" aria-pressed="true"><span class="lg">All</span><span class="sm" aria-hidden="true">All</span></button></li>']
+    for ph in PHASES:
+        dis = "" if ph in have else " disabled"
+        btns.append(f'<li><button type="button" data-ph="{phase_slug(ph)}" aria-pressed="false"{dis}>'
+                    f'<span class="lg">{ph}</span><span class="sm" aria-hidden="true">{short[ph]}</span></button></li>')
+    return '<ol class="phases" aria-label="Filter by production phase">' + "".join(btns) + '</ol>'
 
 def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wide, idle_empty, extra_links, page_title, desc):
     cells = "\n".join(reel_cell(i, r) for i, r in enumerate(reels))
@@ -684,7 +694,7 @@ def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wid
     <div class="fp-slot" id="fp-slot"></div>{idle}
     <div class="herotitle herotop heroui">
       <span class="lab"><b>{rail_n}</b> · {rail_label}</span>
-      <h1 class="herohead">{title_html}</h1>{phase_strip(ROLE_PHASES[key]) if key in ROLE_PHASES else ""}
+      <h1 class="herohead">{title_html}</h1>{phase_strip(reels) if has_any else ""}
     </div>
     <div class="reelbar heroui">
       <span class="fp-title" id="fp-title" aria-live="polite"></span>{ctrls}
@@ -737,8 +747,8 @@ write("fleapit/index.html", '''<!doctype html>
 ''')
 
 # ---------------------------------------------------------------- vfx supervisor (player + grid; showreel first)
-SUP_REELS = [dict(title="VFX supervisor showreel", kind="Stand-in", video=next((r["video"] for r in REELS if r["role"] == "VFX supervisor"), None))] + \
-    [dict(title=q["title"], kind=" · ".join(x for x in (q["role"], q["co"]) if x), video=q.get("video"))
+SUP_REELS = [dict(title="VFX supervisor showreel", kind="Stand-in", video=next((r["video"] for r in REELS if r["role"] == "VFX supervisor"), None), phases=["Pre-production", "Production", "Post-production"])] + \
+    [dict(title=q["title"], kind=" · ".join(x for x in (q["role"], q["co"]) if x), video=q.get("video"), phases=q["phases"])
      for p in PROJECTS if p["group"] == "VFX supervisor" for q in expand(p)]
 player_page("vfxsupervisor/index.html", "vfxsup", "VFX Supervisor", "VFX Supervisor", "SUP", "Showreels",
             "On-set and in-facility supervision across feature film, episodic and commercials. The showreel plays first; pick a project from the grid to play its reel.",
@@ -756,7 +766,7 @@ FORMAT_LEDES = {
 for i, f in enumerate(FORMATS, 1):
     if f not in PLAYER_FORMATS: continue
     items = [q for p in PROJECTS if in_format(p, f) for q in expand(p)]
-    reels = [dict(title=q["title"], kind=" · ".join(x for x in (q["role"], q["co"], q["yr"]) if x), video=q.get("video"))
+    reels = [dict(title=q["title"], kind=" · ".join(x for x in (q["role"], q["co"], q["yr"]) if x), video=q.get("video"), phases=q["phases"])
              for q in items]
     reels = [r for r in reels if r["video"]] + [r for r in reels if not r["video"]]
     title = fmt_title(f)

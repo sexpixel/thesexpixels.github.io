@@ -533,3 +533,13 @@ iframe{color-scheme:normal}
 @media (max-width:700px){.phases{font-size:8px;letter-spacing:1px}.phases li{padding:6px 6px}}
 .phases .sm{display:none}
 @media (max-width:700px){.phases{flex-wrap:nowrap;font-size:10px;letter-spacing:1.5px}.phases li{padding:7px 12px}.phases .lg{display:none}.phases .sm{display:inline}}
+
+/* The phase strip is a filter: All, Development … Distribution */
+.phases li,.phases li.on{padding:0;border:0;background:none;margin:0;color:inherit}
+.phases button{font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;padding:7px 12px;border:1px solid rgba(238,234,228,.22);color:rgba(238,234,228,.75);background:rgba(17,16,18,.45);backdrop-filter:blur(4px);margin-right:-1px}
+.phases li:first-child button{border-radius:4px 0 0 4px}.phases li:last-child button{border-radius:0 4px 4px 0}
+.phases button:hover:not(:disabled){color:var(--fg);border-color:rgba(238,234,228,.5)}
+.phases button[aria-pressed="true"]{color:var(--ink);background:var(--accent);border-color:var(--accent)}
+.phases button:disabled{opacity:.35;cursor:default}
+@media (max-width:700px){.phases button{padding:7px 9px}}
+.fp-grid .fp-cell[hidden]{display:none}
