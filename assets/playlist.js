@@ -29,6 +29,13 @@
     });
     return ytReady;
   }
+  // Keep YouTube's captions off, even for viewers whose YouTube settings switch them on.
+  // YouTube can load captions after the video starts, so this runs on ready, on start and when the captions module loads.
+  function noCaptions(yp){
+    try { yp.setOption('captions', 'track', {}); } catch (x) {}
+    try { yp.unloadModule('captions'); } catch (x) {}
+    try { yp.unloadModule('cc'); } catch (x) {}
+  }
   function clear(){ if (player && player.destroy) { try { player.destroy(); } catch (e) {} } player = null; slot.innerHTML = ''; }
 
   function play(i){
@@ -71,10 +78,12 @@
         if (cur !== mine) return;
         player = new window.YT.Player(box, { videoId: p[1], playerVars: { autoplay: 1, mute: sound ? 0 : 1, rel: 0, modestbranding: 1, playsinline: 1, cc_load_policy: 0, iv_load_policy: 3 },
           events: { onReady: function(e){
-                      // Keep YouTube's captions off, even for viewers whose YouTube settings switch them on.
-                      try { e.target.unloadModule('captions'); e.target.unloadModule('cc'); } catch (x) {}
+                      noCaptions(e.target);
                       if (window.TSPcrop) window.TSPcrop(stage, slot.querySelector('iframe')); },
-                    onStateChange: function(e){ if (e.data === 0) next(); } } });
+                    onApiChange: function(e){ noCaptions(e.target); },   // fires when YouTube loads its captions module
+                    onStateChange: function(e){
+                      if (e.data === 1) { noCaptions(e.target); setTimeout(function(){ noCaptions(e.target); }, 1500); }   // playing
+                      if (e.data === 0) next(); } } });
       }).catch(function(){});
     } else if (p[0] === 'instagram') {
       var f = document.createElement('iframe');
