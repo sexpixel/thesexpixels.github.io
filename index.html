@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Sex Pixels · Visual effects</title>
-<meta name="description" content="The Sex Pixels Ltd: boutique visual effects studio led by Mark Pinheiro, Nuke compositor and VFX supervisor.">
+<title>Mark Pinheiro · Filmmaker / VFX / AI</title>
+<meta name="description" content="Mark Pinheiro: filmmaker, Nuke compositor and VFX supervisor, working through his studio, The Sex Pixels.">
 <meta name="theme-color" content="#111012">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,8 +30,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--fg);outline-offset:
   background:linear-gradient(180deg,rgba(17,16,18,.75),rgba(17,16,18,0))}
 .nav.solid{background:rgba(17,16,18,.94);backdrop-filter:blur(12px)}
 .nav.hide{transform:translateY(-100%)}
-.mark{font-weight:900;font-size:18px;letter-spacing:-.2px;text-transform:uppercase;text-decoration:none;white-space:nowrap}
-.mark span{color:var(--accent)}
+.mark{display:flex;flex-direction:column;gap:3px;text-decoration:none;white-space:nowrap;line-height:1}
+.mark b{font-weight:900;font-size:22px;letter-spacing:-.4px;text-transform:uppercase}
+.mark small{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--accent)}
 .nav ul{display:flex;gap:clamp(14px,3vw,40px);list-style:none;margin:0;padding:0}
 .nav ul a{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;color:var(--soft);
   display:inline-block;padding:12px 0}
@@ -111,18 +112,19 @@ footer .avail b{background:var(--accent);color:var(--ink);padding:1px 4px 1px 8p
 @media (max-width:560px){
   .nav ul{gap:14px}
   .nav ul li.opt{display:none}
-  .mark{font-size:15px}
+  .mark b{font-size:18px}
+  .mark small{font-size:8px;letter-spacing:2.5px}
 }
 </style>
 </head>
 <body>
 
 <header class="nav" id="nav">
-  <a class="mark" href="#top" aria-label="The Sex Pixels, back to top">The Sex Pixels<span>.</span></a>
+  <a class="mark" href="#top" aria-label="Mark Pinheiro, The Sex Pixels, back to top"><b>Mark Pinheiro</b><small>The Sex Pixels</small></a>
   <nav aria-label="Main">
     <ul>
       <li><a href="#work">Work</a></li>
-      <li class="opt"><a href="#studio">Studio</a></li>
+      <li class="opt"><a href="#about">About</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
@@ -132,7 +134,7 @@ footer .avail b{background:var(--accent);color:var(--ink);padding:1px 4px 1px 8p
   <section class="hero" aria-label="Showreel" style="padding:0;max-width:none">
     <iframe
       src="https://www.youtube-nocookie.com/embed/S0dXndn0OBo?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=S0dXndn0OBo,WuXgmtTcd04&amp;controls=0&amp;rel=0&amp;modestbranding=1&amp;iv_load_policy=3&amp;playsinline=1&amp;disablekb=1"
-      title="The Sex Pixels showreels, playing muted in the background"
+      title="Mark Pinheiro showreels, playing muted in the background"
       allow="autoplay; encrypted-media; picture-in-picture"
       tabindex="-1"></iframe>
     <div class="reelbar">
@@ -184,14 +186,14 @@ footer .avail b{background:var(--accent);color:var(--ink);padding:1px 4px 1px 8p
     </div>
   </section>
 
-  <section id="studio">
-    <div class="rail"><span class="n">02</span>Studio</div>
+  <section id="about">
+    <div class="rail"><span class="n">02</span>About</div>
     <h2>Filmmaker <span class="sl">/</span> VFX <span class="sl">/</span> AI</h2>
     <div class="about">
       <div>
-        <p class="lede">The Sex Pixels is a boutique visual effects studio led by Mark Pinheiro, Nuke compositor and VFX supervisor.</p>
+        <p class="lede">Mark Pinheiro is a filmmaker, Nuke compositor and VFX supervisor.</p>
         <p>Twenty-six years in VFX, from on-set supervision and previz through compositing to final delivery, across feature film, episodic, commercials and music promos.</p>
-        <p>The studio pairs traditional VFX craft with ethical AI.</p>
+        <p>He works through his boutique studio, The Sex Pixels, pairing traditional VFX craft with ethical AI.</p>
       </div>
       <div>
         <figure class="quote">
