@@ -14,6 +14,13 @@ from work_data import PROJECTS, ROLE_GROUPS, FORMATS, FORMAT_SLUGS
 from news_data import NEWS
 
 E = html.escape
+
+# Cache-busting: the stylesheet and scripts are linked with a short fingerprint of their contents
+# (site.css?v=1a2b3c4d), so browsers fetch the new file as soon as it changes instead of using an old copy.
+import hashlib
+def _ver(rel):
+    with open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), rel), "rb") as f:
+        return hashlib.sha1(f.read()).hexdigest()[:8]
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # ---------------------------------------------------------------- reels
@@ -48,7 +55,7 @@ def head(title, desc, extra=""):
 <meta name="description" content="{E(desc)}">
 <meta name="theme-color" content="#111012">
 {FONTS_SITE}
-{extra}<link rel="stylesheet" href="/assets/site.css">
+{extra}<link rel="stylesheet" href="/assets/site.css?v={_ver("assets/site.css")}">
 </head>'''
 
 def header(current="", sub="VFX Supervisor"):
@@ -83,7 +90,7 @@ FOOTER = '''<footer>
   <span class="avail">Available <b>now</b> worldwide</span>
 </footer>
 
-<script src="/assets/site.js"></script>'''
+<script src="/assets/site.js?v=''' + _ver('assets/site.js') + '''"></script>'''
 
 TREE = '''<div class="tree">
             <div style="--c:#eeeae4"><span></span>/jobs/Production_Name/</div>
@@ -564,7 +571,7 @@ def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wid
 </main>
 
 {FOOTER}
-<script src="/assets/playlist.js"></script>
+<script src="/assets/playlist.js?v={_ver("assets/playlist.js")}"></script>
 </body>
 </html>
 '''
