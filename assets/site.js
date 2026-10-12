@@ -4,12 +4,15 @@
   var nav = document.getElementById('nav');
   if (nav) {
     var last = window.scrollY, ticking = false;
+    // On player pages the page name sits just under the menu, so the menu never turns solid there
+    // (it would cover the name); it simply slides away as soon as you scroll.
+    var overTitle = !!document.querySelector('.herotop'), HIDE_AT = overTitle ? 8 : 140;
     var update = function(){
       var y = window.scrollY;
-      nav.classList.toggle('solid', y > 40);
+      nav.classList.toggle('solid', y > 40 && !(overTitle && y < window.innerHeight * 0.9));
       if (nav.classList.contains('open')) { last = y; ticking = false; return; }
-      if (y > last && y > 140) nav.classList.add('hide');
-      else if (y < last - 4 || y <= 140) nav.classList.remove('hide');
+      if (y > last && y > HIDE_AT) nav.classList.add('hide');
+      else if (y < last - 4 || y <= HIDE_AT) nav.classList.remove('hide');
       last = y; ticking = false;
     };
     window.addEventListener('scroll', function(){ if (!ticking) { requestAnimationFrame(update); ticking = true; } }, {passive:true});
