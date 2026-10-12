@@ -285,3 +285,9 @@ address a{color:var(--fg)}
 .contactpage .email{font-size:clamp(24px,3vw,44px)}
 .ctiles .t{font-size:clamp(18px,1.8vw,28px);text-transform:none;letter-spacing:-.01em;overflow-wrap:normal;word-break:normal}
 @media (max-width:520px){.ctiles .t{overflow-wrap:anywhere}}
+
+/* ---------- TV mode (homepage reel, after a few idle seconds) ---------- */
+.reelbar,.hero::after{transition:opacity .8s ease}
+body.tv .nav{transform:translateY(-100%);transition:transform .8s cubic-bezier(.6,0,.2,1)}
+body.tv .reelbar,body.tv .hero::after{opacity:0;pointer-events:none}
+body.tv .hero{cursor:none}

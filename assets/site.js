@@ -29,6 +29,25 @@
     document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && nav.classList.contains('open')) { setOpen(false); btn.focus(); } });
   }
 
+
+  // 1c. TV mode on the homepage reel: after a few seconds with no mouse movement, the menu,
+  // captions and cursor fade away and the reel fills the screen like a TV. Any movement,
+  // touch, key press or scroll brings them back.
+  var hero = document.querySelector('.hero');
+  if (hero) {
+    var idle, IDLE_MS = 2500;
+    var onHero = function(){ return window.scrollY < hero.offsetHeight * 0.6; };
+    var wake = function(){
+      document.body.classList.remove('tv');
+      clearTimeout(idle);
+      idle = setTimeout(function(){
+        if (onHero() && !(nav && nav.classList.contains('open')) && !document.querySelector('.lightbox:not([hidden])')) document.body.classList.add('tv');
+      }, IDLE_MS);
+    };
+    ['mousemove', 'touchstart', 'keydown', 'scroll', 'focusin'].forEach(function(ev){ window.addEventListener(ev, wake, {passive:true}); });
+    wake();
+  }
+
   // 2. Full-screen player. Any element with data-video="vimeo:ID:HASH" or "youtube:ID" opens it.
   var box, frame, closeBtn, lastFocus;
   function build(){
