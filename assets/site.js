@@ -47,12 +47,14 @@
     var p = spec.split(':');
     if (p[0] === 'vimeo') return 'https://player.vimeo.com/video/' + p[1] + '?h=' + (p[2] || '') + '&autoplay=1&title=0&byline=0&portrait=0&dnt=1';
     if (p[0] === 'youtube') return 'https://www.youtube-nocookie.com/embed/' + p[1] + '?autoplay=1&rel=0&modestbranding=1&playsinline=1';
+    if (p[0] === 'instagram') return 'https://www.instagram.com/reel/' + p[1] + '/embed';
     return null;
   }
   function open(spec){
     var src = srcFor(spec); if (!src) return false;
     if (!box) build();
     lastFocus = document.activeElement;
+    box.classList.toggle('vertical', spec.indexOf('instagram:') === 0);
     frame.src = src; box.hidden = false; document.body.style.overflow = 'hidden'; closeBtn.focus();
     if (box.requestFullscreen) box.requestFullscreen().catch(function(){});
     return true;

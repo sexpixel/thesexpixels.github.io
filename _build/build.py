@@ -36,7 +36,6 @@ def reel_link(r):
 FONTS_SITE = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
               '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
               '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,75..125,400..900;1,75..125,400..900&family=IBM+Plex+Mono:wght@400;600&display=swap">')
-FONTS_FLEAPIT = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Sans:wght@400;500;600&family=Yellowtail&display=swap">'
 
 def head(title, desc, extra=""):
     return f'''<!doctype html>
@@ -139,8 +138,7 @@ def page_intro(n, label, title, lede=""):
 
 # ---------------------------------------------------------------- home
 home = head("Mark Pinheiro · Filmmaker / VFX / AI",
-            "Mark Pinheiro: filmmaker, Nuke compositor and VFX supervisor.",
-            '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yellowtail&display=swap">\n') + f'''
+            "Mark Pinheiro: filmmaker, Nuke compositor and VFX supervisor.") + f'''
 <body>
 
 {header()}
@@ -179,7 +177,7 @@ home = head("Mark Pinheiro · Filmmaker / VFX / AI",
         </div>
       </a>
       <a class="card" href="/fleapit/">
-        <div class="thumb fleapit-thumb" aria-hidden="true"><span>The Fleapit.</span></div>
+        <div class="thumb fleapit-thumb" aria-hidden="true"><span>The Fleapit<b>.</b></span></div>
         <div class="meta">
           <span class="kicker">03 · The Fleapit</span>
           <h3>Filmmaking experiments</h3>
@@ -379,37 +377,63 @@ skills = head("Skills · Mark Pinheiro",
 write("skills/index.html", skills)
 
 # ---------------------------------------------------------------- the fleapit
-# Its own house style (the Fleapit design system), inside the site's frame. Ready to move to its own domain.
-PROGRAMME = [
-    ("19:00", "Idents & stings", "Short openers and channel idents."),
-    ("19:05", "Local-shop ads", "Cheap uncommercials for the corner shop."),
-    ("19:15", "Uncommercials", "High-end ad craft advertising the flaw the maker would rather you didn't notice."),
-    ("19:40", "Coming attractions", "Trailers for films that don't exist."),
-    ("19:55", "The short", "Short films in the 70s pre-feature slot."),
-    ("20:15", "Film essays", "Clips from the archive, picked and discussed."),
+# Filmmaking experiments, in the CV look. Ready to move to its own domain later.
+# FEATURE: the film in the big player. REELS: the grid, newest first.
+# video: "vimeo:ID:HASH", "youtube:ID" or "instagram:REELCODE" (the code in instagram.com/reel/CODE/). None = coming soon.
+FLEAPIT_FEATURE = dict(title="Now showing", video=None, url=None)
+FLEAPIT_REELS = [
+    dict(title="Uncommercials", kind="Uncommercial", video=None),
+    dict(title="Coming attractions", kind="Trailer", video=None),
+    dict(title="Idents & stings", kind="Ident", video=None),
+    dict(title="Local-shop ads", kind="Cheap uncommercial", video=None),
+    dict(title="The short", kind="Short film", video=None),
+    dict(title="Film essays", kind="Film essay", video=None),
 ]
-rows = "\n".join(f'''        <li><span class="t">{t}</span><span class="w"><b>{E(w)}</b><span>{E(d)}</span></span><span class="s">Coming soon</span></li>''' for t, w, d in PROGRAMME)
-fleapit = head("The Fleapit. SE1 · Mark Pinheiro",
-               "The Fleapit. SE1: Mark Pinheiro's filmmaking experiments. Uncommercials, fake trailers, idents and film essays.",
-               FONTS_FLEAPIT + "\n") + f'''
-<body class="fleapit">
+def embed_src(v):
+    k, _, rest = v.partition(":")
+    if k == "vimeo":
+        vid, _, h = rest.partition(":"); return f"https://player.vimeo.com/video/{vid}?h={h}&title=0&byline=0&portrait=0&dnt=1"
+    if k == "youtube": return f"https://www.youtube-nocookie.com/embed/{rest}?rel=0&modestbranding=1&playsinline=1"
+    if k == "instagram": return f"https://www.instagram.com/reel/{rest}/embed"
+    return ""
+f = FLEAPIT_FEATURE
+if f["video"]:
+    player = f'''    <div class="fp-player">
+      <iframe src="{embed_src(f["video"])}" title="{E(f["title"])}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="fp-under"><span>{E(f["title"])}</span><a class="pill" href="{f["url"] or "#"}" data-video="{f["video"]}"><i></i>Full screen</a></div>'''
+else:
+    player = f'''    <div class="fp-player fp-empty">
+      <div><span class="fp-now">Now showing</span><span class="fp-big">The first reel is in the edit</span><a class="pill" href="{INSTAGRAM}" target="_blank" rel="noopener">Follow on Instagram ↗</a></div>
+    </div>'''
+def reel_cell(r):
+    if r["video"]:
+        return f'''      <a class="fp-cell" href="#" data-video="{r["video"]}"><span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])}</i></span><span class="play"></span></a>'''
+    return f'''      <div class="fp-cell fp-soon"><span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])} · coming soon</i></span></div>'''
+cells = "\n".join(reel_cell(r) for r in FLEAPIT_REELS)
+fleapit = head("The Fleapit · Mark Pinheiro",
+               "The Fleapit. SE1: Mark Pinheiro's filmmaking experiments. Uncommercials, fake trailers, idents and film essays.") + f'''
+<body>
 
 {header("fleapit")}
 
 <main>
-  <section class="fp-hero">
-    <p class="fp-sign" aria-label="The Fleapit.">The Fleapit.</p>
-    <p class="fp-sub">SE1 · Filmmaking experiments by Mark Pinheiro</p>
-    <p class="fp-lead">Uncommercials, fake trailers, idents and film essays. Shot on iPhone, finished with VFX and AI, and programmed like the reel before the feature.</p>
-    <a class="fp-ticket" href="{INSTAGRAM}" target="_blank" rel="noopener">Follow the programme on Instagram</a>
+  <section class="page fp-head">
+    <div class="rail"><span class="n">SE1</span>Filmmaker</div>
+    <h1 class="pagetitle">The Fleapit<span class="dot">.</span></h1>
+    <p class="pagelede">Filmmaking experiments: uncommercials, fake trailers, idents and film essays. Shot on iPhone, finished with VFX and AI.</p>
   </section>
 
-  <section class="fp-programme" aria-labelledby="tonight">
-    <h2 id="tonight">Tonight's programme</h2>
-    <ol>
-{rows}
-    </ol>
-    <p class="fp-note">New reels go up on Instagram first.</p>
+  <section class="fp-stage" aria-label="Now showing">
+{player}
+  </section>
+
+  <section class="fp-reels" aria-labelledby="reels-h">
+    <div class="rail"><span class="n">Reels</span><span id="reels-h">Latest</span></div>
+    <div class="fp-grid">
+{cells}
+    </div>
+    <div class="fp-follow"><a class="pill ghost" href="{INSTAGRAM}" target="_blank" rel="noopener">@t_h_e__p_i_x_x_x_e_l_s on Instagram ↗</a></div>
   </section>
 </main>
 
