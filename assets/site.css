@@ -407,3 +407,5 @@ body.tuner.noguides .heroui{opacity:0}
 .ctop .clabel{flex-direction:column;align-items:flex-start;gap:12px}
 .ic.big{width:clamp(48px,4.4vw,64px);height:clamp(48px,4.4vw,64px)}
 .roles .loc{color:var(--dim)}
+.herotop{text-align:left}
+.fp-empty > .herotop{align-items:flex-start;text-align:left;padding:0}

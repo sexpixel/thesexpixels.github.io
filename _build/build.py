@@ -352,7 +352,7 @@ write("work/index.html", work)
 
 # One page per format. Formats in PLAYER_FORMATS get the full-screen player layout (built further down,
 # after player_page); the rest keep this list layout.
-PLAYER_FORMATS = ["Feature film", "Episodic", "Feature animation"]
+PLAYER_FORMATS = ["Feature film", "Episodic", "Commercial", "Feature animation"]
 for i, f in enumerate(FORMATS, 1):
     if f in PLAYER_FORMATS: continue
     items = [q for p in PROJECTS if p["fmt"] == f for q in expand(p)]
@@ -678,6 +678,7 @@ player_page("vfxsupervisor/index.html", "vfxsup", "VFX Supervisor", "VFX Supervi
 FORMAT_LEDES = {
     "Feature film": "Feature film project reels: Nuke compositing, PostVis and VFX supervision. Play them all, or pick one from the grid.",
     "Episodic": "Episodic project reels: Nuke compositing, PostVis and VFX supervision. Play them all, or pick one from the grid.",
+    "Commercial": "Commercial project reels: on-set supervision and compositing. Play them all, or pick one from the grid.",
     "Feature animation": "Feature animation project reels. Play them all, or pick one from the grid.",
 }
 for i, f in enumerate(FORMATS, 1):
