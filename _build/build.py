@@ -29,8 +29,9 @@ REEL_2026 = "vimeo:1232958213:ffbea294d7"
 REELS = [
     dict(id="reel-compositor", role="Nuke compositor", title="Compositing showreel", note="Showreel · 2026",
          line="The latest compositing reel.", video=REEL_2026, url="https://vimeo.com/1232958213/ffbea294d7"),
-    dict(id="reel-vfx-supervisor", role="VFX supervisor", title="VFX supervisor showreel", note="Stand-in: compositing showreel 2026",
-         line="On-set and post supervision across film, episodic and commercials.", video=REEL_2026, url="https://vimeo.com/1232958213/ffbea294d7"),  # STAND-IN until the supervisor reel exists
+    dict(id="reel-vfx-supervisor", role="VFX supervisor", title="VFX supervisor showreel", note="Stand-in",
+         line="On-set and post supervision across film, episodic and commercials.", video="youtube:9KZPd8__8ys", url="https://youtu.be/9KZPd8__8ys",
+         thumb="https://i.ytimg.com/vi/9KZPd8__8ys/hqdefault.jpg"),  # STAND-IN until the supervisor reel exists
     dict(id="reel-sizzle", role="Archive", title="Sizzle reel", note="02:30",
          line="Seventeen years of work in two and a half minutes.", video="youtube:SDAXjN_sOlE",
          url="https://youtu.be/SDAXjN_sOlE", thumb="https://i.ytimg.com/vi/SDAXjN_sOlE/hqdefault.jpg"),
@@ -599,7 +600,7 @@ write("fleapit/index.html", '''<!doctype html>
 ''')
 
 # ---------------------------------------------------------------- vfx supervisor (player + grid; showreel first)
-SUP_REELS = [dict(title="VFX supervisor showreel", kind="Stand-in: compositing showreel 2026", video=next((r["video"] for r in REELS if r["role"] == "VFX supervisor"), None))] + \
+SUP_REELS = [dict(title="VFX supervisor showreel", kind="Stand-in", video=next((r["video"] for r in REELS if r["role"] == "VFX supervisor"), None))] + \
     [dict(title=p["title"], kind=" · ".join(x for x in (p["role"], p["co"]) if x), video=p.get("video"))
      for p in PROJECTS if p["group"] == "VFX supervisor"]
 player_page("vfxsupervisor/index.html", "vfxsup", "VFX Supervisor", "VFX Supervisor", "SUP", "Showreels",
