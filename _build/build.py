@@ -71,7 +71,7 @@ def header(current="", sub="VFX Supervisor"):
         return f'<li><a href="{href}"{cur}>{label}</a></li>'
     sub_items = "\n          ".join(f'<li><a href="/work/{FORMAT_SLUGS[f]}/">{" ".join(w.capitalize() for w in f.split())}</a></li>' for f in FORMATS)
     return f'''<header class="nav" id="nav">
-  <a class="mark" href="/" aria-label="Mark Pinheiro, {sub}, home"><b>Mark Pinheiro</b><small>{sub}</small></a>
+  <a class="mark" href="/" aria-label="Mark Pinheiro{", " + sub if sub else ""}, home"><b>Mark Pinheiro</b>{f"<small>{sub}</small>" if sub else ""}</a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
   <nav aria-label="Main" id="menu">
     <ul>
@@ -602,7 +602,7 @@ def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wid
     pg = head(page_title, desc) + f'''
 <body>
 
-{header(key, sub)}
+{header(key, None)}
 
 <main>
   <section class="hero stickyhero fp-player{"" if has_any else " fp-empty"}" id="fp-player" aria-label="Player">
