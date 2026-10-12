@@ -429,3 +429,9 @@ body.tuner.noguides .heroui{opacity:0}
 .doc-ch.on{border-color:var(--accent)}
 .doc-ch .doc-n{position:absolute;top:6px;left:8px;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:1px;color:var(--accent)}
 .doc-ch b{position:absolute;left:8px;bottom:6px;font-weight:900;font-size:clamp(11px,.95vw,14px);text-shadow:0 1px 8px rgba(0,0,0,.8)}
+
+/* The player is pinned to the window (fixed rather than sticky: Safari lets sticky elements drift a few
+   pixels as you start scrolling). The content scrolls up over it from one screen down. */
+.stickyhero{position:fixed;top:0;left:0;right:0}
+.stickyhero + .over,.stickyhero ~ .over{margin-top:max(100svh,420px)}
+footer{background:var(--bg)}
