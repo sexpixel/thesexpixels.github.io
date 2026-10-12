@@ -12,15 +12,11 @@ sys.path.insert(0, os.path.dirname(__file__))
 from skills_data import stages
 from work_data import PROJECTS, ROLE_GROUPS, FORMATS, FORMAT_SLUGS, expand
 from news_data import NEWS
-from crops import CROPS, crop_of
+from crops import CROPS, crop_of, crop_str
 
 def crop_attr(spec):
-    c = crop_of(spec)
-    return f' data-crop="{c[0]},{c[1]}"' if c else ""
-
-def crop_style(spec):
-    c = crop_of(spec)
-    return f' style="--zoom:{c[0]};--shift:{c[1]}"' if c else ""
+    c = crop_str(spec)
+    return f' data-crop="{c}"' if c else ""
 
 
 E = html.escape
@@ -164,7 +160,7 @@ home = head("Mark Pinheiro · Filmmaker / VFX / AI",
 {header()}
 
 <main id="top">
-  <section class="hero stickyhero" aria-label="Showreel"{crop_style(REEL_2026)}>
+  <section class="hero stickyhero" aria-label="Showreel"{crop_attr(REEL_2026)}>
     <iframe
       src="https://player.vimeo.com/video/1232958213?h=ffbea294d7&amp;background=1&amp;autoplay=1&amp;muted=1&amp;loop=1&amp;autopause=0&amp;controls=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;dnt=1"
       title="Mark Pinheiro compositing showreel 2026, playing muted in the background"
@@ -774,8 +770,9 @@ for page_name, reels in (("Home", [dict(title="Compositing showreel 2026", video
     for r in reels:
         v = r.get("video")
         if not v or v in _seen or v.startswith("instagram:"): continue
-        _seen.add(v); c = crop_of(v) or (1, 0)
-        TUNE.append(dict(title=r["title"], spec=v, page=page_name, zoom=c[0], shift=c[1]))
+        _seen.add(v); c = crop_of(v) or {}
+        TUNE.append(dict(title=r["title"], spec=v, page=page_name, top=c.get("top", 0), bottom=c.get("bottom", 0),
+                         left=c.get("left", 0), right=c.get("right", 0), fill=c.get("fill", True)))
 tuner = head("Reel crop tuner · Mark Pinheiro", "Private: set the crop for each reel.", '<meta name="robots" content="noindex">\n') + f"""
 <body class="tuner">
 
@@ -796,8 +793,14 @@ tuner = head("Reel crop tuner · Mark Pinheiro", "Private: set the crop for each
   <div class="tp-row"><button type="button" class="fp-btn" id="t-prev" aria-label="Previous reel">◀</button>
     <select id="t-pick" aria-label="Reel"></select>
     <button type="button" class="fp-btn" id="t-next" aria-label="Next reel">▶</button></div>
-  <label>Zoom <output id="t-zv"></output><input type="range" id="t-zoom" min="1" max="1.8" step="0.01"></label>
-  <label>Move up / down <output id="t-sv"></output><input type="range" id="t-shift" min="-25" max="25" step="0.5"></label>
+  <div class="tp-crop">
+    <label>Crop top <output id="v-top"></output><input type="range" id="c-top" min="0" max="35" step="0.1"></label>
+    <label>Crop bottom <output id="v-bottom"></output><input type="range" id="c-bottom" min="0" max="35" step="0.1"></label>
+    <label>Crop left <output id="v-left"></output><input type="range" id="c-left" min="0" max="35" step="0.1"></label>
+    <label>Crop right <output id="v-right"></output><input type="range" id="c-right" min="0" max="35" step="0.1"></label>
+  </div>
+  <label class="tp-check"><input type="checkbox" id="c-link"> Link top &amp; bottom</label>
+  <label class="tp-check"><input type="checkbox" id="c-fill"> Fill screen (scale the cropped picture up)</label>
   <div class="tp-row"><button type="button" class="fp-btn" id="t-reset">Reset this reel</button>
     <button type="button" class="fp-btn" id="t-guides" aria-pressed="true">Headings on</button>
     <button type="button" class="fp-btn" id="t-hide">Hide panel (H)</button></div>
@@ -809,8 +812,8 @@ tuner = head("Reel crop tuner · Mark Pinheiro", "Private: set the crop for each
 <script>
 var TUNE = {json.dumps(TUNE)};
 </script>
-<script src="/assets/tuner.js?v={_ver('assets/tuner.js')}"></script>
 <script src="/assets/site.js?v={_ver('assets/site.js')}"></script>
+<script src="/assets/tuner.js?v={_ver('assets/tuner.js')}"></script>
 </body>
 </html>
 """

@@ -48,8 +48,31 @@
     wake();
   }
 
+  // 1c2. Crop, Resolve-style. data-crop="top,bottom,left,right,fill" (percent of the frame).
+  // fill=1 scales the cropped picture up to cover the screen; fill=0 leaves the cropped edges black.
+  window.TSPcrop = function(stage, frame){
+    if (!stage || !frame) return;
+    var c = (stage.getAttribute('data-crop') || '').split(',').map(Number);
+    var props = ['width', 'height', 'left', 'top', 'transform', 'clip-path'];
+    if (c.length < 4 || !(c[0] || c[1] || c[2] || c[3])) { props.forEach(function(k){ frame.style.removeProperty(k); }); return; }
+    var t = c[0] / 100, b = c[1] / 100, l = c[2] / 100, r = c[3] / 100, fill = c[4] !== 0;
+    var ar = parseFloat(getComputedStyle(stage).getPropertyValue('--ar')) || 16 / 9;
+    var vw = stage.clientWidth, vh = stage.clientHeight, fw = Math.max(0.05, 1 - l - r), fh = Math.max(0.05, 1 - t - b), W;
+    if (fill) W = Math.max(vw / fw, vh * ar / fh); else W = Math.max(vw, vh * ar);
+    var H = W / ar, cx = fill ? W * (l + fw / 2) : W / 2, cy = fill ? H * (t + fh / 2) : H / 2;
+    var set = function(k, v){ frame.style.setProperty(k, v, 'important'); };
+    set('width', W + 'px'); set('height', H + 'px'); set('left', (vw / 2 - cx) + 'px'); set('top', (vh / 2 - cy) + 'px');
+    set('transform', 'none'); set('clip-path', 'inset(' + c[0] + '% ' + c[3] + '% ' + c[1] + '% ' + c[2] + '%)');
+  };
+  window.addEventListener('resize', function(){
+    document.querySelectorAll('[data-crop]').forEach(function(st){
+      if (st.classList.contains('hero')) window.TSPcrop(st, st.querySelector('.fp-slot iframe, :scope > iframe'));
+    });
+  });
+
   // 1d. Homepage background reel: read the video's real shape so it covers the screen edge to edge.
   var bg = document.querySelector('.hero > iframe[src*="player.vimeo.com"]');
+  if (bg) window.TSPcrop(bg.parentNode, bg);
   if (bg) {
     var s = document.createElement('script'); s.src = 'https://player.vimeo.com/api/player.js';
     s.onload = function(){
@@ -57,6 +80,7 @@
         var pl = new window.Vimeo.Player(bg);
         Promise.all([pl.getVideoWidth(), pl.getVideoHeight()]).then(function(d){
           if (d[0] && d[1]) bg.parentNode.style.setProperty('--ar', d[0] / d[1]);
+          window.TSPcrop(bg.parentNode, bg);
         }).catch(function(){});
       } catch (e) {}
     };

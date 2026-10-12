@@ -1,17 +1,19 @@
 // Reel crop tuner (private page at /tuner/). Plays each reel full screen behind a sample
-// page heading; Zoom and Move set how much of the black bars is pushed off screen.
+// page heading; Crop top/bottom/left/right work like Resolve's crop, with an option to fill the screen.
 // "Copy settings" gives the lines to paste back to Claude, who puts them in _build/crops.py.
 (function(){
   var stage = document.getElementById('fp-player'), slot = document.getElementById('fp-slot');
-  var pick = document.getElementById('t-pick'), zoom = document.getElementById('t-zoom'), shift = document.getElementById('t-shift');
-  var zv = document.getElementById('t-zv'), sv = document.getElementById('t-sv'), out = document.getElementById('t-out');
+  var pick = document.getElementById('t-pick'), out = document.getElementById('t-out');
+  var SIDES = ['top', 'bottom', 'left', 'right'], slider = {}, readout = {};
+  SIDES.forEach(function(k){ slider[k] = document.getElementById('c-' + k); readout[k] = document.getElementById('v-' + k); });
+  var link = document.getElementById('c-link'), fill = document.getElementById('c-fill');
   var head = document.getElementById('t-head'), now = document.getElementById('t-now');
   var panel = document.getElementById('t-panel'), show = document.getElementById('t-show');
-  var KEY = 'tsp-crops-v1', saved = {};
+  var KEY = 'tsp-crops-v2', saved = {};
   try { saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) {}
-  TUNE.forEach(function(r){ if (saved[r.spec]) { r.zoom = saved[r.spec][0]; r.shift = saved[r.spec][1]; } });
+  TUNE.forEach(function(r){ var v = saved[r.spec]; if (v) { SIDES.forEach(function(k){ r[k] = v[k] || 0; }); r.fill = v.fill !== false; } });
   function save(){
-    var o = {}; TUNE.forEach(function(r){ o[r.spec] = [r.zoom, r.shift]; });
+    var o = {}; TUNE.forEach(function(r){ o[r.spec] = { top: r.top, bottom: r.bottom, left: r.left, right: r.right, fill: r.fill }; });
     try { localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {}
   }
 
@@ -26,43 +28,54 @@
       var s = document.createElement('script'); s.src = 'https://player.vimeo.com/api/player.js'; s.onload = res; s.onerror = rej; document.head.appendChild(s);
     }));
   }
+  function cropped(x){ return x.top || x.bottom || x.left || x.right; }
   function apply(){
     var r = TUNE[cur];
-    stage.style.setProperty('--zoom', r.zoom); stage.style.setProperty('--shift', r.shift);
-    zoom.value = r.zoom; shift.value = r.shift;
-    zv.textContent = Number(r.zoom).toFixed(2) + '×'; sv.textContent = (r.shift > 0 ? '+' : '') + r.shift + '%';
-    out.value = TUNE.filter(function(x){ return x.zoom != 1 || x.shift != 0; })
-      .map(function(x){ return x.spec + ' = ' + Number(x.zoom).toFixed(2) + ', ' + x.shift + '   # ' + x.title; }).join('\n') || '(no reels cropped yet)';
+    SIDES.forEach(function(k){ slider[k].value = r[k]; readout[k].textContent = Number(r[k]).toFixed(1) + '%'; });
+    fill.checked = r.fill;
+    stage.setAttribute('data-crop', [r.top, r.bottom, r.left, r.right, r.fill ? 1 : 0].join(','));
+    window.TSPcrop(stage, slot.querySelector('iframe'));
+    out.value = TUNE.filter(cropped).map(function(x){
+      return x.spec + ' = top ' + x.top + ', bottom ' + x.bottom + ', left ' + x.left + ', right ' + x.right + ', ' + (x.fill ? 'fill' : 'black edges') + '   # ' + x.title;
+    }).join('\n') || '(no reels cropped yet)';
   }
   function load(i){
     cur = (i + TUNE.length) % TUNE.length; pick.value = cur;
     var r = TUNE[cur], p = r.spec.split(':');
     head.textContent = r.page; now.textContent = (cur + 1) + ' / ' + TUNE.length + ' · ' + r.title;
-    stage.style.removeProperty('--ar'); apply();
+    stage.style.removeProperty('--ar');
     slot.innerHTML = '';
     var f = document.createElement('iframe');
     f.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture'); f.title = r.title;
     if (p[0] === 'vimeo') {
       f.src = 'https://player.vimeo.com/video/' + p[1] + '?' + (p[2] ? 'h=' + p[2] + '&' : '') + 'autoplay=1&muted=1&loop=1&controls=0&title=0&byline=0&portrait=0&dnt=1';
-      slot.appendChild(f);
+      slot.appendChild(f); apply();
       vimeo().then(function(){
         var pl = new window.Vimeo.Player(f), mine = cur;
         Promise.all([pl.getVideoWidth(), pl.getVideoHeight()]).then(function(d){
-          if (mine === cur && d[0] && d[1]) stage.style.setProperty('--ar', d[0] / d[1]);
+          if (mine === cur && d[0] && d[1]) { stage.style.setProperty('--ar', d[0] / d[1]); apply(); }
         }).catch(function(){});
       }).catch(function(){});
     } else if (p[0] === 'youtube') {
       f.src = 'https://www.youtube-nocookie.com/embed/' + p[1] + '?autoplay=1&mute=1&loop=1&playlist=' + p[1] + '&controls=0&rel=0&playsinline=1';
-      slot.appendChild(f);
+      slot.appendChild(f); apply();
     }
   }
 
   pick.addEventListener('change', function(){ load(+pick.value); });
   document.getElementById('t-prev').addEventListener('click', function(){ load(cur - 1); });
   document.getElementById('t-next').addEventListener('click', function(){ load(cur + 1); });
-  zoom.addEventListener('input', function(){ TUNE[cur].zoom = +zoom.value; apply(); save(); });
-  shift.addEventListener('input', function(){ TUNE[cur].shift = +shift.value; apply(); save(); });
-  document.getElementById('t-reset').addEventListener('click', function(){ TUNE[cur].zoom = 1; TUNE[cur].shift = 0; apply(); save(); });
+  SIDES.forEach(function(k){
+    slider[k].addEventListener('input', function(){
+      var r = TUNE[cur]; r[k] = +slider[k].value;
+      if (link.checked && (k === 'top' || k === 'bottom')) r[k === 'top' ? 'bottom' : 'top'] = r[k];
+      apply(); save();
+    });
+  });
+  fill.addEventListener('change', function(){ TUNE[cur].fill = fill.checked; apply(); save(); });
+  document.getElementById('t-reset').addEventListener('click', function(){
+    var r = TUNE[cur]; SIDES.forEach(function(k){ r[k] = 0; }); r.fill = true; apply(); save();
+  });
   var guides = document.getElementById('t-guides');
   guides.addEventListener('click', function(){
     var on = document.body.classList.toggle('noguides') === false;

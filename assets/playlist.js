@@ -41,8 +41,7 @@
     showSound();
     stage.style.removeProperty('--ar');
     // Per-reel crop (set on the tuning page) pushes text in the black bars off screen.
-    var crop = (c.getAttribute('data-crop') || '1,0').split(',');
-    stage.style.setProperty('--zoom', crop[0]); stage.style.setProperty('--shift', crop[1]);
+    if (c.getAttribute('data-crop')) stage.setAttribute('data-crop', c.getAttribute('data-crop')); else stage.removeAttribute('data-crop');
     stage.classList.add('playing'); stage.classList.toggle('tall', p[0] === 'instagram');
     clear();
     var box = document.createElement('div'); slot.appendChild(box);
@@ -58,17 +57,19 @@
         f.title = c.getAttribute('data-title');
         f.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
         slot.replaceChild(f, box);
+        if (window.TSPcrop) window.TSPcrop(stage, f);
         player = new window.Vimeo.Player(f);
         player.on('ended', next);
         Promise.all([player.getVideoWidth(), player.getVideoHeight()]).then(function(d){
-          if (cur === mine && d[0] && d[1]) stage.style.setProperty('--ar', d[0] / d[1]);
+          if (cur === mine && d[0] && d[1]) { stage.style.setProperty('--ar', d[0] / d[1]); if (window.TSPcrop) window.TSPcrop(stage, f); }
         }).catch(function(){});
       }).catch(function(){});
     } else if (p[0] === 'youtube') {
       yt().then(function(){
         if (cur !== mine) return;
         player = new window.YT.Player(box, { videoId: p[1], playerVars: { autoplay: 1, mute: sound ? 0 : 1, rel: 0, modestbranding: 1, playsinline: 1 },
-          events: { onStateChange: function(e){ if (e.data === 0) next(); } } });
+          events: { onReady: function(){ if (window.TSPcrop) window.TSPcrop(stage, slot.querySelector('iframe')); },
+                    onStateChange: function(e){ if (e.data === 0) next(); } } });
       }).catch(function(){});
     } else if (p[0] === 'instagram') {
       var f = document.createElement('iframe');

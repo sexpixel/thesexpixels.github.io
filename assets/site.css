@@ -321,7 +321,7 @@ body.tv .heroui{opacity:0;pointer-events:none}
 /* role pages: the player is the full-screen layer */
 .fp-player.stickyhero{aspect-ratio:auto;max-height:none;height:100svh;border:0}
 /* Cover the whole screen, whatever the reel's shape (--ar is set from the video itself; 16:9 until known). */
-.hero.fp-player .fp-slot iframe,.hero > iframe{inset:auto;top:50%;left:50%;width:max(100vw,calc(100svh * var(--ar,1.7778))) !important;height:max(calc(100vw / var(--ar,1.7778)),100svh) !important;max-width:none;max-height:none;transform:translate(-50%,calc(-50% + var(--shift,0) * 1%)) scale(var(--zoom,1))}
+.hero.fp-player .fp-slot iframe,.hero > iframe{inset:auto;top:50%;left:50%;width:max(100vw,calc(100svh * var(--ar,1.7778))) !important;height:max(calc(100vw / var(--ar,1.7778)),100svh) !important;max-width:none;max-height:none;transform:translate(-50%,-50%)}
 .hero.fp-player.tall .fp-slot iframe{top:0;left:50%;width:auto;height:100%;aspect-ratio:9/16;transform:translateX(-50%);pointer-events:auto}
 .herotitle{display:flex;flex-direction:column;gap:2px;min-width:0}
 .herohead{margin:6px 0 8px;font-weight:900;font-size:clamp(44px,8.5vw,136px);line-height:.84;letter-spacing:-.045em;text-transform:uppercase;font-stretch:85%;text-shadow:0 2px 30px rgba(0,0,0,.35)}
@@ -359,3 +359,6 @@ body.tuner.noguides .heroui{opacity:0}
 .tp-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .tp-row select{flex:1}
 .tp-show{position:fixed;z-index:60;right:var(--gutter);bottom:var(--gutter)}
+.tp-crop{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.tp-check{flex-direction:row!important;align-items:center;gap:8px!important;text-transform:none;letter-spacing:0;font-size:12px}
+.tp-check input{accent-color:var(--accent)}
