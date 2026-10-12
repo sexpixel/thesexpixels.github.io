@@ -62,7 +62,8 @@
     var t = c[0] / 100, b = c[1] / 100, l = c[2] / 100, r = c[3] / 100, fill = c[4] === 1;
     var ar = parseFloat(getComputedStyle(stage).getPropertyValue('--ar')) || 16 / 9;
     var vw = stage.clientWidth, vh = stage.clientHeight, fw = Math.max(0.05, 1 - l - r), fh = Math.max(0.05, 1 - t - b), W;
-    if (fill) W = Math.max(vw / fw, vh * ar / fh); else W = Math.max(vw, vh * ar);
+    if (vw < vh) W = fill ? vw / fw : vw;   // phone held upright: fit the width, never crop the sides
+    else if (fill) W = Math.max(vw / fw, vh * ar / fh); else W = Math.max(vw, vh * ar);
     var H = W / ar, cx = fill ? W * (l + fw / 2) : W / 2, cy = fill ? H * (t + fh / 2) : H / 2;
     var set = function(k, v){ frame.style.setProperty(k, v, 'important'); };
     set('width', W + 'px'); set('height', H + 'px'); set('left', (vw / 2 - cx) + 'px'); set('top', (vh / 2 - cy) + 'px');

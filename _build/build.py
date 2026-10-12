@@ -427,7 +427,7 @@ skills = head("Skills · Mark Pinheiro",
       <button type="button" data-f="all" aria-pressed="true">All</button>
 {filters}
     </div>
-    <div class="cards" id="tiles">
+    <div class="cards skills3" id="tiles">
 {chr(10).join(tiles)}
     </div>
   </section>
