@@ -61,7 +61,9 @@
     if (c.length < 4 || !(c[0] || c[1] || c[2] || c[3])) { props.forEach(function(k){ frame.style.removeProperty(k); }); return; }
     var t = c[0] / 100, b = c[1] / 100, l = c[2] / 100, r = c[3] / 100, fill = c[4] === 1;
     var ar = parseFloat(getComputedStyle(stage).getPropertyValue('--ar')) || 16 / 9;
-    var vw = stage.clientWidth, vh = stage.clientHeight, fw = Math.max(0.05, 1 - l - r), fh = Math.max(0.05, 1 - t - b), W;
+    var box = frame.closest('.fp-slot') || stage;   // on an upright phone the video sits in its own box under the page name
+    if (window.matchMedia('(orientation:portrait)').matches && box === stage) box = frame;
+    var vw = box.clientWidth, vh = box.clientHeight, fw = Math.max(0.05, 1 - l - r), fh = Math.max(0.05, 1 - t - b), W;
     if (vw < vh) W = fill ? vw / fw : vw;   // phone held upright: fit the width, never crop the sides
     else if (fill) W = Math.max(vw / fw, vh * ar / fh); else W = Math.max(vw, vh * ar);
     var H = W / ar, cx = fill ? W * (l + fw / 2) : W / 2, cy = fill ? H * (t + fh / 2) : H / 2;
@@ -75,7 +77,10 @@
   window.TSPplaceTitle = function(){
     var t = document.querySelector('.herotop'), n = document.getElementById('nav'), mk = n && n.querySelector('.mark');
     if (!t || !mk) return;
-    t.style.top = (mk.getBoundingClientRect().bottom - n.getBoundingClientRect().top + 4) + 'px';
+    var y = (mk.getBoundingClientRect().bottom - n.getBoundingClientRect().top + 4) + 'px', hero = t.closest('.hero');
+    t.style.top = y;
+    // Upright phone: the page is stacked, so the name sits in the flow just under the menu bar.
+    if (hero) hero.style.paddingTop = window.matchMedia('(orientation:portrait)').matches ? y : '';
   };
   window.TSPplaceTitle();
   window.addEventListener('resize', function(){
