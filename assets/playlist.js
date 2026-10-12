@@ -60,7 +60,7 @@
         // using the video's real shape, so 4:3, 16:9 and scope reels all fill edge to edge.
         var f = document.createElement('iframe');
         f.src = 'https://player.vimeo.com/video/' + p[1] + '?' + (p[2] ? 'h=' + p[2] + '&' : '') +
-          'autoplay=1&autopause=0&texttrack=false&muted=' + (sound ? 0 : 1) + '&title=0&byline=0&portrait=0&dnt=1&playsinline=1';
+          'autoplay=1&autopause=0&controls=0&texttrack=false&muted=' + (sound ? 0 : 1) + '&title=0&byline=0&portrait=0&dnt=1&playsinline=1';
         f.title = c.getAttribute('data-title');
         f.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media');
         f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');   // lets Vimeo see the site, for domain-restricted videos
@@ -85,7 +85,7 @@
     } else if (p[0] === 'youtube') {
       yt().then(function(){
         if (cur !== mine) return;
-        player = new window.YT.Player(box, { videoId: p[1], playerVars: { autoplay: 1, mute: sound ? 0 : 1, rel: 0, modestbranding: 1, playsinline: 1, cc_load_policy: 0, iv_load_policy: 3 },
+        player = new window.YT.Player(box, { videoId: p[1], playerVars: { autoplay: 1, controls: 0, mute: sound ? 0 : 1, rel: 0, modestbranding: 1, playsinline: 1, cc_load_policy: 0, iv_load_policy: 3 },
           events: { onReady: function(e){
                       noCaptions(e.target);
                       var yp = e.target;
