@@ -133,13 +133,13 @@ footer .avail b{background:var(--accent);color:var(--ink);padding:1px 4px 1px 8p
 <main id="top">
   <section class="hero" aria-label="Showreel" style="padding:0;max-width:none">
     <iframe
-      src="https://www.youtube-nocookie.com/embed/S0dXndn0OBo?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=S0dXndn0OBo,WuXgmtTcd04&amp;controls=0&amp;rel=0&amp;modestbranding=1&amp;iv_load_policy=3&amp;playsinline=1&amp;disablekb=1"
-      title="Mark Pinheiro showreels, playing muted in the background"
-      allow="autoplay; encrypted-media; picture-in-picture"
+      src="https://player.vimeo.com/video/1232958213?h=ffbea294d7&amp;background=1&amp;autoplay=1&amp;muted=1&amp;loop=1&amp;autopause=0&amp;controls=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;dnt=1"
+      title="Mark Pinheiro Showreel 2026, playing muted in the background"
+      allow="autoplay; fullscreen; picture-in-picture"
       tabindex="-1"></iframe>
     <div class="reelbar">
-      <span class="lab"><b>Showreel</b> · 2026 · 2025</span>
-      <a class="pill" href="https://www.youtube.com/watch?v=S0dXndn0OBo" target="_blank" rel="noopener"><i></i>Watch with sound</a>
+      <span class="lab"><b>Showreel</b> · 2026</span>
+      <a class="pill" href="https://vimeo.com/1232958213/ffbea294d7" target="_blank" rel="noopener"><i></i>Watch with sound</a>
     </div>
   </section>
 
@@ -147,13 +147,13 @@ footer .avail b{background:var(--accent);color:var(--ink);padding:1px 4px 1px 8p
     <div class="rail"><span class="n">01</span>Work</div>
     <h2>Work</h2>
     <div class="cards">
-      <a class="card" href="https://www.youtube.com/watch?v=S0dXndn0OBo" target="_blank" rel="noopener">
-        <div class="thumb"><img src="https://i.ytimg.com/vi/S0dXndn0OBo/hqdefault.jpg" alt="" loading="lazy"></div>
+      <a class="card" href="https://vimeo.com/1232958213/ffbea294d7" target="_blank" rel="noopener">
+        <div class="thumb"><img id="reel26" alt="" loading="lazy" hidden></div>
         <div class="body">
           <span class="kicker">Reel · 2026</span>
           <h3>Showreel 2026</h3>
           <p>The latest compositing and supervision reel.</p>
-          <span class="go">Watch on YouTube →</span>
+          <span class="go">Watch on Vimeo →</span>
         </div>
       </a>
       <a class="card" href="/pipeline/">
@@ -231,6 +231,14 @@ footer .avail b{background:var(--accent);color:var(--ink);padding:1px 4px 1px 8p
 </footer>
 
 <script>
+// Showreel 2026 card thumbnail, fetched from Vimeo (the video is unlisted, so its still is not at a fixed address).
+(function(){
+  var img = document.getElementById('reel26');
+  fetch('https://vimeo.com/api/oembed.json?url=' + encodeURIComponent('https://vimeo.com/1232958213/ffbea294d7') + '&width=1280')
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(d){ if (d && d.thumbnail_url) { img.src = d.thumbnail_url; img.hidden = false; } })
+    .catch(function(){});
+})();
 // Nav hides when scrolling down, comes back when scrolling up (Framestore-style).
 (function(){
   var nav = document.getElementById('nav'), last = window.scrollY, ticking = false;
