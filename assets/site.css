@@ -504,3 +504,7 @@ iframe{color-scheme:normal}
 @media (max-width:520px){.iconpill{gap:5px}.ic.xs{width:14px;height:14px}}
 @media (max-width:520px){.linkrow{gap:5px}.linkrow .pill.iconpill{padding:8px 9px;letter-spacing:1px}}
 @media (max-width:380px){.linkrow .pill.iconpill{padding:7px 7px;letter-spacing:.6px;gap:4px}.linkrow .ic.xs{width:12px;height:12px}}
+/* About links: icon above the name, as small tiles in one row */
+.linkrow .pill.iconpill{flex-direction:column;justify-content:center;gap:8px;border-radius:10px;padding:12px 16px;min-width:96px}
+.linkrow .iconpill .ic.xs{width:24px;height:24px}
+@media (max-width:520px){.linkrow{gap:6px}.linkrow .pill.iconpill{flex:1 1 0;min-width:0;padding:10px 4px;gap:6px;letter-spacing:1px}.linkrow .iconpill .ic.xs{width:20px;height:20px}}
