@@ -1,4 +1,4 @@
-// The Fleapit player: plays every reel in the grid, one after another.
+// Playlist player (The Fleapit, Nuke Compositor): plays every reel in the grid, one after another.
 // Vimeo and YouTube reels advance by themselves when they end. Instagram allows no
 // "ended" signal, so on an Instagram reel the player waits for the Next button.
 (function(){

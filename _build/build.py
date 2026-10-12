@@ -11,6 +11,7 @@ import html, os, sys
 sys.path.insert(0, os.path.dirname(__file__))
 from skills_data import stages
 from work_data import PROJECTS, ROLE_GROUPS, FORMATS, FORMAT_SLUGS
+from news_data import NEWS
 
 E = html.escape
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -54,16 +55,15 @@ def header(current="", sub="VFX Supervisor"):
     def a(href, label, key):
         cur = ' aria-current="page"' if key == current else ""
         return f'<li><a href="{href}"{cur}>{label}</a></li>'
-    cur_f = ' aria-current="page"' if current == "fleapit" else ""
-    reels = f'<li><a href="/fleapit/"{cur_f}>Filmmaker</a></li>\n      ' + "\n      ".join(
-        f'<li><a {reel_link(r)}>{r["role"].title().replace("Vfx","VFX")}</a></li>' for r in REELS[:2])
     sub_items = "\n          ".join(f'<li><a href="/work/{FORMAT_SLUGS[f]}/">{" ".join(w.capitalize() for w in f.split())}</a></li>' for f in FORMATS)
     return f'''<header class="nav" id="nav">
   <a class="mark" href="/" aria-label="Mark Pinheiro, {sub}, home"><b>Mark Pinheiro</b><small>{sub}</small></a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
   <nav aria-label="Main" id="menu">
     <ul>
-      {reels}
+      {a("/thefleapit/", "Filmmaker", "fleapit")}
+      {a("/nukecompositor/", "Nuke Compositor", "nuke")}
+      {a("/vfxsupervisor/", "VFX Supervisor", "vfxsup")}
       <li class="sep" aria-hidden="true"></li>
       <li class="has-sub"><a href="/work/"{' aria-current="page"' if current == "work" else ""}>Work</a>
         <ul class="sub">
@@ -71,6 +71,7 @@ def header(current="", sub="VFX Supervisor"):
         </ul>
       </li>
       {a("/skills/", "Skills", "skills")}
+      {a("/news/", "News", "news")}
       {a("/about/", "About", "about")}
       {a("/contact/", "Contact", "contact")}
     </ul>
@@ -176,7 +177,7 @@ home = head("Mark Pinheiro · Filmmaker / VFX / AI",
           <span class="go">Skills →</span>
         </div>
       </a>
-      <a class="card" href="/fleapit/">
+      <a class="card" href="/thefleapit/">
         <div class="thumb fleapit-thumb" aria-hidden="true"><span>The Fleapit<b>.</b></span></div>
         <div class="meta">
           <span class="kicker">03 · The Fleapit</span>
@@ -266,7 +267,7 @@ work = head("Work · Mark Pinheiro", "Mark Pinheiro's showreels and project reel
 
   <section id="formats" style="padding-top:0">
     <div class="rail"><span class="n">B</span>Project reels by format</div>
-    <div class="cards">
+    <div class="cards four">
 {chr(10).join(doors)}
     </div>
   </section>
@@ -375,73 +376,6 @@ skills = head("Skills · Mark Pinheiro",
 </html>
 '''
 write("skills/index.html", skills)
-
-# ---------------------------------------------------------------- the fleapit
-# Filmmaking experiments, in the CV look. Ready to move to its own domain later.
-# REELS: the grid, newest first. The player at the top plays them one after another.
-# video: "vimeo:ID:HASH" or "youtube:ID" (these play straight through), or "instagram:REELCODE"
-# (Instagram allows no auto-advance, so the player waits on those for the Next button). None = coming soon.
-# thumb: optional image URL for the grid tile (Vimeo stills are fetched automatically).
-FLEAPIT_REELS = [
-    dict(title="Uncommercials", kind="Uncommercial", video=None),
-    dict(title="Coming attractions", kind="Trailer", video=None),
-    dict(title="Idents & stings", kind="Ident", video=None),
-    dict(title="Local-shop ads", kind="Cheap uncommercial", video=None),
-    dict(title="The short", kind="Short film", video=None),
-    dict(title="Film essays", kind="Film essay", video=None),
-]
-def reel_cell(i, r):
-    if r["video"]:
-        img = ""
-        if r.get("thumb"): img = f'<img src="{r["thumb"]}" alt="" loading="lazy">'
-        elif r["video"].startswith("vimeo:"):
-            vid, _, h = r["video"][6:].partition(":"); img = f'<img data-vimeo="https://vimeo.com/{vid}/{h}" alt="" hidden>'
-        elif r["video"].startswith("youtube:"): img = f'<img src="https://i.ytimg.com/vi/{r["video"][8:]}/hqdefault.jpg" alt="" loading="lazy">'
-        return f'''      <button class="fp-cell" type="button" data-i="{i}" data-src="{r["video"]}" data-title="{E(r["title"])}">{img}<span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])}</i></span><span class="play"></span></button>'''
-    return f'''      <div class="fp-cell fp-soon"><span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])} · coming soon</i></span></div>'''
-cells = "\n".join(reel_cell(i, r) for i, r in enumerate(FLEAPIT_REELS))
-has_any = any(r["video"] for r in FLEAPIT_REELS)
-fleapit = head("The Fleapit · Mark Pinheiro",
-               "The Fleapit. SE1: Mark Pinheiro's filmmaking experiments. Uncommercials, fake trailers, idents and film essays.") + f'''
-<body>
-
-{header("fleapit", "The Sex Pixels")}
-
-<main>
-  <section class="page fp-head">
-    <div class="rail"><span class="n">SE1</span>Filmmaker</div>
-    <h1 class="pagetitle">The Fleapit<span class="dot">.</span></h1>
-    <p class="pagelede">Filmmaking experiments: uncommercials, fake trailers, idents and film essays. Shot on iPhone, finished with VFX and AI.</p>
-  </section>
-
-  <section class="fp-stage" aria-label="Player">
-    <div class="fp-player{"" if has_any else " fp-empty"}" id="fp-player">
-      <div class="fp-slot" id="fp-slot"></div>
-      <div class="fp-idle"><span class="fp-now">Now showing</span><span class="fp-big">{"Press play" if has_any else "The first reel is in the edit"}</span>{'<button class="pill" type="button" id="fp-start"><i></i>Play all</button>' if has_any else f'<a class="pill" href="{INSTAGRAM}" target="_blank" rel="noopener">Follow on Instagram ↗</a>'}</div>
-    </div>
-    <div class="fp-bar"{"" if has_any else " hidden"}>
-      <button type="button" class="fp-btn" id="fp-prev" aria-label="Previous reel">◀</button>
-      <span class="fp-title" id="fp-title" aria-live="polite">The Fleapit</span>
-      <button type="button" class="fp-btn" id="fp-next" aria-label="Next reel">▶</button>
-      <button type="button" class="fp-btn" id="fp-full">Full screen</button>
-    </div>
-  </section>
-
-  <section class="fp-reels" aria-labelledby="reels-h">
-    <div class="rail"><span class="n">Reels</span><span id="reels-h">Latest</span></div>
-    <div class="fp-grid">
-{cells}
-    </div>
-    <div class="fp-follow"><a class="pill ghost" href="{INSTAGRAM}" target="_blank" rel="noopener">@t_h_e__p_i_x_x_x_e_l_s on Instagram ↗</a></div>
-  </section>
-</main>
-
-{FOOTER}
-<script src="/assets/fleapit.js"></script>
-</body>
-</html>
-'''
-write("fleapit/index.html", fleapit)
 
 # ---------------------------------------------------------------- about
 HISTORY = [
@@ -564,23 +498,111 @@ about = head("About · Mark Pinheiro",
 '''
 write("about/index.html", about)
 
-# ---------------------------------------------------------------- contact
-contact = head("Contact · Mark Pinheiro", "Contact Mark Pinheiro and The Sex Pixels Ltd.") + f'''
+# ---------------------------------------------------------------- player pages (The Fleapit, Nuke Compositor)
+# A player on top that plays every reel in the grid one after another; the grid below.
+# video: "vimeo:ID:HASH" or "youtube:ID" (advance on their own), or "instagram:REELCODE"
+# (Instagram gives no "ended" signal, so the player waits for Next). None = coming soon.
+FLEAPIT_REELS = [
+    dict(title="Uncommercials", kind="Uncommercial", video=None),
+    dict(title="Coming attractions", kind="Trailer", video=None),
+    dict(title="Idents & stings", kind="Ident", video=None),
+    dict(title="Local-shop ads", kind="Cheap uncommercial", video=None),
+    dict(title="The short", kind="Short film", video=None),
+    dict(title="Film essays", kind="Film essay", video=None),
+]
+NUKE_REELS = [
+    dict(title="Compositing showreel 2026", kind="Showreel", video=REEL_2026),
+    dict(title="Sizzle reel", kind="17 years in 02:30", video="youtube:SDAXjN_sOlE"),
+] + [dict(title=p["title"], kind=" · ".join(x for x in (p["role"], p["co"]) if x), video=p.get("video"))
+     for p in PROJECTS if p["group"] == "Nuke compositor"]
+
+def reel_cell(i, r):
+    if r["video"]:
+        img = ""
+        if r.get("thumb"): img = f'<img src="{r["thumb"]}" alt="" loading="lazy">'
+        elif r["video"].startswith("vimeo:"):
+            vid, _, h = r["video"][6:].partition(":"); img = f'<img data-vimeo="https://vimeo.com/{vid}/{h}" alt="" hidden>'
+        elif r["video"].startswith("youtube:"): img = f'<img src="https://i.ytimg.com/vi/{r["video"][8:]}/hqdefault.jpg" alt="" loading="lazy">'
+        return f'''      <button class="fp-cell" type="button" data-i="{i}" data-src="{r["video"]}" data-title="{E(r["title"])}">{img}<span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])}</i></span><span class="play"></span></button>'''
+    return f'''      <div class="fp-cell fp-soon"><span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])} · coming soon</i></span></div>'''
+
+def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wide, idle_empty, extra_links, page_title, desc):
+    cells = "\n".join(reel_cell(i, r) for i, r in enumerate(reels))
+    has_any = any(r["video"] for r in reels)
+    idle_btn = '<button class="pill" type="button" id="fp-start"><i></i>Play all</button>' if has_any else extra_links
+    pg = head(page_title, desc) + f'''
 <body>
 
-{header("contact")}
+{header(key, sub)}
+
+<main>
+  <section class="page fp-head">
+    <div class="rail"><span class="n">{rail_n}</span>{rail_label}</div>
+    <h1 class="pagetitle">{title_html}</h1>
+    <p class="pagelede">{lede}</p>
+  </section>
+
+  <section class="fp-stage" aria-label="Player">
+    <div class="fp-player{"" if has_any else " fp-empty"}" id="fp-player">
+      <div class="fp-slot" id="fp-slot"></div>
+      <div class="fp-idle"><span class="fp-now">Now showing</span><span class="fp-big">{"Press play" if has_any else idle_empty}</span>{idle_btn}</div>
+    </div>
+    <div class="fp-bar"{"" if has_any else " hidden"}>
+      <button type="button" class="fp-btn" id="fp-prev" aria-label="Previous reel">◀</button>
+      <span class="fp-title" id="fp-title" aria-live="polite"></span>
+      <button type="button" class="fp-btn" id="fp-next" aria-label="Next reel">▶</button>
+      <button type="button" class="fp-btn" id="fp-full">Full screen</button>
+    </div>
+  </section>
+
+  <section class="fp-reels" aria-labelledby="reels-h">
+    <div class="rail"><span class="n">Reels</span><span id="reels-h">All</span></div>
+    <div class="fp-grid{" wide" if wide else ""}">
+{cells}
+    </div>
+  </section>
+</main>
+
+{FOOTER}
+<script src="/assets/playlist.js"></script>
+</body>
+</html>
+'''
+    write(path, pg)
+
+player_page("thefleapit/index.html", "fleapit", "The Sex Pixels", 'The Fleapit<span class="dot">.</span>', "SE1", "Filmmaker",
+            "Filmmaking experiments: uncommercials, fake trailers, idents and film essays. Shot on iPhone, finished with VFX and AI.",
+            FLEAPIT_REELS, False, "The first reel is in the edit",
+            f'<a class="pill" href="{INSTAGRAM}" target="_blank" rel="noopener">Follow on Instagram ↗</a>',
+            "The Fleapit · Mark Pinheiro",
+            "The Fleapit. SE1: Mark Pinheiro's filmmaking experiments. Uncommercials, fake trailers, idents and film essays.")
+player_page("nukecompositor/index.html", "nuke", "Nuke Compositor", 'Nuke Compositor', "2D", "Showreels",
+            "Compositing showreels and project reels. Play them all, or pick one from the grid.",
+            NUKE_REELS, True, "", "", "Nuke Compositor · Mark Pinheiro",
+            "Mark Pinheiro's compositing showreels and project reels.")
+
+# Old address: send /fleapit/ visitors to /thefleapit/
+write("fleapit/index.html", '''<!doctype html>
+<html lang="en-GB"><head><meta charset="utf-8"><title>The Fleapit · Mark Pinheiro</title>
+<link rel="canonical" href="/thefleapit/"><meta http-equiv="refresh" content="0; url=/thefleapit/">
+<style>body{background:#111012;color:#eeeae4;font-family:Arial,sans-serif;padding:40px}</style></head>
+<body><p>The Fleapit has moved to <a href="/thefleapit/" style="color:#e98aa9">thesexpixels.com/thefleapit</a>.</p></body></html>
+''')
+
+# ---------------------------------------------------------------- vfx supervisor (tile layout, for comparison)
+sup_reels = [r for r in REELS if r["role"] == "VFX supervisor"]
+sup_projects = [p for p in PROJECTS if p["group"] == "VFX supervisor"]
+vfxsup = head("VFX Supervisor · Mark Pinheiro", "Mark Pinheiro's VFX supervision: showreel and project reels.") + f'''
+<body>
+
+{header("vfxsup", "VFX Supervisor")}
 
 <main>
   <section class="page">
-{page_intro("04", "Contact", "Let's talk")}
-    <div class="contact">
-      <div><a class="email" href="mailto:info@thesexpixels.com">info@thesexpixels.com</a></div>
-      <address>
-        <b>The Sex Pixels Ltd.</b>
-        Fifth Floor, Mariner House<br>
-        62 Prince Street, Bristol<br>
-        BS1 4QD
-      </address>
+{page_intro("SUP", "Showreels", "VFX Supervisor", "On-set and in-facility supervision across feature film, episodic and commercials.")}
+    <div class="cards">
+{chr(10).join(reel_tile(r) for r in sup_reels)}
+{chr(10).join(proj_tile(p) for p in sup_projects)}
     </div>
   </section>
 </main>
@@ -589,5 +611,102 @@ contact = head("Contact · Mark Pinheiro", "Contact Mark Pinheiro and The Sex Pi
 </body>
 </html>
 '''
+write("vfxsupervisor/index.html", vfxsup)
+
+# ---------------------------------------------------------------- news
+import datetime
+def nice_date(d): return datetime.date.fromisoformat(d).strftime("%-d %B %Y")
+news_cards = "\n".join(f'''      <a class="card" href="/news/{n["slug"]}/">
+        {slate(nice_date(n["date"]), "News")}
+        <div class="meta">
+          <span class="kicker">{nice_date(n["date"])}</span>
+          <h3>{n["title"]}</h3>
+          <p>{n["body"][0]}</p>
+          <span class="go">Read →</span>
+        </div>
+      </a>''' for n in NEWS)
+news = head("News · Mark Pinheiro", "News and updates from Mark Pinheiro.") + f'''
+<body>
+
+{header("news")}
+
+<main>
+  <section class="page">
+{page_intro("03", "News", "News", "Updates: new reels, demos, jobs and experiments.")}
+    <div class="cards">
+{news_cards}
+    </div>
+  </section>
+</main>
+
+{FOOTER}
+</body>
+</html>
+'''
+write("news/index.html", news)
+for n in NEWS:
+    body = "\n".join(f"      <p>{para}</p>" for para in n["body"])
+    write(f"news/{n['slug']}/index.html", head(f"{n['title']} · News · Mark Pinheiro", n["body"][0]) + f'''
+<body>
+
+{header("news")}
+
+<main>
+  <article class="page post">
+    <a class="back" href="/news/">&larr; News</a>
+    <div class="rail"><span class="n">{nice_date(n["date"])}</span>News</div>
+    <h1 class="pagetitle">{n["title"]}</h1>
+    <div class="postbody">
+{body}
+    </div>
+  </article>
+</main>
+
+{FOOTER}
+</body>
+</html>
+''')
+
+# ---------------------------------------------------------------- contact
+CONTACT_LINKS = [
+    ("Showreel", "Compositing showreel 2026", "https://vimeo.com/1232958213/ffbea294d7"),
+    ("Sizzle", "17 years in 02:30", "https://youtu.be/SDAXjN_sOlE"),
+    ("Vimeo", "vimeo.com/thesexpixels", "https://vimeo.com/thesexpixels"),
+    ("Instagram", "@t_h_e__p_i_x_x_x_e_l_s", INSTAGRAM),
+    ("IMDb", "nm1025041", "https://www.imdb.com/name/nm1025041/"),
+    ("LinkedIn", "in/markpinheiro", "https://www.linkedin.com/in/markpinheiro"),
+]
+clinks = "\n".join(f'        <li><span class="k">{k}</span><a href="{u}" target="_blank" rel="noopener">{E(t)} ↗</a></li>' for k, t, u in CONTACT_LINKS)
+contact = head("Contact · Mark Pinheiro", "Contact Mark Pinheiro: email, showreels, Vimeo, Instagram, IMDb and LinkedIn.") + f'''
+<body>
+
+{header("contact")}
+
+<main>
+  <section class="page">
+{page_intro("04", "Contact", "Let's talk")}
+    <div class="contact">
+      <div>
+        <a class="email" href="mailto:mark@thesexpixels.com">mark@thesexpixels.com</a>
+        <p class="avail-line">London · UK work eligibility · valid passport, available to travel</p>
+      </div>
+      <address>
+        <b>The Sex Pixels Ltd.</b>
+        Fifth Floor, Mariner House<br>
+        62 Prince Street, Bristol<br>
+        BS1 4QD<br>
+        <a href="mailto:info@thesexpixels.com">info@thesexpixels.com</a>
+      </address>
+    </div>
+    <ul class="clinks">
+{clinks}
+    </ul>
+  </section>
+</main>
+
+{FOOTER}
+</body>
+</html>
+'''
 write("contact/index.html", contact)
-print("built: index, work, skills, fleapit, about, contact")
+print("built: index, work, skills, thefleapit, nukecompositor, vfxsupervisor, news, about, contact")
