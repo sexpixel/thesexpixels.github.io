@@ -50,7 +50,7 @@ def head(title, desc, extra=""):
 {extra}<link rel="stylesheet" href="/assets/site.css">
 </head>'''
 
-def header(current=""):
+def header(current="", sub="VFX Supervisor"):
     def a(href, label, key):
         cur = ' aria-current="page"' if key == current else ""
         return f'<li><a href="{href}"{cur}>{label}</a></li>'
@@ -59,7 +59,7 @@ def header(current=""):
         f'<li><a {reel_link(r)}>{r["role"].title().replace("Vfx","VFX")}</a></li>' for r in REELS[:2])
     sub_items = "\n          ".join(f'<li><a href="/work/{FORMAT_SLUGS[f]}/">{" ".join(w.capitalize() for w in f.split())}</a></li>' for f in FORMATS)
     return f'''<header class="nav" id="nav">
-  <a class="mark" href="/" aria-label="Mark Pinheiro, VFX Supervisor, home"><b>Mark Pinheiro</b><small>VFX Supervisor</small></a>
+  <a class="mark" href="/" aria-label="Mark Pinheiro, {sub}, home"><b>Mark Pinheiro</b><small>{sub}</small></a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
   <nav aria-label="Main" id="menu">
     <ul>
@@ -378,9 +378,10 @@ write("skills/index.html", skills)
 
 # ---------------------------------------------------------------- the fleapit
 # Filmmaking experiments, in the CV look. Ready to move to its own domain later.
-# FEATURE: the film in the big player. REELS: the grid, newest first.
-# video: "vimeo:ID:HASH", "youtube:ID" or "instagram:REELCODE" (the code in instagram.com/reel/CODE/). None = coming soon.
-FLEAPIT_FEATURE = dict(title="Now showing", video=None, url=None)
+# REELS: the grid, newest first. The player at the top plays them one after another.
+# video: "vimeo:ID:HASH" or "youtube:ID" (these play straight through), or "instagram:REELCODE"
+# (Instagram allows no auto-advance, so the player waits on those for the Next button). None = coming soon.
+# thumb: optional image URL for the grid tile (Vimeo stills are fetched automatically).
 FLEAPIT_REELS = [
     dict(title="Uncommercials", kind="Uncommercial", video=None),
     dict(title="Coming attractions", kind="Trailer", video=None),
@@ -389,33 +390,22 @@ FLEAPIT_REELS = [
     dict(title="The short", kind="Short film", video=None),
     dict(title="Film essays", kind="Film essay", video=None),
 ]
-def embed_src(v):
-    k, _, rest = v.partition(":")
-    if k == "vimeo":
-        vid, _, h = rest.partition(":"); return f"https://player.vimeo.com/video/{vid}?h={h}&title=0&byline=0&portrait=0&dnt=1"
-    if k == "youtube": return f"https://www.youtube-nocookie.com/embed/{rest}?rel=0&modestbranding=1&playsinline=1"
-    if k == "instagram": return f"https://www.instagram.com/reel/{rest}/embed"
-    return ""
-f = FLEAPIT_FEATURE
-if f["video"]:
-    player = f'''    <div class="fp-player">
-      <iframe src="{embed_src(f["video"])}" title="{E(f["title"])}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-    </div>
-    <div class="fp-under"><span>{E(f["title"])}</span><a class="pill" href="{f["url"] or "#"}" data-video="{f["video"]}"><i></i>Full screen</a></div>'''
-else:
-    player = f'''    <div class="fp-player fp-empty">
-      <div><span class="fp-now">Now showing</span><span class="fp-big">The first reel is in the edit</span><a class="pill" href="{INSTAGRAM}" target="_blank" rel="noopener">Follow on Instagram ↗</a></div>
-    </div>'''
-def reel_cell(r):
+def reel_cell(i, r):
     if r["video"]:
-        return f'''      <a class="fp-cell" href="#" data-video="{r["video"]}"><span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])}</i></span><span class="play"></span></a>'''
+        img = ""
+        if r.get("thumb"): img = f'<img src="{r["thumb"]}" alt="" loading="lazy">'
+        elif r["video"].startswith("vimeo:"):
+            vid, _, h = r["video"][6:].partition(":"); img = f'<img data-vimeo="https://vimeo.com/{vid}/{h}" alt="" hidden>'
+        elif r["video"].startswith("youtube:"): img = f'<img src="https://i.ytimg.com/vi/{r["video"][8:]}/hqdefault.jpg" alt="" loading="lazy">'
+        return f'''      <button class="fp-cell" type="button" data-i="{i}" data-src="{r["video"]}" data-title="{E(r["title"])}">{img}<span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])}</i></span><span class="play"></span></button>'''
     return f'''      <div class="fp-cell fp-soon"><span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])} · coming soon</i></span></div>'''
-cells = "\n".join(reel_cell(r) for r in FLEAPIT_REELS)
+cells = "\n".join(reel_cell(i, r) for i, r in enumerate(FLEAPIT_REELS))
+has_any = any(r["video"] for r in FLEAPIT_REELS)
 fleapit = head("The Fleapit · Mark Pinheiro",
                "The Fleapit. SE1: Mark Pinheiro's filmmaking experiments. Uncommercials, fake trailers, idents and film essays.") + f'''
 <body>
 
-{header("fleapit")}
+{header("fleapit", "The Sex Pixels")}
 
 <main>
   <section class="page fp-head">
@@ -424,8 +414,17 @@ fleapit = head("The Fleapit · Mark Pinheiro",
     <p class="pagelede">Filmmaking experiments: uncommercials, fake trailers, idents and film essays. Shot on iPhone, finished with VFX and AI.</p>
   </section>
 
-  <section class="fp-stage" aria-label="Now showing">
-{player}
+  <section class="fp-stage" aria-label="Player">
+    <div class="fp-player{"" if has_any else " fp-empty"}" id="fp-player">
+      <div class="fp-slot" id="fp-slot"></div>
+      <div class="fp-idle"><span class="fp-now">Now showing</span><span class="fp-big">{"Press play" if has_any else "The first reel is in the edit"}</span>{'<button class="pill" type="button" id="fp-start"><i></i>Play all</button>' if has_any else f'<a class="pill" href="{INSTAGRAM}" target="_blank" rel="noopener">Follow on Instagram ↗</a>'}</div>
+    </div>
+    <div class="fp-bar"{"" if has_any else " hidden"}>
+      <button type="button" class="fp-btn" id="fp-prev" aria-label="Previous reel">◀</button>
+      <span class="fp-title" id="fp-title" aria-live="polite">The Fleapit</span>
+      <button type="button" class="fp-btn" id="fp-next" aria-label="Next reel">▶</button>
+      <button type="button" class="fp-btn" id="fp-full">Full screen</button>
+    </div>
   </section>
 
   <section class="fp-reels" aria-labelledby="reels-h">
@@ -438,6 +437,7 @@ fleapit = head("The Fleapit · Mark Pinheiro",
 </main>
 
 {FOOTER}
+<script src="/assets/fleapit.js"></script>
 </body>
 </html>
 '''

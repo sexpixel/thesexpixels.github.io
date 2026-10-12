@@ -14,7 +14,7 @@
 <body>
 
 <header class="nav" id="nav">
-  <a class="mark" href="/" aria-label="Mark Pinheiro, VFX Supervisor, home"><b>Mark Pinheiro</b><small>VFX Supervisor</small></a>
+  <a class="mark" href="/" aria-label="Mark Pinheiro, The Sex Pixels, home"><b>Mark Pinheiro</b><small>The Sex Pixels</small></a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
   <nav aria-label="Main" id="menu">
     <ul>
@@ -44,9 +44,16 @@
     <p class="pagelede">Filmmaking experiments: uncommercials, fake trailers, idents and film essays. Shot on iPhone, finished with VFX and AI.</p>
   </section>
 
-  <section class="fp-stage" aria-label="Now showing">
-    <div class="fp-player fp-empty">
-      <div><span class="fp-now">Now showing</span><span class="fp-big">The first reel is in the edit</span><a class="pill" href="https://www.instagram.com/t_h_e__p_i_x_x_x_e_l_s" target="_blank" rel="noopener">Follow on Instagram ↗</a></div>
+  <section class="fp-stage" aria-label="Player">
+    <div class="fp-player fp-empty" id="fp-player">
+      <div class="fp-slot" id="fp-slot"></div>
+      <div class="fp-idle"><span class="fp-now">Now showing</span><span class="fp-big">The first reel is in the edit</span><a class="pill" href="https://www.instagram.com/t_h_e__p_i_x_x_x_e_l_s" target="_blank" rel="noopener">Follow on Instagram ↗</a></div>
+    </div>
+    <div class="fp-bar" hidden>
+      <button type="button" class="fp-btn" id="fp-prev" aria-label="Previous reel">◀</button>
+      <span class="fp-title" id="fp-title" aria-live="polite">The Fleapit</span>
+      <button type="button" class="fp-btn" id="fp-next" aria-label="Next reel">▶</button>
+      <button type="button" class="fp-btn" id="fp-full">Full screen</button>
     </div>
   </section>
 
@@ -70,5 +77,6 @@
 </footer>
 
 <script src="/assets/site.js"></script>
+<script src="/assets/fleapit.js"></script>
 </body>
 </html>
