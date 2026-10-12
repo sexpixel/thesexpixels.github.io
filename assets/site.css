@@ -329,3 +329,4 @@ body.tv .heroui{opacity:0;pointer-events:none}
 .fp-ctrls{display:flex;gap:8px;flex-wrap:wrap}
 .hero .fp-btn{background:rgba(17,16,18,.55);backdrop-filter:blur(6px)}
 .fp-reels{padding-top:clamp(48px,8vh,96px)!important}
+.anniv-t em{font-style:normal;font-size:clamp(12px,1vw,14px);line-height:1.4;color:var(--fg);max-width:46ch}

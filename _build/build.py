@@ -163,7 +163,7 @@ home = head("Mark Pinheiro · Filmmaker / VFX / AI",
     <div class="reelbar heroui">
       <a class="anniv" href="/news/{ANNIV["slug"]}/">
         <span class="anniv-n">20</span>
-        <span class="anniv-t"><b>Years</b><span>The Sex Pixels · 2006–2026</span><i>Read the story →</i></span>
+        <span class="anniv-t"><b>Years</b><span>The Sex Pixels · servicing clients since 2006</span><em>BBC World Cup · Match of the Day · Nickelodeon · London Grammar · M.I.A. · Gangs of London</em><i>Read the story →</i></span>
       </a>
       <div class="reelside">
         <span class="lab"><b>Compositing showreel</b> · 2026</span>
@@ -182,7 +182,7 @@ home = head("Mark Pinheiro · Filmmaker / VFX / AI",
         <div class="meta">
           <span class="kicker">News · 12 October 2026</span>
           <h3>{ANNIV["title"]}</h3>
-          <p>Twenty years of The Sex Pixels, marked with a new website.</p>
+          <p>Servicing clients since 2006: BBC World Cup, Match of the Day, Nickelodeon, London Grammar, M.I.A. and more.</p>
           <span class="go">Read →</span>
         </div>
       </a>
