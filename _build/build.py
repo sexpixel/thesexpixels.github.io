@@ -152,7 +152,13 @@ def page_intro(n, label, title, lede=""):
     <h1 class="pagetitle">{title}</h1>{lede_html}'''
 
 # ---------------------------------------------------------------- home
-ANNIV = NEWS[0]  # the 20th anniversary story
+ANNIV = next(n for n in NEWS if n["slug"] == "the-sex-pixels-at-20")  # the 20th anniversary story
+# Homepage "Latest": always the newest news post.
+import datetime
+def nice_date(d): return datetime.date.fromisoformat(d).strftime("%-d %B %Y")
+LATEST_NEWS = max(NEWS, key=lambda n: n["date"])  # first listed wins a tie
+LATEST_THUMB = ('<div class="thumb anniv-thumb" aria-hidden="true"><span>20</span><i>2006–2026</i></div>'
+                if LATEST_NEWS is ANNIV else slate(nice_date(LATEST_NEWS["date"]), "News"))
 home = head("Mark Pinheiro · Filmmaker / VFX / AI",
             "Mark Pinheiro: filmmaker, Nuke compositor and VFX supervisor. The Sex Pixels, 20 years: 2006–2026.") + f'''
 <body>
@@ -181,14 +187,14 @@ home = head("Mark Pinheiro · Filmmaker / VFX / AI",
 
   <div class="over">
   <section aria-labelledby="latest-h">
-    <div class="rail"><span class="n">01</span><span id="latest-h">Latest</span></div>
+    <div class="rail"><span class="n">01</span><span id="latest-h">Latest</span><a class="rail-link" href="/news/">All news →</a></div>
     <div class="cards">
-      <a class="card" href="/news/{ANNIV["slug"]}/">
-        <div class="thumb anniv-thumb" aria-hidden="true"><span>20</span><i>2006–2026</i></div>
+      <a class="card" href="/news/{LATEST_NEWS["slug"]}/">
+        {LATEST_THUMB}
         <div class="meta">
-          <span class="kicker">News · 12 October 2026</span>
-          <h3>{ANNIV["title"]}</h3>
-          <p>Servicing clients since 2006: BBC World Cup, Match of the Day, Nickelodeon, London Grammar, M.I.A. and more.</p>
+          <span class="kicker">News · {nice_date(LATEST_NEWS["date"])}</span>
+          <h3>{LATEST_NEWS["title"]}</h3>
+          <p>{LATEST_NEWS.get("summary") or LATEST_NEWS["body"][0]}</p>
           <span class="go">Read →</span>
         </div>
       </a>

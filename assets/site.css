@@ -363,3 +363,6 @@ body.tuner.noguides .heroui{opacity:0}
 .tp-check{flex-direction:row!important;align-items:center;gap:8px!important;text-transform:none;letter-spacing:0;font-size:12px}
 .tp-check input{accent-color:var(--accent)}
 @media (max-height:500px){.scrollcue{display:none}}
+.rail-link{order:3;color:var(--soft);text-decoration:none}
+.rail-link:hover{color:var(--accent-hi)}
+.rail::after{order:2}
