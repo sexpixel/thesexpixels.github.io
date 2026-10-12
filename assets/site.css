@@ -517,3 +517,19 @@ iframe{color-scheme:normal}
 .fp-cell .play,.thumb .play{top:10px;right:10px;left:auto;bottom:auto;width:28px;height:28px;margin:0}
 .fp-cell .play::before,.thumb .play::before{border-left-width:8px;border-top-width:5px;border-bottom-width:5px;margin-left:2px}
 @media (min-width:900px){.cards.four{grid-template-columns:repeat(5,minmax(0,1fr))}}
+
+/* Menu: each artist role carries the production stage it lives in */
+.nav ul{align-items:flex-end}
+.nav li.role a{display:flex;flex-direction:column;align-items:flex-start;gap:4px;line-height:1}
+.nav li.role .ph{font-family:var(--mono);font-size:8.5px;font-weight:600;letter-spacing:2px;color:var(--accent)}
+.nav li.sep{align-self:center}
+@media (max-width:1279px){.nav.open li.role .ph{font-size:10px;margin-bottom:2px}}
+
+/* Stage strip on the role pages: Development → Distribution, lit where the role sits */
+.phases{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:0;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase}
+.phases li{padding:7px 12px;border:1px solid rgba(238,234,228,.22);color:rgba(238,234,228,.55);background:rgba(17,16,18,.45);backdrop-filter:blur(4px);margin-right:-1px}
+.phases li:first-child{border-radius:4px 0 0 4px}.phases li:last-child{border-radius:0 4px 4px 0}
+.phases li.on{color:var(--ink);background:var(--accent);border-color:var(--accent)}
+@media (max-width:700px){.phases{font-size:8px;letter-spacing:1px}.phases li{padding:6px 6px}}
+.phases .sm{display:none}
+@media (max-width:700px){.phases{flex-wrap:nowrap;font-size:10px;letter-spacing:1.5px}.phases li{padding:7px 12px}.phases .lg{display:none}.phases .sm{display:inline}}

@@ -66,8 +66,10 @@ def head(title, desc, extra=""):
 </head>'''
 
 def header(current="", sub="VFX Supervisor"):
-    def a(href, label, key):
+    def a(href, label, key, phase=None):
         cur = ' aria-current="page"' if key == current else ""
+        if phase:   # the artist roles carry the production stage they live in
+            return f'<li class="role"><a href="{href}"{cur}><span class="ph">{phase}</span>{label}</a></li>'
         return f'<li><a href="{href}"{cur}>{label}</a></li>'
     sub_items = "\n          ".join(f'<li><a href="/work/{FORMAT_SLUGS[f]}/">{" ".join(w.capitalize() for w in f.split())}</a></li>' for f in FORMATS)
     return f'''<header class="nav" id="nav">
@@ -75,9 +77,9 @@ def header(current="", sub="VFX Supervisor"):
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
   <nav aria-label="Main" id="menu">
     <ul>
-      {a("/thefleapit/", "Filmmaker", "fleapit")}
-      {a("/nukecompositor/", "Nuke Compositor", "nuke")}
-      {a("/vfxsupervisor/", "VFX Supervisor", "vfxsup")}
+      {a("/thefleapit/", "Filmmaker", "fleapit", "Development")}
+      {a("/vfxsupervisor/", "VFX Supervisor", "vfxsup", "Pre-production")}
+      {a("/nukecompositor/", "Nuke Compositor", "nuke", "Post-production")}
       <li class="sep" aria-hidden="true"></li>
       <li class="has-sub"><a href="/work/"{' aria-current="page"' if current == "work" else ""}>Work</a>
         <ul class="sub">
@@ -653,6 +655,13 @@ NUKE_REELS = [
 ] + [dict(title=q["title"], kind=" · ".join(x for x in (q["role"], q["co"]) if x), video=q.get("video"))
      for p in PROJECTS if p["group"] in ("Nuke compositor", "PostVis") for q in expand(p)]
 
+PHASES = ["Development", "Pre-production", "Production", "Post-production", "Distribution"]
+ROLE_PHASES = {"fleapit": ["Development"], "vfxsup": ["Pre-production", "Production"], "nuke": ["Post-production"]}
+def phase_strip(lit):
+    short = {"Development": "Dev", "Pre-production": "Pre", "Production": "Prod", "Post-production": "Post", "Distribution": "Dist"}
+    cells = "".join(('<li class="on">' if p in lit else '<li>') + f'<span class="lg">{p}</span><span class="sm" aria-hidden="true">{short[p]}</span></li>' for p in PHASES)
+    return f'<ol class="phases" aria-label="Where this sits in the production pipeline">{cells}</ol>'
+
 def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wide, idle_empty, extra_links, page_title, desc):
     cells = "\n".join(reel_cell(i, r) for i, r in enumerate(reels))
     has_any = any(r["video"] for r in reels)
@@ -675,7 +684,7 @@ def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wid
     <div class="fp-slot" id="fp-slot"></div>{idle}
     <div class="herotitle herotop heroui">
       <span class="lab"><b>{rail_n}</b> · {rail_label}</span>
-      <h1 class="herohead">{title_html}</h1>
+      <h1 class="herohead">{title_html}</h1>{phase_strip(ROLE_PHASES[key]) if key in ROLE_PHASES else ""}
     </div>
     <div class="reelbar heroui">
       <span class="fp-title" id="fp-title" aria-live="polite"></span>{ctrls}
