@@ -233,7 +233,7 @@ home = head("Mark Pinheiro · Filmmaker / VFX / AI",
     <div class="rail"><span class="n">02</span><span id="explore-h">Explore</span></div>
     <div class="cards">
       <a class="card" href="/work/">
-        {slate("Feature film · Episodic · Commercial", "Work")}
+        {slate("Feature film · Episodic · PostVis · Shorts", "Work")}
         <div class="meta">
           <span class="kicker">Work</span>
           <h3>Project reels by format</h3>
@@ -353,7 +353,7 @@ write("work/index.html", work)
 
 # One page per format. Formats in PLAYER_FORMATS get the full-screen player layout (built further down,
 # after player_page); the rest keep this list layout.
-PLAYER_FORMATS = ["Feature film", "Episodic", "PostVis", "Commercial", "Feature animation"]
+PLAYER_FORMATS = ["Feature film", "Episodic", "PostVis", "Shorts", "Feature animation"]
 for i, f in enumerate(FORMATS, 1):
     if f in PLAYER_FORMATS: continue
     items = [q for p in PROJECTS if in_format(p, f) for q in expand(p)]
@@ -712,6 +712,13 @@ player_page("nukecompositor/index.html", "nuke", "Nuke Compositor", 'Nuke Compos
             NUKE_REELS, True, "", "", "Nuke Compositor · Mark Pinheiro",
             "Mark Pinheiro's compositing showreels and project reels.")
 
+# Old address: /work/commercial/ is now /work/shorts/
+write("work/commercial/index.html", """<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><title>Shorts · Mark Pinheiro</title>
+<link rel="canonical" href="/work/shorts/"><meta http-equiv="refresh" content="0; url=/work/shorts/">
+<style>body{background:#111012;color:#eeeae4;font-family:Arial,sans-serif;padding:40px}</style></head>
+<body><p>Commercials are now under <a href="/work/shorts/" style="color:#e98aa9">Shorts</a>.</p></body></html>
+""")
+
 # Old address: send /fleapit/ visitors to /thefleapit/
 write("fleapit/index.html", '''<!doctype html>
 <html lang="en-GB"><head><meta charset="utf-8"><title>The Fleapit · Mark Pinheiro</title>
@@ -734,7 +741,7 @@ FORMAT_LEDES = {
     "Feature film": "Feature film project reels: Nuke compositing, PostVis and VFX supervision. Play them all, or pick one from the grid.",
     "Episodic": "Episodic project reels: Nuke compositing, PostVis and VFX supervision. Play them all, or pick one from the grid.",
     "PostVis": "PostVis across feature film and episodic: temp comps that carry the edit from shoot to final VFX. Play them all, or pick one from the grid.",
-    "Commercial": "Commercial project reels: on-set supervision and compositing. Play them all, or pick one from the grid.",
+    "Shorts": "Short form: commercials, promos, titles and music videos. Play them all, or pick one from the grid.",
     "Feature animation": "Feature animation project reels. Play them all, or pick one from the grid.",
 }
 for i, f in enumerate(FORMATS, 1):

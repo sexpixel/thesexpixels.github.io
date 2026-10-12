@@ -2,20 +2,20 @@
 # Each project: title, role label as credited, role group (filter), format (filter), company, year or "".
 # A project's reels go in clips=[("clip name", "vimeo id"), ...]; each clip becomes its own playable tile.
 ROLE_GROUPS = ["Nuke compositor", "VFX supervisor", "PostVis", "Director"]
-FORMATS = ["Feature film", "Episodic", "PostVis", "Commercial", "Feature animation"]
-FORMAT_SLUGS = {"Feature film": "feature-film", "Episodic": "episodic", "PostVis": "postvis", "Commercial": "commercial", "Feature animation": "feature-animation"}
+FORMATS = ["Feature film", "Episodic", "PostVis", "Shorts", "Feature animation"]
+FORMAT_SLUGS = {"Feature film": "feature-film", "Episodic": "episodic", "PostVis": "postvis", "Shorts": "shorts", "Feature animation": "feature-animation"}
 PROJECTS = [
     dict(title="Gangs of London S4", role="On-set VFX supervisor", group="VFX supervisor", fmt="Episodic", co="The Sex Pixels", yr="2026"),
-    dict(title="Salomon", role="On-set supervision and comp", group="VFX supervisor", fmt="Commercial", co="", yr="2025"),
+    dict(title="Salomon", role="On-set supervision and comp", group="VFX supervisor", fmt="Shorts", co="", yr="2025"),
     dict(title="Rogue Trooper", role="Senior compositor", group="Nuke compositor", fmt="Feature film", co="Liberty Films · Netflix", yr="2025"),
     dict(title="The Ballad of a Small Player", role="VFX supervisor", group="VFX supervisor", fmt="Feature film", co="Netflix", yr="",
          clips=[("Official trailer", "youtube:z1B5W55TFyo"), ("Behind the scenes", "youtube:FGYPLc8bB9E")]),
     dict(title="Gangs of London S3", role="On-set VFX supervisor", group="VFX supervisor", fmt="Episodic", co="", yr=""),
     dict(title="Panda Plan", role="VFX supervisor", group="VFX supervisor", fmt="Feature film", co="Horizon VFX", yr=""),
     dict(title="I Am Nobody S2", role="VFX consultant", group="VFX supervisor", fmt="Episodic", co="Horizon VFX", yr=""),
-    dict(title="Spotify", role="Director", group="Director", fmt="Commercial", co="The Sex Pixels", yr="",
+    dict(title="Spotify", role="Director", group="Director", fmt="Shorts", co="The Sex Pixels", yr="",
          clips=[("Happy Ending", "143586386"), ("Run Your Way", "143586363"), ("Procrastinator", "143586362")]),
-    dict(title="Zinga Poker", role="Compositor", group="Nuke compositor", fmt="Commercial", co="ICHI Worldwide", yr="2024"),
+    dict(title="Zinga Poker", role="Compositor", group="Nuke compositor", fmt="Shorts", co="ICHI Worldwide", yr="2024"),
     dict(title="Damsel", role="Lead PostVis artist", group="PostVis", fmt="Feature film", co="Proof", yr="2023",
          clips=[("The Knights Arrive", "1014291965"), ("The Knights: Rashomon", "1014291669"), ("The Fall", "1014291582")]),
     dict(title="The Family Plan", role="Lead PostVis artist", group="PostVis", fmt="Feature film", co="Proof", yr="2023",
