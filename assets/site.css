@@ -60,6 +60,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--fg);outline-offset:
 
 /* ---------- sections ---------- */
 main section{padding:clamp(56px,10vh,112px) var(--gutter);max-width:1440px;margin:0 auto}
+main section.hero{max-width:none;margin:0;padding:0}
 .rail{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin:0 0 28px}
 .rail .n{color:var(--dim)}
 .rail::after{content:"";flex:1;height:1px;background:var(--line)}
