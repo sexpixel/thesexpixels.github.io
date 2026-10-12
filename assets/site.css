@@ -370,3 +370,15 @@ body.tuner.noguides .heroui{opacity:0}
 /* Page name directly under Mark's name, small enough to live in the black strip above the picture. */
 .herotop .lab{display:none}
 .herotop .herohead{margin:0}
+
+/* About: festival-style laurels under the name, all on one line */
+.laurels{list-style:none;margin:clamp(28px,5vh,48px) 0 6px;padding:0;display:flex;flex-wrap:nowrap;gap:clamp(4px,1vw,14px);overflow-x:auto;scrollbar-width:none}
+.laurels::-webkit-scrollbar{display:none}
+.laurel{flex:1 0 auto;display:flex;align-items:center;justify-content:center;gap:2px;color:var(--fg)}
+.laurel .lb{width:clamp(16px,1.6vw,24px);height:clamp(50px,5vw,74px);color:var(--accent);flex:none}
+.laurel .lb.r{transform:scaleX(-1)}
+.laurel .lt{display:flex;flex-direction:column;align-items:center;text-align:center;gap:3px;padding:0 2px;max-width:13ch}
+.laurel b{font-weight:900;font-size:clamp(14px,1.35vw,20px);line-height:1;text-transform:uppercase;letter-spacing:-.01em;white-space:nowrap}
+.laurel i{font-style:normal;font-family:var(--mono);font-size:8.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent)}
+.laurel span{font-size:clamp(10px,.8vw,12px);line-height:1.25;color:var(--soft)}
+.profile .awards-note{margin:4px 0 0}

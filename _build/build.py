@@ -495,12 +495,18 @@ EDUCATION = [
 ]
 LINKS = [("IMDb", "https://www.imdb.com/name/nm1025041/"), ("LinkedIn", "https://www.linkedin.com/in/markpinheiro"),
          ("Vimeo", "https://vimeo.com/thesexpixels"), ("Instagram", INSTAGRAM)]
+LAUREL_BRANCH = open(os.path.join(os.path.dirname(__file__), "laurel_branch.svg.txt")).read()
+def laurel(n, k, d):
+    return (f'        <li class="laurel"><svg class="lb" aria-hidden="true"><use href="#laurel"/></svg>'
+            f'<div class="lt"><b>{n}</b>{f"<i>{k}</i>" if k else ""}<span>{E(d)}</span></div>'
+            f'<svg class="lb r" aria-hidden="true"><use href="#laurel"/></svg></li>')
+lau = "\n".join(laurel(n, k, d) for n, k, d in AWARDS)
 awd = "\n".join(f'        <li><b>{n}</b>{f"<i>{k}</i>" if k else ""}<span>{E(d)}</span></li>' for n, k, d in AWARDS)
 eqp = "\n".join(f'        <div><dt>{E(k)}</dt><dd>{E(v)}</dd></div>' for k, v in EQUIPMENT)
 edu = "\n".join(f'        <li><span class="b">{E(b)}</span><span><b>{q}</b> · {w}</span></li>' for b, q, w in EDUCATION)
 lnk = " ".join(f'<a class="pill ghost" href="{u}" target="_blank" rel="noopener">{n} ↗</a>' for n, u in LINKS)
 about = head("About · Mark Pinheiro",
-             "Mark Pinheiro: filmmaker, Nuke compositor and VFX supervisor. Software, equipment, press and laurels from twenty-six years in visual effects.") + f'''
+             "Mark Pinheiro: filmmaker, Nuke compositor and VFX supervisor. Laurels, software, equipment and press from twenty-six years in visual effects.") + f'''
 <body>
 
 {header("about")}
@@ -509,6 +515,11 @@ about = head("About · Mark Pinheiro",
   <section class="profile">
     <h1>Mark<br>Pinheiro</h1>
     <div class="roles"><span class="a">Filmmaker / VFX / AI</span><span>Nuke compositor &amp; VFX supervisor</span><span>London</span></div>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="laurel" viewBox="0 0 40 124">{LAUREL_BRANCH}</symbol></defs></svg>
+    <ul class="laurels" aria-label="Laurels">
+{lau}
+    </ul>
+    <p class="awards-note">Promax won outright; the others won by the shows and teams he was part of.</p>
     <div class="bio solo">
       <p class="lede">A filmmaker at heart, with twenty-six years in visual effects.</p>
       <p>Today he still enjoys exploring methods and practices that use technology to simplify filmmaking. He is an <strong>agentic coder</strong>: every tool he builds is written with AI. He designs courses for the NFTS, ECAM Madrid and Escape Studios, and works through his boutique studio, The Sex Pixels.</p>
@@ -524,7 +535,7 @@ about = head("About · Mark Pinheiro",
   </section>
 
   <section id="press" style="padding-top:0">
-    <div class="rail"><span class="n">02</span>Press &amp; laurels</div>
+    <div class="rail"><span class="n">02</span>Press</div>
     <div class="press">
       <figure class="quote">
         <blockquote>“Mark has an undeniably impressive portfolio and his understanding of the industry as a whole makes him a total catch.”</blockquote>
@@ -535,10 +546,6 @@ about = head("About · Mark Pinheiro",
         <figcaption><a href="https://www.televisual.com/news/mark-pinheiro-joins-absolute-as-vfx-super/">Televisual, 2022</a> · on Escape Studios</figcaption>
       </figure>
     </div>
-    <ul class="awardgrid">
-{awd}
-    </ul>
-    <div class="awards-note">Promax won outright; the others won by the shows and teams he was part of.</div>
   </section>
 
   <section id="education" style="padding-top:0">
