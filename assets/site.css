@@ -366,3 +366,7 @@ body.tuner.noguides .heroui{opacity:0}
 .rail-link{order:3;color:var(--soft);text-decoration:none}
 .rail-link:hover{color:var(--accent-hi)}
 .rail::after{order:2}
+
+/* Page name directly under Mark's name, small enough to live in the black strip above the picture. */
+.herotop .lab{display:none}
+.herotop .herohead{margin:0;font-size:clamp(28px,4.6vh,72px);line-height:.9}

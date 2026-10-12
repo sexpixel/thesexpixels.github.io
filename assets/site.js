@@ -54,8 +54,9 @@
     if (!stage || !frame) return;
     var c = (stage.getAttribute('data-crop') || '').split(',').map(Number);
     var props = ['width', 'height', 'left', 'top', 'transform', 'clip-path'];
-    var title = stage.querySelector('.herotop');
-    if (title) title.style.removeProperty('top');
+    var title = stage.querySelector('.herotop'), head = title && title.querySelector('.herohead');
+    if (head) head.style.removeProperty('font-size');
+    if (window.TSPplaceTitle) window.TSPplaceTitle();
     if (c.length < 4 || !(c[0] || c[1] || c[2] || c[3])) { props.forEach(function(k){ frame.style.removeProperty(k); }); return; }
     var t = c[0] / 100, b = c[1] / 100, l = c[2] / 100, r = c[3] / 100, fill = c[4] === 1;
     var ar = parseFloat(getComputedStyle(stage).getPropertyValue('--ar')) || 16 / 9;
@@ -67,13 +68,21 @@
     set('transform', 'none'); set('clip-path', 'inset(' + c[0] + '% ' + c[3] + '% ' + c[1] + '% ' + c[2] + '%)');
     // With a top crop, sit the page name in the black strip: its bottom on the crop line,
     // but never up under the menu.
-    if (title && t > 0 && !fill) {
-      var nav = document.getElementById('nav'), navBottom = nav ? nav.offsetHeight : 0;
-      var barBottom = (vh / 2 - cy) + H * t;
-      title.style.top = Math.max(navBottom, barBottom - title.offsetHeight) + 'px';
+    // With a top crop, size the page name to fill the black strip between the menu and the picture.
+    if (head && t > 0 && !fill) {
+      var room = (vh / 2 - cy) + H * t - title.offsetTop - 6;
+      head.style.fontSize = Math.max(22, Math.min(96, room / 0.9)) + 'px';
     }
   };
+  // The page name sits directly under Mark's name in the menu bar.
+  window.TSPplaceTitle = function(){
+    var t = document.querySelector('.herotop'), n = document.getElementById('nav'), mk = n && n.querySelector('.mark');
+    if (!t || !mk) return;
+    t.style.top = (mk.getBoundingClientRect().bottom - n.getBoundingClientRect().top + 4) + 'px';
+  };
+  window.TSPplaceTitle();
   window.addEventListener('resize', function(){
+    window.TSPplaceTitle();
     document.querySelectorAll('[data-crop]').forEach(function(st){
       if (st.classList.contains('hero')) window.TSPcrop(st, st.querySelector('.fp-slot iframe, :scope > iframe'));
     });
