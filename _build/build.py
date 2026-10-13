@@ -767,7 +767,7 @@ def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wid
       </a>'''
     else:
         pbanner = (f'''<a class="anniv pbanner" href="#reels-h">
-        <span class="anniv-n">{b["n"]}</span>
+        <span class="anniv-n">{f'<small>{E(b["above"])}</small>' if b.get("above") else ""}{b["n"]}</span>
         <span class="anniv-t"><b>{b["word"]}</b><span>{b.get("line", "")}</span>{f"<em>{E(b['credits'])}</em>" if b["credits"] else ""}<i>{b["more"]}</i></span>
       </a>''' if vids else "")
     pg = head(page_title, desc) + f'''
@@ -823,8 +823,8 @@ player_page("thefleapit/index.html", "fleapit", "The Sex Pixels", 'The Fleapit<s
             f'<a class="pill" href="{INSTAGRAM}" target="_blank" rel="noopener">Follow on Instagram ↗</a>',
             "The Fleapit · Mark Pinheiro",
             "The Fleapit. SE1. Trailers, fillers, adverts, shorts and public information films. Continuous programme. No latecomers.", phases=False,
-            banner=dict(n="1", word="Screen", line="Intermission…",
-                        credits="…a word from our sponsors…", more="Tonight's programme ↓"))   # creative direction across every phase: no filter, not driven by the tags
+            banner=dict(n="1", above="Screen", word="Intermission…", line="…a word from our sponsors…",
+                        credits="", more="Tonight's programme ↓"))   # creative direction across every phase: no filter, not driven by the tags
 player_page("nukecompositor/index.html", "nuke", "Nuke Compositor", 'Nuke Compositor', "2D", "Showreels",
             "Compositing showreels and project reels. Play them all, or pick one from the grid.",
             NUKE_REELS, True, "", "", "Nuke Compositor · Mark Pinheiro",

@@ -687,13 +687,15 @@ iframe{color-scheme:normal}
   .pg-fleapit .pagelede{margin-bottom:calc(36px + var(--fx,0px) * .35)}
   .pg-fleapit .pagelinks{margin-bottom:calc(28px + var(--ft,0px))}
   /* Safari: the same space above the banner (under the video) as below Full screen (above Reels) */
-  .pg-fleapit.fp-float .reelbar{margin-top:calc(28px + var(--fx,0px) * .25)}
-  .pg-fleapit.fp-float .fp-reels{padding-top:calc(28px + var(--fx,0px) * .25)!important}
+  .pg-fleapit.fp-float .reelbar{margin-top:calc(34px + var(--fx,0px) * .25)}
+  .pg-fleapit.fp-float .fp-reels{padding-top:calc(34px + var(--fx,0px) * .25)!important}
 }
 
 /* The Fleapit: under Reels, the cinema line (what used to sit in the player banner), the programme, then the bio line */
 .fp-kicker{display:block;margin-bottom:6px;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent-hi)}
 .fp-prog{display:block;margin-bottom:10px;font-size:clamp(13px,1.1vw,15px);line-height:1.45;color:var(--fg)}
 .pg-fleapit .pbanner .anniv-t span:empty{display:none}
-.pg-fleapit .pbanner .anniv-t span{font-family:var(--display,inherit);font-style:italic;font-weight:800;font-size:20px;line-height:1.1;letter-spacing:-.01em;text-transform:none;color:var(--fg)}   /* Intermission…: capital I only, italic */
-.pg-fleapit .pbanner .anniv-t em{font-style:italic;font-weight:400;font-size:13px;color:var(--dim)}   /* …a word from our sponsors…: a filler card, not a headline */
+.pg-fleapit .pbanner .anniv-t b{text-transform:none;font-style:italic}   /* Intermission…: capital I only, italic */
+.pg-fleapit .pbanner .anniv-t span{font-family:var(--display,inherit);font-style:italic;font-weight:400;font-size:13px;letter-spacing:0;text-transform:none;color:var(--dim)}   /* …a word from our sponsors…: a filler card, not a headline */
+/* SCREEN sits over the 1, like the sign over a cinema door */
+.pbanner .anniv-n small{display:block;margin:0 0 .5em .06em;font-family:var(--mono);font-size:10px;font-weight:600;line-height:1;letter-spacing:3px;text-transform:uppercase;color:var(--soft);text-shadow:none}
