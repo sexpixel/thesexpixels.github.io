@@ -16,7 +16,8 @@ PROJECTS = [
     dict(title="I Am Nobody S2", role="VFX consultant", group="VFX supervisor", fmt="Episodic", co="Horizon VFX", yr=""),
     dict(title="Spotify", role="Director", group="Director", fmt="Shorts", co="The Sex Pixels", yr="",
          clips=[("Happy Ending", "143586386"), ("Run Your Way", "143586363"), ("Procrastinator", "143586362")]),
-    dict(title="Zinga Poker", role="Compositor", group="Nuke compositor", fmt="Shorts", co="ICHI Worldwide", yr="2024"),
+    # Zinga Poker (Compositor · ICHI Worldwide · 2024): reel unavailable, tile removed 13 Oct at Mark's request. Credit kept for the CV.
+    # dict(title="Zinga Poker", role="Compositor", group="Nuke compositor", fmt="Shorts", co="ICHI Worldwide", yr="2024"),
     dict(title="Damsel", role="Lead PostVis artist", group="PostVis", fmt="Feature film", co="Proof", yr="2023",
          clips=[("The Knights Arrive", "1014291965"), ("The Knights: Rashomon", "1014291669"), ("The Fall", "1014291582")]),
     dict(title="The Family Plan", role="Lead PostVis artist", group="PostVis", fmt="Feature film", co="Proof", yr="2023",
