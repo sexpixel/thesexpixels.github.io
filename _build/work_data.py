@@ -7,7 +7,7 @@ FORMAT_SLUGS = {"Feature film": "feature-film", "Episodic": "episodic", "Visuali
 PROJECTS = [
     dict(title="Gangs of London S4", role="On-set VFX supervisor", group="VFX supervisor", fmt="Episodic", co="The Sex Pixels", yr="2026", phases=["Pre-production", "Production"]),
     dict(title="Salomon", role="On-set supervision and comp", group="VFX supervisor", fmt="Shorts", co="", yr="2025",
-         clips=[("Salomon", "youtube:UeRKN7WWE0c", ["Production", "Post-production"])]),
+         clips=[("XT-Whisper · Sportstyle", "youtube:UeRKN7WWE0c", ["Production", "Post-production"])]),
     dict(title="Rogue Trooper", role="Senior compositor", group="Nuke compositor", fmt="Feature film", co="Liberty Films · Netflix", yr="2025"),
     dict(title="The Ballad of a Small Player", role="VFX supervisor", group="VFX supervisor", fmt="Feature film", co="Netflix", yr="",
          clips=[("Official trailer", "youtube:z1B5W55TFyo", ["Distribution"]), ("Behind the scenes", "youtube:FGYPLc8bB9E", ["Production"])]),
