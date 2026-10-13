@@ -734,3 +734,10 @@ iframe{color-scheme:normal}
   main#top .anniv:not(.pbanner) .anniv-t em{font-size:min(17px,2.25svh)}   /* svh: the screen with the browser bars showing, so Chrome sizes to what you actually see */
   main#top .anniv:not(.pbanner) .anniv-t span{font-size:13px}
 }
+
+/* Contact page on desktop: the title and top gap scale with the window's height too, so the contact details
+   sit fully in the first screen on shorter laptop windows */
+@media (min-width:981px){
+  main section.page.contactpage{padding-top:clamp(96px,13vh,162px)}
+  .contactpage .pagetitle{font-size:min(11vw,16vh,168px)}
+}
