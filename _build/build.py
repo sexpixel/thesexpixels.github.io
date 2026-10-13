@@ -591,7 +591,10 @@ def laurel(n, k, d):
             f'<svg class="lb r" aria-hidden="true"><use href="#laurel"/></svg></li>')
 lau = "\n".join(laurel(n, k, d) for n, k, d in AWARDS)
 awd = "\n".join(f'        <li><b>{n}</b>{f"<i>{k}</i>" if k else ""}<span>{E(d)}</span></li>' for n, k, d in AWARDS)
-eqp = "\n".join(f'        <div><dt>{E(k)}</dt><dd>{E(v)}</dd></div>' for k, v in EQUIPMENT)
+EQUIP_COLS = (["Cameras", "VFX kit", "Wrangle", "Real-time", "Track"],
+              ["Pipeline", "Comp", "3D", "AI", "Review", "Finishing"])
+_eq = dict(EQUIPMENT)
+eqp = "\n".join('      <dl class="kit big">\n' + "\n".join(f'        <div><dt>{E(k)}</dt><dd>{E(_eq[k])}</dd></div>' for k in col) + '\n      </dl>' for col in EQUIP_COLS)
 edu = "\n".join(f'        <li><span class="b">{E(b)}</span><span><b>{q}</b> · {w}</span></li>' for b, q, w in EDUCATION)
 lnk = " ".join(f'<a class="pill ghost iconpill" href="{u}" target="_blank" rel="noopener">{icon(n, "ic xs")}{n}</a>' for n, u in LINKS)
 about = head("Bio · Mark Pinheiro",
@@ -656,9 +659,9 @@ about = head("Bio · Mark Pinheiro",
 
   <section id="kit" style="padding-top:0">
     <div class="rail"><span class="n">02</span>Software &amp; equipment</div>
-    <dl class="kit big">
+    <div class="kitcols">
 {eqp}
-    </dl>
+    </div>
   </section>
 
   <section id="press" style="padding-top:0">

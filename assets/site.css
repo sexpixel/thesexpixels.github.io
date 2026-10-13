@@ -872,3 +872,7 @@ iframe{color-scheme:normal}
   .contactpage .ccompany{padding:clamp(18px,4vh,72px) 0 clamp(16px,3vh,48px)}
 }
 @media (max-width:860px){ .contactpage .ccompany > .cco{grid-column:1/-1} }
+/* Software & equipment: two fixed columns */
+.kitcols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:clamp(24px,4vw,56px);align-items:start}
+.kitcols .kit.big{display:block}
+@media (max-width:860px){.kitcols{grid-template-columns:minmax(0,1fr)}}
