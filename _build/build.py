@@ -36,9 +36,9 @@ REEL_2026 = "vimeo:1232958213:ffbea294d7"
 REELS = [
     dict(id="reel-compositor", role="Nuke compositor", title="Compositing showreel", note="Showreel · 2026",
          line="The latest compositing reel.", video=REEL_2026, url="https://vimeo.com/1232958213/ffbea294d7"),
-    dict(id="reel-vfx-supervisor", role="VFX supervisor", title="VFX supervisor showreel", note="Stand-in",
+    dict(id="reel-vfx-supervisor", role="VFX supervisor", title="Gangs of London S4 · Official teaser", note="On-set VFX supervisor",
          line="On-set and post supervision across film, episodic and commercials.", video="youtube:9KZPd8__8ys", url="https://youtu.be/9KZPd8__8ys",
-         thumb="https://i.ytimg.com/vi/9KZPd8__8ys/hqdefault.jpg"),  # STAND-IN until the supervisor reel exists
+         thumb="https://i.ytimg.com/vi/9KZPd8__8ys/hqdefault.jpg"),  # Gangs of London S4 official teaser, until the supervisor showreel exists
     dict(id="reel-sizzle", role="Archive", title="Sizzle reel", note="02:30",
          line="Seventeen years of work in two and a half minutes.", video="youtube:SDAXjN_sOlE",
          url="https://youtu.be/SDAXjN_sOlE", thumb="https://i.ytimg.com/vi/SDAXjN_sOlE/hqdefault.jpg"),
@@ -230,8 +230,8 @@ home = head("Mark Pinheiro · Filmmaker / VFX / AI",
         <div class="thumb"><img src="https://i.ytimg.com/vi/9KZPd8__8ys/hqdefault.jpg" alt="" loading="lazy"><span class="play"></span></div>
         <div class="meta">
           <span class="kicker">VFX supervisor</span>
-          <h3>Supervisor showreel</h3>
-          <p>On-set and in-facility supervision, plus project reels.</p>
+          <h3>VFX supervision</h3>
+          <p>Gangs of London S4 official teaser, plus project reels.</p>
           <span class="go">Watch →</span>
         </div>
       </a>
@@ -812,7 +812,7 @@ def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wid
 
 # Showreels aren't projects, so they join the catalogue here (the VFX supervisor reel, then the Nuke reels).
 _sup = next((r["video"] for r in REELS if r["role"] == "VFX supervisor"), None)
-if _sup: CATALOGUE.setdefault(_sup, dict(title="VFX supervisor showreel", kind="Stand-in", video=_sup))
+if _sup: CATALOGUE.setdefault(_sup, dict(title="Gangs of London S4 · Official teaser", kind="On-set VFX supervisor · The Sex Pixels · 2026", video=_sup))
 for _r in NUKE_REELS + FLEAPIT_REELS:   # Nuke first: its plain captions, not The Fleapit's in-world ones
     if _r.get("video"): CATALOGUE.setdefault(_r["video"], dict(_r))
 
@@ -846,7 +846,7 @@ write("fleapit/index.html", '''<!doctype html>
 ''')
 
 # ---------------------------------------------------------------- vfx supervisor (player + grid; showreel first)
-SUP_REELS = [dict(title="VFX supervisor showreel", kind="Stand-in", video=next((r["video"] for r in REELS if r["role"] == "VFX supervisor"), None), phases=["Pre-production", "Production", "Post-production"])] + \
+SUP_REELS = [dict(title="Gangs of London S4 · Official teaser", kind="On-set VFX supervisor · The Sex Pixels · 2026", video=next((r["video"] for r in REELS if r["role"] == "VFX supervisor"), None), phases=["Pre-production", "Production", "Post-production"])] + \
     [dict(title=q["title"], kind=" · ".join(x for x in (q["role"], q["co"]) if x), video=q.get("video"), phases=q["phases"])
      for p in PROJECTS if p["group"] == "VFX supervisor" for q in expand(p)]
 player_page("vfxsupervisor/index.html", "vfxsup", "VFX Supervisor", "VFX Supervisor", "SUP", "Showreels",
