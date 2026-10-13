@@ -580,3 +580,23 @@ iframe{color-scheme:normal}
 .phrow .p:not(:last-child) > button::after{line-height:14px;margin-left:14px}
 @media (max-width:1279px){ .nav.open nav{clip-path:inset(84px 0 0 0)} }   /* the long menu scrolls under the name, not over it */
 .phrow .p:not(:last-child) > button::after{position:relative;top:-1px}.phrow{align-items:flex-start}
+
+/* page banners on player pages: the home page's anniversary style, one per page */
+.pbwrap{display:flex;flex-direction:column;gap:14px;min-width:0;flex:1}
+.pbwrap .fp-title{flex:none}
+.pbanner .anniv-n{font-size:clamp(80px,11vw,170px)}
+.pbanner .anniv-t b{font-size:clamp(26px,2.8vw,44px)}
+.pbanner .anniv-t em{max-width:56ch}
+@media (orientation:portrait) and (max-width:760px){
+  .pbanner .anniv-n{font-size:clamp(64px,20vw,96px)}
+  .pbanner .anniv-t b{font-size:26px}
+}
+.pbanner{min-width:0;max-width:100%}
+.pbanner .anniv-t{min-width:0}
+.pbanner .anniv-t span{overflow-wrap:anywhere}
+@media (max-width:760px){ .pbanner .anniv-t span{letter-spacing:1.5px;font-size:10px} .pbanner .anniv-t em{font-size:13px} }
+.pbanner{width:100%}
+.pbanner .anniv-t{flex:1 1 0}
+.pbwrap .fp-title{max-width:min(46ch,100%)}   /* long titles stop short of the scroll cue */
+.pbwrap .fp-title{max-width:calc(50vw - var(--gutter) - 90px)}
+@media (max-width:760px){ .pbwrap{align-self:stretch;width:100%} .pbwrap .fp-title{max-width:100%} }

@@ -721,7 +721,7 @@ def tagged_reels(reels, page):
         out.append(r)
     return out + [r for r in reels if not r.get("video")]
 
-def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wide, idle_empty, extra_links, page_title, desc, tag_page=None, phases=True):
+def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wide, idle_empty, extra_links, page_title, desc, tag_page=None, phases=True, banner=None):
     reels = tagged_reels(reels, tag_page)
     cells = "\n".join(reel_cell(i, r) for i, r in enumerate(reels))
     has_any = any(r["video"] for r in reels)
@@ -734,6 +734,24 @@ def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wid
           <button type="button" class="fp-btn" id="fp-sound" aria-pressed="false">Sound on</button>
           <button type="button" class="fp-btn" id="fp-full">Full screen</button>
         </div>''' if has_any else ""
+    # The page's banner, in the home page's anniversary style: a big pink number, a word, the page's line,
+    # the projects on the page, and a link down to the grid. The Fleapit passes its own in-world banner.
+    vids = [r for r in reels if r.get("video")]
+    b = dict(banner or {})
+    if not b.get("credits"):
+        seen = []
+        for r in vids:
+            proj = r["title"].split(" · ")[0]
+            if "reel" in proj.lower() or proj in seen: continue   # showreels aren't projects
+            seen.append(proj)
+        b["credits"] = " · ".join(seen[:6])
+    b.setdefault("n", str(len(vids)))
+    b.setdefault("word", "Reel" if len(vids) == 1 else "Reels")
+    b.setdefault("more", "All reels ↓")
+    pbanner = (f'''<a class="anniv pbanner" href="#reels-h">
+        <span class="anniv-n">{b["n"]}</span>
+        <span class="anniv-t"><b>{b["word"]}</b><span>{b.get("line", "")}</span>{f"<em>{E(b['credits'])}</em>" if b["credits"] else ""}<i>{b["more"]}</i></span>
+      </a>''' if vids else "")
     pg = head(page_title, desc) + f'''
 <body>
 
@@ -747,7 +765,9 @@ def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wid
       <h1 class="herohead">{title_html}</h1>{phase_strip(reels) if has_any and phases else ""}
     </div>
     <div class="reelbar heroui">
-      <span class="fp-title" id="fp-title" aria-live="polite"></span>{ctrls}
+      <div class="pbwrap">{pbanner}
+        <span class="fp-title" id="fp-title" aria-live="polite"></span>
+      </div>{ctrls}
     </div>
     <div class="scrollcue heroui" aria-hidden="true">Scroll for reels</div>
   </section>
@@ -781,11 +801,14 @@ player_page("thefleapit/index.html", "fleapit", "The Sex Pixels", 'The Fleapit<s
             FLEAPIT_REELS, False, "The first reel is in the edit",
             f'<a class="pill" href="{INSTAGRAM}" target="_blank" rel="noopener">Follow on Instagram ↗</a>',
             "The Fleapit · Mark Pinheiro",
-            "The Fleapit. SE1. A word from our advertisers.", phases=False)   # creative direction across every phase: no filter, not driven by the tags
+            "The Fleapit. SE1. A word from our advertisers.", phases=False,
+            banner=dict(n="1", word="Screen", line="The Fleapit. SE1 · Now showing",
+                        credits=" · ".join(r["title"] for r in FLEAPIT_REELS if not r["video"]), more="Tonight's programme ↓"))   # creative direction across every phase: no filter, not driven by the tags
 player_page("nukecompositor/index.html", "nuke", "Nuke Compositor", 'Nuke Compositor', "2D", "Showreels",
             "Compositing showreels and project reels. Play them all, or pick one from the grid.",
             NUKE_REELS, True, "", "", "Nuke Compositor · Mark Pinheiro",
-            "Mark Pinheiro's compositing showreels and project reels.", tag_page="Nuke Compositor")
+            "Mark Pinheiro's compositing showreels and project reels.", tag_page="Nuke Compositor",
+            banner=dict(line="Compositing &amp; PostVis · 2000–2026"))
 
 # Old address: /work/commercial/ is now /work/shorts/
 write("work/commercial/index.html", """<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><title>Shorts · Mark Pinheiro</title>
@@ -809,9 +832,17 @@ SUP_REELS = [dict(title="VFX supervisor showreel", kind="Stand-in", video=next((
 player_page("vfxsupervisor/index.html", "vfxsup", "VFX Supervisor", "VFX Supervisor", "SUP", "Showreels",
             "On-set and in-facility supervision across feature film, episodic and commercials. The showreel plays first; pick a project from the grid to play its reel.",
             SUP_REELS, True, "The supervisor showreel is in the edit", "", "VFX Supervisor · Mark Pinheiro",
-            "Mark Pinheiro's VFX supervision: showreel and project reels.", tag_page="VFX Supervisor")
+            "Mark Pinheiro's VFX supervision: showreel and project reels.", tag_page="VFX Supervisor",
+            banner=dict(line="On-set &amp; in-facility supervision"))
 
 # ---------------------------------------------------------------- work format pages with the player
+FORMAT_LINES = {   # the line in each format page's banner
+    "Feature film": "Feature film · project reels",
+    "Episodic": "Episodic · series &amp; seasons",
+    "Visualisation": "Previs &amp; PostVis",
+    "Shorts": "Commercials, promos, titles &amp; music videos",
+    "Feature animation": "Feature animation · stereo &amp; compositing",
+}
 FORMAT_LEDES = {
     "Feature film": "Feature film project reels: Nuke compositing, PostVis and VFX supervision. Play them all, or pick one from the grid.",
     "Episodic": "Episodic project reels: Nuke compositing, PostVis and VFX supervision. Play them all, or pick one from the grid.",
@@ -828,7 +859,8 @@ for i, f in enumerate(FORMATS, 1):
     title = fmt_title(f)
     player_page(f"work/{FORMAT_SLUGS[f]}/index.html", "work", None, title, f"01.{i}", "Work",
                 FORMAT_LEDES[f], reels, True, "Reels on their way", "",
-                f"{title} · Work · Mark Pinheiro", f"Mark Pinheiro's {f} work: project reels as Nuke compositor and VFX supervisor.", tag_page=f)
+                f"{title} · Work · Mark Pinheiro", f"Mark Pinheiro's {f} work: project reels as Nuke compositor and VFX supervisor.", tag_page=f,
+                banner=dict(line=FORMAT_LINES[f]))
 
 # ---------------------------------------------------------------- news
 import datetime
