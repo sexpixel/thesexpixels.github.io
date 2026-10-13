@@ -796,7 +796,8 @@ def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wid
   <div class="over">
   <section class="fp-reels" aria-labelledby="reels-h">
     <div class="rail"><span class="n">Reels</span><span id="reels-h">All</span></div>
-    <p class="pagelede">{lede}</p>
+    <p class="pagelede">{lede}</p>{f'''
+    <p class="pagelinks">{extra_links}</p>''' if extra_links and has_any else ""}
     <div class="fp-grid{" wide" if wide else ""}">
 {cells}
     </div>

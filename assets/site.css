@@ -671,3 +671,4 @@ iframe{color-scheme:normal}
   .pb-meta dd{white-space:normal;overflow:visible;text-overflow:clip;max-width:40vw}
 }
 .ctiles li.wide{grid-column:1 / -1}
+.pagelinks{margin:-8px 0 28px;display:flex;flex-wrap:wrap;gap:10px}
