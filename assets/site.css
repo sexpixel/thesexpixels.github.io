@@ -672,3 +672,14 @@ iframe{color-scheme:normal}
 }
 .ctiles li.wide{grid-column:1 / -1}
 .pagelinks{margin:-8px 0 28px;display:flex;flex-wrap:wrap;gap:10px}
+
+/* The Fleapit, phones held upright: tighter spacing so the screen, the intro and Follow on Instagram fit in one view.
+   The Now playing line is only hidden from view (screen readers still hear it). */
+@media (orientation:portrait) and (max-width:760px){
+  .pg-fleapit .reelbar{margin:10px var(--gutter) 0;gap:12px}
+  .pg-fleapit .pbwrap .fp-title{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .pg-fleapit .fp-reels{padding-top:14px!important}
+  .pg-fleapit .rail{margin-bottom:10px}
+  .pg-fleapit .pagelede{margin-bottom:18px}
+  .pg-fleapit .pbanner .anniv-t em{display:none}   /* the programme list: the tiles below already show it */
+}

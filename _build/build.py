@@ -778,7 +778,7 @@ def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wid
 
 {header(key, None)}
 
-<main>
+<main class="pg-{key}">
   <section class="hero stickyhero fp-player{"" if has_any else " fp-empty"}" id="fp-player" aria-label="Player">
     <div class="fp-slot" id="fp-slot"></div>{idle}
     <div class="herotitle herotop heroui">
