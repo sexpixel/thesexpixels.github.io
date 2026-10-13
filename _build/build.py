@@ -546,7 +546,7 @@ EQUIPMENT = [
     ("Set", "Shot Designer"),
     ("Camera", "iPhone 17 Log · Theta 360 · 15× GoPro · Canon 5D MkII"),
     ("VFX kit", "Grey / chrome ball rig · 2× large silver balls"),
-    ("Light", "Sun Seeker · Helios · Magic Hour · Sekonic 550cine · iPhone light-meter apps"),
+    ("Light", "Sun Seeker · Helios · Magic Hour · Sekonic 550cine · iPhone EV13"),
     ("Wrangle", "Setellite · VFX Reports · Assimilate Scratch · Gaussian splatting · CaraVR · Kartaverse"),
     ("Real-time", "Unreal Engine"),
     ("Pipeline", "USD · AYON · Deadline"),
