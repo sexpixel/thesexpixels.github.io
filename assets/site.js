@@ -200,6 +200,7 @@
   // other browsers (Chrome) keep their bars outside the page, so the button sits at the bottom with a small margin.
   var ua = navigator.userAgent, floatingBar = /Safari/.test(ua) && /iP(hone|od)/.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
   var BAR = floatingBar ? 100 : 20;
+  if (floatingBar) main.classList.add('fp-float');   // Safari: a little more room between the controls and Reels
   function fit(){
     main.style.removeProperty('--fx'); main.style.removeProperty('--ft');
     if (!matchMedia('(orientation:portrait) and (max-width:760px)').matches) return;
@@ -207,8 +208,7 @@
     if (!pill || !grid) return;
     var y = window.scrollY, h = window.innerHeight;
     var spare = h - BAR - (pill.getBoundingClientRect().bottom + y);
-    if (spare <= 0) return;
-    main.style.setProperty('--fx', spare + 'px');
+    if (spare > 0) main.style.setProperty('--fx', spare + 'px');
     var tail = h - (grid.getBoundingClientRect().top + y);
     if (tail > 0) main.style.setProperty('--ft', tail + 'px');
   }
