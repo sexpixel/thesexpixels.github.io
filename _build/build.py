@@ -581,8 +581,6 @@ DOC_CHAPTERS = [
 ]
 DOC_REELS = [dict(title=yrs, kind=f"Chapter {i + 1} of {len(DOC_CHAPTERS)} · narrated", video=f"vimeo:{vid}")
              for i, (yrs, vid) in enumerate(DOC_CHAPTERS)]
-# After the narrated chapters: the 2017 sizzle reel, 17 years in two and a half minutes.
-DOC_REELS.append(dict(title="2017 · Sizzle reel", kind="17 years in 02:30", video="youtube:SDAXjN_sOlE"))
 doc_cells = "\n".join(reel_cell(i, r) for i, r in enumerate(DOC_REELS))
 LINKS = [("CV", "/cv/"), ("IMDb", "https://www.imdb.com/name/nm1025041/"), ("LinkedIn", "https://www.linkedin.com/in/markpinheiro"),
          ("Vimeo", "https://vimeo.com/thesexpixels"), ("Instagram", INSTAGRAM)]
@@ -613,7 +611,7 @@ about = head("Bio · Mark Pinheiro",
       <div class="pbwrap"><a class="anniv pbanner live" href="#story">
         <span class="anniv-n" id="pb-n">01</span>
         <span class="anniv-t"><b id="pb-title">{E(DOC_REELS[0]["title"])}</b><span id="pb-sub">1 of {len(DOC_REELS)}</span>
-          <i>All {len(DOC_REELS)} reels ↓</i></span>
+          <i>All {len(DOC_REELS)} chapters ↓</i></span>
       </a>
         <span class="fp-title" id="fp-title" aria-live="polite"></span>
       </div>{CTRLS}
@@ -637,8 +635,8 @@ about = head("Bio · Mark Pinheiro",
   </section>
 
   <section id="story" style="padding-top:0">
-    <div class="rail"><span class="n">01</span>In his own words · 2000–2017</div>
-    <p class="pagelede">Eight showreels, each narrated by Mark: the stages of a career in VFX, told as a short documentary, closing with the 2017 sizzle reel. It plays above, chapter by chapter; pick any chapter to jump to it, with sound.</p>
+    <div class="rail"><span class="n">01</span>In his own words · 2000–2014</div>
+    <p class="pagelede">Eight showreels, each narrated by Mark: the stages of a career in VFX, told as a short documentary. It plays above, chapter by chapter; pick any chapter to jump to it, with sound.</p>
     <div class="fp-grid wide">
 {doc_cells}
     </div>
