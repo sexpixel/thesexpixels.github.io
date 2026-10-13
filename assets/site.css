@@ -705,3 +705,10 @@ iframe{color-scheme:normal}
   .anniv:not(.pbanner){align-items:flex-start}
   .anniv:not(.pbanner) .anniv-n{margin-top:.04em}
 }
+
+/* Other player pages, phones held upright: only the "Reels · All" line shows at the bottom of the first screen
+   (site.js measures the screen and sets --rp and --rm) */
+@media (orientation:portrait) and (max-width:760px){
+  main.pg-fit .fp-reels{padding-top:calc(16px + var(--rp,0px))!important}
+  main.pg-fit .fp-reels .rail{margin-bottom:calc(28px + var(--rm,0px))}
+}

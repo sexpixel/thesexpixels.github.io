@@ -219,3 +219,33 @@
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit); else window.addEventListener('load', fit);
   fit();
 })();
+
+/* Other player pages (Nuke Compositor, VFX Supervisor, the Work formats), phones held upright: the first screen ends
+   with the "Reels · All" line sitting at the bottom, so people know the reels are below, and the reels themselves
+   start just off the screen. Safari's see-through address bar floats over the page, so there the line sits above it. */
+(function(){
+  var main = document.querySelector('main[class^="pg-"]:not(.pg-fleapit)'); if (!main) return;
+  var rail = main.querySelector('.fp-reels .rail'); if (!rail) return;
+  var ua = navigator.userAgent, floatingBar = /Safari/.test(ua) && /iP(hone|od)/.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
+  var BAR = floatingBar ? 96 : 14, BEHIND = floatingBar ? 80 : 0;
+  function fit(){
+    main.classList.remove('pg-fit'); main.style.removeProperty('--rp'); main.style.removeProperty('--rm');
+    if (!matchMedia('(orientation:portrait) and (max-width:760px)').matches) return;
+    main.classList.add('pg-fit');   // Reels padding and rail gap start from their smallest
+    var y = window.scrollY, h = window.innerHeight, r = rail.getBoundingClientRect();
+    var lift = h - BAR - (r.bottom + y);                       // room left under the Reels line
+    if (lift > 0) main.style.setProperty('--rp', lift + 'px');
+    var next = rail.nextElementSibling; if (!next) return;
+    var gap = h + BEHIND - (next.getBoundingClientRect().top + y);   // push what follows off the screen
+    if (gap > 0) main.style.setProperty('--rm', gap + 'px');
+  }
+  var t; function soon(){ clearTimeout(t); t = setTimeout(fit, 150); }
+  window.addEventListener('orientationchange', soon);
+  var lastW = window.innerWidth, lastH = window.innerHeight;
+  window.addEventListener('resize', function(){
+    // refit when the phone turns, or when the browser bar settles while the page is still at the top
+    if (window.innerWidth !== lastW || (window.scrollY < 8 && Math.abs(window.innerHeight - lastH) > 40)) { lastW = window.innerWidth; lastH = window.innerHeight; soon(); }
+  });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit); else window.addEventListener('load', fit);
+  fit();
+})();
