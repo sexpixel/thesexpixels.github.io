@@ -109,6 +109,16 @@
     });
   });
 
+  // Keep Vimeo subtitles off. Vimeo can switch a caption track on after the video starts (when the
+  // video has one set as default), so they're switched off again whenever a track turns on.
+  window.TSPnoSubs = function(pl){
+    if (!pl || !pl.disableTextTrack) return;
+    var off = function(){ pl.disableTextTrack().catch(function(){}); };
+    off();
+    ['loaded', 'play', 'playing'].forEach(function(ev){ try { pl.on(ev, off); } catch (e) {} });
+    try { pl.on('texttrackchange', function(d){ if (d && (d.language || d.kind)) off(); }); } catch (e) {}
+  };
+
   // 1d. Homepage background reel: read the video's real shape so it covers the screen edge to edge.
   var bg = document.querySelector('.hero > iframe[src*="player.vimeo.com"]');
   if (bg) window.TSPcrop(bg.parentNode, bg);
@@ -117,6 +127,7 @@
     s.onload = function(){
       try {
         var pl = new window.Vimeo.Player(bg);
+        window.TSPnoSubs(pl);
         Promise.all([pl.getVideoWidth(), pl.getVideoHeight()]).then(function(d){
           if (d[0] && d[1]) bg.parentNode.style.setProperty('--ar', d[0] / d[1]);
           window.TSPcrop(bg.parentNode, bg);

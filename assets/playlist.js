@@ -71,7 +71,7 @@
         player = new window.Vimeo.Player(f);
         player.on('ended', next);
         player.on('error', function(){ setTimeout(next, 1500); });   // a video that can't play (privacy, removed) is skipped
-        if (player.disableTextTrack) player.disableTextTrack().catch(function(){});   // no subtitles
+        if (window.TSPnoSubs) window.TSPnoSubs(player); else if (player.disableTextTrack) player.disableTextTrack().catch(function(){});   // no subtitles, even if Vimeo turns them on later
         // If the browser refuses to start the next video with sound, start it muted rather than stall.
         var vp = player;
         setTimeout(function(){
