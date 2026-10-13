@@ -798,3 +798,40 @@ iframe{color-scheme:normal}
 /* Contact: two tiles (LinkedIn, Instagram) side by side */
 .ctiles{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media (max-width:520px){.ctiles{grid-template-columns:minmax(0,1fr)}}
+
+/* Contact page (13 Oct): title with Based beside it; email, LinkedIn and Instagram as three equal ways in,
+   on one line; the company's two addresses each on one line, in two columns */
+.ctitlerow{display:flex;align-items:flex-end;justify-content:space-between;gap:24px 48px;flex-wrap:wrap;padding-bottom:clamp(20px,3vh,32px);border-bottom:1px solid var(--line)}
+.ctitlerow .pagetitle{margin:0}
+.cbased{display:grid;gap:4px;max-width:34ch;padding-bottom:6px}
+.cbased .cbig{margin:2px 0 0}
+.cbased .csmall{margin:0}
+.cways{list-style:none;margin:0;padding:clamp(24px,4vh,40px) 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;border-bottom:1px solid var(--line)}
+.cways a{display:grid;gap:12px;text-decoration:none;color:var(--fg)}
+.cways .cval{font-weight:800;font-size:clamp(18px,1.9vw,30px);line-height:1.1;letter-spacing:-.01em;overflow-wrap:anywhere;border-bottom:2px solid transparent;justify-self:start;transition:border-color .2s,color .2s}
+.cways a:hover .cval{border-color:var(--accent)}
+.cways .arr{color:var(--accent);font-size:.7em}
+.ccompany{display:grid;gap:14px;padding-top:clamp(24px,4vh,40px)}
+.caddr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.caddr > div{display:grid;gap:6px}
+.caddr address{font-style:normal;font-family:var(--mono);font-size:14px;line-height:1.5;color:var(--soft)}
+.ccompany .coemail{justify-self:start}
+@media (max-width:860px){
+  .cways{grid-template-columns:minmax(0,1fr)}
+  .caddr{grid-template-columns:minmax(0,1fr)}
+}
+/* contact: addresses one line each, info@ beside the company name, fits laptop height */
+.ccompany{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"lab mail" "addr addr";align-items:center}
+.ccompany > .clabel{grid-area:lab}
+.ccompany > .coemail{grid-area:mail;margin:0;justify-self:end}
+.ccompany > .caddr{grid-area:addr}
+@media (min-width:861px){
+  .caddr{grid-template-columns:auto auto;justify-content:space-between;gap:32px}
+  .caddr address{white-space:nowrap;font-size:min(14px,1.02vw)}
+  .cways{padding:clamp(18px,3vh,40px) 0}
+  .cways a{gap:8px}
+}
+@media (max-width:860px){
+  .ccompany{grid-template-columns:minmax(0,1fr);grid-template-areas:"lab" "addr" "mail"}
+  .ccompany > .coemail{justify-self:start}
+}

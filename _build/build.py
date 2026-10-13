@@ -974,38 +974,27 @@ contact = head("Contact · Mark Pinheiro", "Contact Mark Pinheiro: email, Linked
 
 <main>
   <section class="page contactpage">
-{page_intro("04", "Contact", "Contact")}
-    <div class="ctop">
-      <div>
-        <span class="clabel">{icon("Email", "ic big")}Email</span>
-        <a class="email" href="mailto:mark@thesexpixels.com">mark@thesexpixels.com</a>
-      </div>
-      <div>
+    <div class="rail"><span class="n">04</span>Contact</div>
+    <div class="ctitlerow">
+      <h1 class="pagetitle">Contact</h1>
+      <div class="cbased">
         <span class="clabel">{icon("Based", "ic big")}Based</span>
         <p class="cbig">London</p>
         <p class="csmall">UK work eligibility · valid passport · available to travel worldwide</p>
       </div>
-      <div>
-        <span class="clabel">{icon("Company", "ic big")}Company</span>
-        <b class="coname">The Sex Pixels Ltd.</b>
-        <div class="offices">
-          <address><span class="olabel">Studio</span>
-            Old Bank Chambers, The Slip<br>
-            217 Grange Road, Bermondsey<br>
-            London SE1 3AA
-          </address>
-          <address><span class="olabel">Registered office</span>
-            Fifth Floor, Mariner House<br>
-            62 Prince Street<br>
-            Bristol BS1 4QD
-          </address>
-        </div>
-        <a class="coemail" href="mailto:info@thesexpixels.com">info@thesexpixels.com</a>
-      </div>
     </div>
-    <ul class="ctiles">
-{chr(10).join(f'      <li><a href="{u}" target="_blank" rel="noopener">{icon(k)}<span class="k">{k}</span><span class="t">{E(t)}</span><span class="arr">↗</span></a></li>' for k, t, u in CONTACT_LINKS)}
+    <ul class="cways" aria-label="Ways to get in touch">
+      <li><a href="mailto:mark@thesexpixels.com"><span class="clabel">{icon("Email", "ic big")}Email</span><span class="cval">mark@thesexpixels.com</span></a></li>
+{chr(10).join(f'      <li><a href="{u}" target="_blank" rel="noopener"><span class="clabel">{icon(k, "ic big")}{k}</span><span class="cval">{E(t)} <span class="arr">↗</span></span></a></li>' for k, t, u in CONTACT_LINKS)}
     </ul>
+    <div class="ccompany">
+      <span class="clabel">{icon("Company", "ic big")}The Sex Pixels Ltd.</span>
+      <div class="caddr">
+        <div><span class="olabel">Studio</span><address>Old Bank Chambers, The Slip, 217 Grange Road, Bermondsey, London SE1 3AA</address></div>
+        <div><span class="olabel">Registered office</span><address>Fifth Floor, Mariner House, 62 Prince Street, Bristol BS1 4QD</address></div>
+      </div>
+      <a class="coemail" href="mailto:info@thesexpixels.com">info@thesexpixels.com</a>
+    </div>
   </section>
 </main>
 
