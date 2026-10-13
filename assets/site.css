@@ -765,3 +765,12 @@ iframe{color-scheme:normal}
   .hero.fp-player .fp-slot iframe{width:100% !important;height:100% !important}
 }
 @media (orientation:landscape){ .hero.fp-player{background:#000} }
+
+/* Bio page on desktop: the intro and the link tiles side by side across the page, tiles wrapping instead of
+   running off to the side */
+@media (min-width:981px){
+  .bio.solo{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);column-gap:clamp(40px,6vw,96px);max-width:none;align-items:start}
+  .bio.solo .biotext p{max-width:62ch}
+  .bio.solo .linkrow{margin-top:6px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;overflow:visible}
+  .bio.solo .linkrow .pill.iconpill{min-width:0;padding:22px 12px}
+}

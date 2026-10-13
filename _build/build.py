@@ -108,7 +108,7 @@ def header(current="", sub="VFX Supervisor"):
       </li>
       {a("/skills/", "Skills", "skills")}
       {a("/news/", "News", "news")}
-      {a("/about/", "About", "about")}
+      {a("/about/", "Bio", "about")}
       {a("/contact/", "Contact", "contact")}
     </ul>
   </nav>
@@ -271,11 +271,11 @@ home = head("Mark Pinheiro · Filmmaker / VFX / AI",
         </div>
       </a>
       <a class="card" href="/about/">
-        {slate("Since 1995", "About")}
+        {slate("Since 1995", "Bio")}
         <div class="meta">
-          <span class="kicker">About</span>
+          <span class="kicker">Bio</span>
           <h3>Kit, press &amp; laurels</h3>
-          <span class="go">About →</span>
+          <span class="go">Bio →</span>
         </div>
       </a>
     </div>
@@ -596,7 +596,7 @@ awd = "\n".join(f'        <li><b>{n}</b>{f"<i>{k}</i>" if k else ""}<span>{E(d)}
 eqp = "\n".join(f'        <div><dt>{E(k)}</dt><dd>{E(v)}</dd></div>' for k, v in EQUIPMENT)
 edu = "\n".join(f'        <li><span class="b">{E(b)}</span><span><b>{q}</b> · {w}</span></li>' for b, q, w in EDUCATION)
 lnk = " ".join(f'<a class="pill ghost iconpill" href="{u}" target="_blank" rel="noopener">{icon(n, "ic xs")}{n}</a>' for n, u in LINKS)
-about = head("About · Mark Pinheiro",
+about = head("Bio · Mark Pinheiro",
              "Mark Pinheiro: filmmaker, Nuke compositor and VFX supervisor. Laurels, software, equipment and press from twenty-six years in visual effects.") + f'''
 <body>
 
@@ -607,7 +607,7 @@ about = head("About · Mark Pinheiro",
     <div class="fp-slot" id="fp-slot"></div>
     <div class="herotitle herotop heroui">
       <span class="lab"><b>01</b> · In his own words</span>
-      <h1 class="herohead">About</h1>
+      <h1 class="herohead">Bio</h1>
     </div>
     <div class="reelbar heroui">
       <div class="pbwrap"><a class="anniv pbanner live" href="#story">
@@ -630,8 +630,8 @@ about = head("About · Mark Pinheiro",
     </ul>
     <p class="awards-note">Promax won outright; the others won by the shows and teams he was part of.</p>
     <div class="bio solo">
-      <p class="lede">A filmmaker at heart, with twenty-six years in visual effects.</p>
-      <p>Today he still enjoys exploring methods and practices that use technology to simplify filmmaking. He works through his boutique studio, The Sex Pixels. He is an <strong>agentic coder</strong>: every tool he builds is written with AI. He also designs courses for the NFTS, ECAM Madrid and Escape Studios.</p>
+      <div class="biotext"><p class="lede">A filmmaker at heart, with twenty-six years in visual effects.</p>
+      <p>Today he still enjoys exploring methods and practices that use technology to simplify filmmaking. He works through his boutique studio, The Sex Pixels. He is an <strong>agentic coder</strong>: every tool he builds is written with AI. He also designs courses for the NFTS, ECAM Madrid and Escape Studios.</p></div>
       <div class="linkrow">{lnk}</div>
     </div>
   </section>
