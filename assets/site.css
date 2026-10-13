@@ -773,7 +773,8 @@ iframe{color-scheme:normal}
   .bioedu{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);column-gap:clamp(40px,6vw,96px);align-items:start}
   .bio.solo{display:block;max-width:none}
   .bio.solo .linkrow{margin-top:24px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;overflow:visible}
-  .bio.solo .linkrow .pill.iconpill{min-width:0;padding:22px 8px}
+  .bio.solo .linkrow .pill.iconpill{min-width:0;padding:20px 6px;font-size:11px;letter-spacing:2px}
+  .bio.solo .linkrow{max-width:534px}   /* the same width as the paragraph above (60 characters) */
 }
 }
 
