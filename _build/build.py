@@ -823,7 +823,7 @@ player_page("thefleapit/index.html", "fleapit", "The Sex Pixels", 'The Fleapit<s
             f'<a class="pill" href="{INSTAGRAM}" target="_blank" rel="noopener">Follow on Instagram ↗</a>',
             "The Fleapit · Mark Pinheiro",
             "The Fleapit. SE1. Trailers, fillers, adverts, shorts and public information films. Continuous programme. No latecomers.", phases=False,
-            banner=dict(n="1", word="Intermission", line="…a word from our sponsors…",
+            banner=dict(n="1", word="Intermission…", line="…a word from our sponsors…",
                         credits="", more="Tonight's programme ↓"))   # creative direction across every phase: no filter, not driven by the tags
 player_page("nukecompositor/index.html", "nuke", "Nuke Compositor", 'Nuke Compositor', "2D", "Showreels",
             "Compositing showreels and project reels. Play them all, or pick one from the grid.",
