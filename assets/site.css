@@ -709,7 +709,10 @@ iframe{color-scheme:normal}
 /* Other player pages, phones held upright: only the "Reels · All" line shows at the bottom of the first screen
    (site.js measures the screen and sets --rp and --rm) */
 @media (orientation:portrait) and (max-width:760px){
-  main.pg-fit .fp-reels{padding-top:calc(16px + var(--rp,0px))!important}
+  /* the spare height is shared: under the banner, between the two lines of controls, and above Reels */
+  main.pg-fit .reelbar{row-gap:calc(16px + var(--rp,0px) * .35)}
+  main.pg-fit .fp-ctrls{row-gap:calc(8px + var(--rp,0px) * .15)}
+  main.pg-fit .fp-reels{padding-top:calc(16px + var(--rp,0px) * .35)!important}
   main.pg-fit .fp-reels .rail{margin-bottom:calc(28px + var(--rm,0px))}
 }
 
