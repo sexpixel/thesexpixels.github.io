@@ -20,15 +20,15 @@ PROJECTS = [
          clips=[("The Knights Arrive", "1014291965"), ("The Knights: Rashomon", "1014291669"), ("The Fall", "1014291582")]),
     dict(title="The Family Plan", role="Lead PostVis artist", group="PostVis", fmt="Feature film", co="Proof", yr="2023",
          clips=[("The Tiki Bar Attack", "1014294324"), ("Car Pool Karaoke", "1014294008")]),
-    dict(title="Wonka", role="PostVis", group="PostVis", fmt="Feature film", co="Framestore FPS", yr="",  # ROLE TO CONFIRM
+    dict(title="Wonka", role="Lead PostVis artist", group="PostVis", fmt="Feature film", co="Framestore FPS", yr="",
          clips=[("Giraffe, parts 1 & 2", "1014150213"), ("Giraffe, part 3", "1014149873")]),
     dict(title="Guardians of the Galaxy Vol. 3", role="Lead PostVis artist", group="PostVis", fmt="Feature film", co="Framestore FPS", yr="",
          clips=[("Guardians of the Galaxy Vol. 3", "1014147480")]),
-    dict(title="Moon Knight", role="PostVis", group="PostVis", fmt="Episodic", co="Framestore FPS", yr="",  # ROLE TO CONFIRM
+    dict(title="Moon Knight", role="Lead PostVis artist", group="PostVis", fmt="Episodic", co="Framestore FPS", yr="",
          clips=[("The Castle", "1014146296"), ("The Ice Cream Van Chase", "1014145891"), ("The Book Attack", "1014145603"), ("The Museum", "1014145227"),
                 ("Security Desk", "1014145040"), ("Storage Lockup", "1014144960"), ("Khonshu Mentors", "1014144736"),
                 ("Pyramid Fight", "1014144315"), ("Desert Magic", "1014144015"), ("The Asylum", "1014143259"), ("The Realm", "1014143091")]),
-    dict(title="Lockwood & Co", role="PostVis", group="PostVis", fmt="Episodic", co="Framestore FPS", yr="",  # ROLE TO CONFIRM
+    dict(title="Lockwood & Co", role="Lead PostVis artist", group="PostVis", fmt="Episodic", co="Framestore FPS", yr="",
          clips=[("S01E03 The Druids", "1014146695")]),
     dict(title="The Rig", role="", group="Nuke compositor", fmt="Episodic", co="Absolute Post", yr="",  # ROLE TO CONFIRM
          clips=[("Season 1", "1014300271")]),
