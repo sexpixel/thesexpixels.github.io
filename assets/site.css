@@ -670,3 +670,10 @@ iframe{color-scheme:normal}
   .pbanner.live .anniv-t b{white-space:normal;overflow:visible;text-overflow:clip;max-width:40vw;font-size:18px;line-height:1.05}
   .pb-meta dd{white-space:normal;overflow:visible;text-overflow:clip;max-width:40vw}
 }
+
+/* TV mode: your name stays on screen as a signature; only the menu, page name, filters, banner and controls fade */
+.nav ul,.menu-btn{transition:opacity .8s ease}
+body.tv .nav{transform:none;background:linear-gradient(180deg,rgba(17,16,18,.45),rgba(17,16,18,0))}
+body.tv .nav nav > ul,body.tv .nav .menu-btn{opacity:0;pointer-events:none}
+@media (hover:none){ body.tv .nav .menu-btn{pointer-events:auto} }   /* one tap still opens the menu */
+body.tv .mark{opacity:.92}
