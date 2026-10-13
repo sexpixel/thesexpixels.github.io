@@ -671,9 +671,8 @@ iframe{color-scheme:normal}
   .pb-meta dd{white-space:normal;overflow:visible;text-overflow:clip;max-width:40vw}
 }
 
-/* TV mode: your name stays on screen as a signature; only the menu, page name, filters, banner and controls fade */
-.nav ul,.menu-btn{transition:opacity .8s ease}
-body.tv .nav{transform:none;background:linear-gradient(180deg,rgba(17,16,18,.45),rgba(17,16,18,0))}
-body.tv .nav nav > ul,body.tv .nav .menu-btn{opacity:0;pointer-events:none}
-@media (hover:none){ body.tv .nav .menu-btn{pointer-events:auto} }   /* one tap still opens the menu */
-body.tv .mark{opacity:.92}
+/* TV mode: your name and the page name fade out together and come back together (same timing) */
+.nav{transition:transform .45s cubic-bezier(.6,0,.2,1),background .3s,opacity .8s ease}
+body.tv .nav{transform:none;opacity:0;pointer-events:none}
+@media (hover:none){ body.tv .nav{pointer-events:auto} }   /* touch: one tap wakes it and works the menu */
+@media (orientation:portrait) and (max-width:760px){ body.tv .nav{opacity:1} }   /* upright phones keep the page name, so the name stays too */
