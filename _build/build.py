@@ -679,11 +679,8 @@ for _p in PROJECTS:
             CATALOGUE.setdefault(_q["video"], dict(title=_q["title"], kind=" · ".join(x for x in (_q["role"], _q["co"], _q["yr"]) if x), video=_q["video"], phases=_q["phases"]))
 FLEAPIT_REELS = [
     dict(title="Showreel 2020", kind="Tonight's programme", video=REEL_2020),  # STAND-IN until the first Fleapit reel is ready
-    dict(title="A word from our advertisers", kind="Advertisement", video=None),
     dict(title="Coming attractions", kind="Trailer", video=None),
-    dict(title="Intermission", kind="Sting", video=None),
     dict(title="Local advertisers", kind="Advertisement", video=None),
-    dict(title="Supporting feature", kind="Short film", video=None),
     dict(title="Programme notes", kind="Notes", video=None),
 ]
 NUKE_REELS = [
@@ -826,7 +823,7 @@ player_page("thefleapit/index.html", "fleapit", "The Sex Pixels", 'The Fleapit<s
             f'<a class="pill" href="{INSTAGRAM}" target="_blank" rel="noopener">Follow on Instagram ↗</a>',
             "The Fleapit · Mark Pinheiro",
             "The Fleapit. SE1. Trailers, fillers, adverts, shorts and public information films. Continuous programme. No latecomers.", phases=False,
-            banner=dict(n="1", word="A word from our sponsors", line="",
+            banner=dict(n="1", word="Intermission", line="…a word from our sponsors…",
                         credits="", more="Tonight's programme ↓"))   # creative direction across every phase: no filter, not driven by the tags
 player_page("nukecompositor/index.html", "nuke", "Nuke Compositor", 'Nuke Compositor', "2D", "Showreels",
             "Compositing showreels and project reels. Play them all, or pick one from the grid.",
