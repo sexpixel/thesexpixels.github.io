@@ -639,8 +639,8 @@ iframe{color-scheme:normal}
 /* Phones held sideways: show the whole frame (fit, not fill), so credits burned into the letterbox
    bars aren't cropped, whatever height the browser's bars leave. Black fills the sides. */
 @media (hover:none) and (orientation:landscape) and (max-height:500px){
-  .hero.fp-player .fp-slot iframe{width:min(100vw,calc(100svh * var(--ar,1.7778))) !important;height:min(calc(100vw / var(--ar,1.7778)),100svh) !important}
+  .hero.fp-player .fp-slot iframe,.hero > iframe{width:min(100vw,calc(100svh * var(--ar,1.7778))) !important;height:min(calc(100vw / var(--ar,1.7778)),100svh) !important}
   @supports (height:100dvh){
-    .hero.fp-player .fp-slot iframe{width:min(100vw,calc(100dvh * var(--ar,1.7778))) !important;height:min(calc(100vw / var(--ar,1.7778)),100dvh) !important}
+    .hero.fp-player .fp-slot iframe,.hero > iframe{width:min(100vw,calc(100dvh * var(--ar,1.7778))) !important;height:min(calc(100vw / var(--ar,1.7778)),100dvh) !important}
   }
 }
