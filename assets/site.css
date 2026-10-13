@@ -756,3 +756,11 @@ iframe{color-scheme:normal}
 
 /* Phones: the see-through touch layer over the video that catches swipes (next / previous reel) and taps (play / pause) */
 .fp-swipe{position:absolute;inset:0;z-index:3;touch-action:pan-y;-webkit-tap-highlight-color:transparent}
+
+/* Players on desktop and laptops: never trim. The whole frame fits the window, with black bars where the
+   window's shape differs from the reel's (the home page's background reel still fills the screen) */
+.hero.fp-player .fp-slot iframe{width:min(100vw,calc(100svh * var(--ar,1.7778))) !important;height:min(calc(100vw / var(--ar,1.7778)),100svh) !important}
+@media (orientation:portrait) and (max-width:760px){
+  .hero.fp-player .fp-slot iframe{width:100% !important;height:100% !important}
+}
+@media (orientation:landscape){ .hero.fp-player{background:#000} }
