@@ -755,7 +755,8 @@ iframe{color-scheme:normal}
 }
 
 /* Phones: the see-through touch layer over the video that catches swipes (next / previous reel) and taps (play / pause) */
-.fp-swipe{position:absolute;inset:0;z-index:3;touch-action:pan-y;-webkit-tap-highlight-color:transparent}
+.fp-swipe{position:absolute;inset:0;z-index:3;touch-action:pan-y;-webkit-tap-highlight-color:transparent;background:rgba(0,0,0,.002)}   /* a hint of fill: iPhones can let touches on a fully clear layer fall through to the video frame */
+.fp-slot{isolation:isolate}   /* keeps the touch layer under the controls when the player fills the screen (phone sideways) */
 
 /* Players on desktop and laptops: never trim. The whole frame fits the window, with black bars where the
    window's shape differs from the reel's (the home page's background reel still fills the screen) */
