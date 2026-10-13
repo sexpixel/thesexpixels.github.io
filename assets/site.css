@@ -692,3 +692,4 @@ iframe{color-scheme:normal}
 .fp-prog{display:block;margin-bottom:10px;font-size:clamp(13px,1.1vw,15px);line-height:1.45;color:var(--fg)}
 .pg-fleapit .pbanner .anniv-t span:empty{display:none}
 .pg-fleapit .pbanner .anniv-t span{font-family:var(--display,inherit);font-style:italic;font-weight:400;font-size:13px;letter-spacing:0;text-transform:none;color:var(--dim)}   /* a filler card, not a headline */
+.pg-fleapit .pbanner .anniv-t b{text-transform:none}   /* Intermission, capital I only */
