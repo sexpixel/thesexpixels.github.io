@@ -14,6 +14,10 @@ from work_data import PROJECTS, ROLE_GROUPS, FORMATS, FORMAT_SLUGS, expand, in_f
 from news_data import NEWS
 from crops import CROPS, crop_of, crop_str
 from phase_tags import TAGS
+try:
+    from page_order import ORDER as PAGE_ORDER
+except ImportError:
+    PAGE_ORDER = {}
 
 def crop_attr(spec):
     c = crop_str(spec)
@@ -719,7 +723,14 @@ def tagged_reels(reels, page):
     have = {r["video"] for r in kept}
     extra = [dict(CATALOGUE[v]) for v in sorted(TAGS, key=lambda v: TAGS[v]["order"]) if on(v) and v not in have and v in CATALOGUE]
     out = []
-    for r in kept + extra:   # the page's own order first (its showreel leads), then videos the tags add
+    order = PAGE_ORDER.get(page)
+    if order:   # Mark's own play order for this page (Phase Tagger, Page order); anything unlisted keeps its place after
+        at = {v: i for i, v in enumerate(order)}
+        both = kept + extra
+        both = sorted(both, key=lambda r: (at.get(r["video"], len(order)), both.index(r)))
+    else:
+        both = kept + extra
+    for r in both:   # the page's own order first (its showreel leads), then videos the tags add
         o = TAGS.get(r["video"], {}).get("other")
         if o and o.lower() not in (r.get("kind") or "").lower():   # an Other role (Stereographer, Director...) leads the caption
             r = dict(r, kind=" · ".join(x for x in (_nice_role(o), r.get("kind")) if x))
