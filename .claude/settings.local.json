@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cp \"/root/.claude/uploads/cecee73a-5304-5744-9a90-978617fd5d9d/cf22d8da-Mark_Pinheiro_CV_2026_web.pdf\" cv/Mark_Pinheiro_CV_2026.pdf)",
+      "Bash(git add *)",
+      "Bash(git commit -q --amend -m 'CV on the site: thesexpixels.com/cv opens the web CV \\(corrected links, no phone number\\); CV links on About and Contact *)"
+    ]
+  }
+}

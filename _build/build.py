@@ -505,6 +505,7 @@ ICONS = {
     "Instagram": '<path d="M3 8.5a2 2 0 0 1 2-2h2.6l1.6-2.2h5.6l1.6 2.2H19a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.8"/>',
     "IMDb": '<path d="M3.5 10h17v9.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1z"/><path d="m3.2 9.6 15.9-4.8-.9-3.1L2.3 6.5z"/><path d="m7.4 4.9 2.6 3.3M12.4 3.4 15 6.7"/>',
     "LinkedIn": '<rect x="2.5" y="7" width="19" height="13" rx="2"/><path d="M8.5 7V5a1.5 1.5 0 0 1 1.5-1.5h4A1.5 1.5 0 0 1 15.5 5v2M2.5 12.5h19"/>',
+    "CV": '<path d="M6 2.5h8l4.5 4.5v14.5H6z"/><path d="M14 2.5V7h4.5M9 11.5h6M9 14.5h6M9 17.5h4"/>',
     "Email": '<rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3 6 9 7 9-7"/>',
     "Based": '<path d="M12 21s-6.5-6.2-6.5-11.2a6.5 6.5 0 0 1 13 0C18.5 14.8 12 21 12 21z"/><circle cx="12" cy="9.8" r="2.4"/>',
     "Company": '<path d="M4 21V5.5L12 3v18M12 8.5l8 2.5V21M2.5 21h19M7 8h2M7 11.5h2M7 15h2M15 13.5h2M15 17h2"/>',
@@ -567,7 +568,7 @@ DOC_REELS = [dict(title=yrs, kind=f"Chapter {i + 1} of {len(DOC_CHAPTERS)} · na
 # After the narrated chapters: the 2017 sizzle reel, 17 years in two and a half minutes.
 DOC_REELS.append(dict(title="2017 · Sizzle reel", kind="17 years in 02:30", video="youtube:SDAXjN_sOlE"))
 doc_cells = "\n".join(reel_cell(i, r) for i, r in enumerate(DOC_REELS))
-LINKS = [("IMDb", "https://www.imdb.com/name/nm1025041/"), ("LinkedIn", "https://www.linkedin.com/in/markpinheiro"),
+LINKS = [("CV", "/cv/"), ("IMDb", "https://www.imdb.com/name/nm1025041/"), ("LinkedIn", "https://www.linkedin.com/in/markpinheiro"),
          ("Vimeo", "https://vimeo.com/thesexpixels"), ("Instagram", INSTAGRAM)]
 LAUREL_BRANCH = open(os.path.join(os.path.dirname(__file__), "laurel_branch.svg.txt")).read()
 def laurel(n, k, d):
@@ -830,6 +831,15 @@ player_page("nukecompositor/index.html", "nuke", "Nuke Compositor", 'Nuke Compos
             "Mark Pinheiro's compositing showreels and project reels.", tag_page="Nuke Compositor",
             banner=dict(line="Compositing &amp; PostVis · 2000–2026"))
 
+# thesexpixels.com/cv always opens the current CV (replace the PDF in /cv/ and update CV_FILE)
+CV_FILE = "Mark_Pinheiro_CV_2026.pdf"
+write("cv/index.html", f"""<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><title>CV · Mark Pinheiro</title>
+<meta name="description" content="Mark Pinheiro's CV: Nuke compositor and VFX supervisor.">
+<link rel="canonical" href="/cv/{CV_FILE}"><meta http-equiv="refresh" content="0; url=/cv/{CV_FILE}">
+<style>body{{background:#111012;color:#eeeae4;font-family:Arial,sans-serif;padding:40px}}a{{color:#e98aa9}}</style></head>
+<body><p>Opening <a href="/cv/{CV_FILE}">Mark Pinheiro's CV (PDF)</a>…</p></body></html>
+""")
+
 # Old address: /work/commercial/ is now /work/shorts/
 write("work/commercial/index.html", """<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><title>Shorts · Mark Pinheiro</title>
 <link rel="canonical" href="/work/shorts/"><meta http-equiv="refresh" content="0; url=/work/shorts/">
@@ -938,6 +948,7 @@ for n in NEWS:
 
 # ---------------------------------------------------------------- contact
 CONTACT_LINKS = [
+    ("CV", "CV 2026 · PDF", "/cv/"),
     ("Showreel", "Compositing showreel 2026", "https://vimeo.com/1232958213/ffbea294d7"),
     ("Sizzle", "17 years in 02:30", "https://youtu.be/SDAXjN_sOlE"),
     ("Vimeo", "vimeo.com/thesexpixels", "https://vimeo.com/thesexpixels"),
@@ -983,7 +994,7 @@ contact = head("Contact · Mark Pinheiro", "Contact Mark Pinheiro: email, showre
       </div>
     </div>
     <ul class="ctiles">
-{chr(10).join(f'      <li><a href="{u}" target="_blank" rel="noopener">{icon(k)}<span class="k">{k}</span><span class="t">{E(t)}</span><span class="arr">↗</span></a></li>' for k, t, u in CONTACT_LINKS)}
+{chr(10).join(f'      <li{" class=\"wide\"" if k == "CV" else ""}><a href="{u}" target="_blank" rel="noopener">{icon(k)}<span class="k">{k}</span><span class="t">{E(t)}</span><span class="arr">↗</span></a></li>' for k, t, u in CONTACT_LINKS)}
     </ul>
   </section>
 </main>

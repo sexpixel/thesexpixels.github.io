@@ -670,3 +670,4 @@ iframe{color-scheme:normal}
   .pbanner.live .anniv-t b{white-space:normal;overflow:visible;text-overflow:clip;max-width:40vw;font-size:18px;line-height:1.05}
   .pb-meta dd{white-space:normal;overflow:visible;text-overflow:clip;max-width:40vw}
 }
+.ctiles li.wide{grid-column:1 / -1}
