@@ -727,3 +727,10 @@ iframe{color-scheme:normal}
   main#top.pg-hfit .over > section:first-child{padding-top:calc(24px + var(--hx,0px) * .4)}
   main#top.pg-hfit .over > section:first-child .rail{margin-bottom:calc(18px + var(--hm,0px))}
 }
+/* Home page, phones held upright: a bigger 20 Years banner fills the first screen */
+@media (orientation:portrait) and (max-width:760px){
+  main#top .anniv:not(.pbanner) .anniv-n{font-size:min(33.5vw,17vh,150px)}
+  main#top .anniv:not(.pbanner) .anniv-t b{font-size:min(13.7vw,7vh,62px)}
+  main#top .anniv:not(.pbanner) .anniv-t em{font-size:17px}
+  main#top .anniv:not(.pbanner) .anniv-t span{font-size:13px}
+}
