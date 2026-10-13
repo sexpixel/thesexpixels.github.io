@@ -778,3 +778,12 @@ iframe{color-scheme:normal}
 /* Player banner: the reel title always keeps room for two lines, so swiping between a short and a long title
    doesn't make everything under it jump */
 .pbanner.live .anniv-t b{min-height:1.8em}
+
+/* Telling people what the controls do: a small label over the phase buttons, and a one-time swipe hint on the
+   video on phones (gone after 5 seconds or the first swipe) */
+.phasewrap{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.phlab{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim)}
+.fp-swipehint{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);white-space:nowrap;padding:7px 12px;border-radius:999px;background:rgba(17,16,18,.72);font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--fg);pointer-events:none;transition:opacity .6s ease}
+.fp-swipehint.gone{opacity:0}
+.phasewrap{margin-top:12px}
+.phasewrap .phases{margin-top:0 !important}

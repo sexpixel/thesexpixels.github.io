@@ -214,6 +214,14 @@
   if (window.matchMedia && matchMedia('(hover:none) and (pointer:coarse)').matches) {
     swipe = document.createElement('div'); swipe.className = 'fp-swipe'; swipe.setAttribute('aria-hidden', 'true');
     slot.appendChild(swipe);
+    // A one-time hint on the video, until the visitor has swiped once.
+    var seen = false; try { seen = localStorage.getItem('tsp-swiped') === '1'; } catch (x) {}
+    var hint = null;
+    if (!seen) {
+      hint = document.createElement('span'); hint.className = 'fp-swipehint'; hint.textContent = '‹  Swipe for more reels  ›';
+      swipe.appendChild(hint);
+      setTimeout(function(){ if (hint) hint.classList.add('gone'); }, 5000);
+    }
     var sx = 0, sy = 0, st = 0, moved = false;
     swipe.addEventListener('touchstart', function(e){ var t = e.touches[0]; sx = t.clientX; sy = t.clientY; st = Date.now(); moved = false; }, { passive: true });
     swipe.addEventListener('touchmove', function(e){ var t = e.touches[0]; if (Math.abs(t.clientX - sx) > 10 || Math.abs(t.clientY - sy) > 10) moved = true; }, { passive: true });
@@ -221,6 +229,7 @@
       var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
       if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
         var dir = dx < 0 ? 1 : -1;
+        if (hint) { hint.classList.add('gone'); hint = null; try { localStorage.setItem('tsp-swiped', '1'); } catch (x) {} }
         try { slot.animate([{ transform: 'translateX(0)', opacity: 1 }, { transform: 'translateX(' + (dir > 0 ? -40 : 40) + 'px)', opacity: .2 }], { duration: 180, easing: 'ease-in' }); } catch (x) {}
         setTimeout(function(){ sound = true; play(cur + dir); }, 170);
       } else if (!moved && Date.now() - st < 400 && playBtn) { togglePlay(); }
