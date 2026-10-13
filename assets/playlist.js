@@ -168,7 +168,13 @@
     else if (e.key === 'ArrowRight') seekBy(10);
   });
   if (soundBtn) soundBtn.addEventListener('click', function(){ sound = !sound; applySound(); });
-  document.getElementById('fp-full').addEventListener('click', function(){ if (stage.requestFullscreen) stage.requestFullscreen().catch(function(){}); });
+  // Full screen: the whole player where the browser allows it; iPhones only allow a video itself to go
+  // full screen, so there the Vimeo player opens in the phone's own full-screen view.
+  document.getElementById('fp-full').addEventListener('click', function(){
+    var fs = stage.requestFullscreen || stage.webkitRequestFullscreen;
+    if (fs) { try { var r = fs.call(stage); if (r && r.catch) r.catch(function(){ if (player && player.requestFullscreen) player.requestFullscreen().catch(function(){}); }); } catch (e) {} }
+    else if (player && player.requestFullscreen) player.requestFullscreen().catch(function(){});
+  });
 
   // Start straight away, muted (browsers only allow sound after a click).
   play(0);

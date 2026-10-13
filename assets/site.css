@@ -629,3 +629,9 @@ iframe{color-scheme:normal}
 }
 /* Touch screens: in TV mode the controls fade but still take taps, so one tap wakes and presses */
 @media (hover:none){ body.tv .heroui,body.tv .reelbar{pointer-events:auto} }
+
+/* Phones held sideways: swiping up to hide the browser's bars scrolls the page, so the first stretch of
+   scrolling is empty space; the reel grid only slides over the video if you keep going. */
+@media (hover:none) and (orientation:landscape) and (max-height:500px){
+  .stickyhero ~ .over{margin-top:calc(100svh + 45svh);margin-top:calc(100dvh + 45dvh)}
+}
