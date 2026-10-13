@@ -249,3 +249,31 @@
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit); else window.addEventListener('load', fit);
   fit();
 })();
+
+/* Home page, phones held upright: the first screen is the reel and the 20 Years banner, spaced out to fill it, with
+   only the "01 Latest" line at the bottom; the first post starts just below the screen. */
+(function(){
+  var main = document.querySelector('main#top'); if (!main) return;
+  var latest = main.querySelector('.over section'), rail = latest && latest.querySelector('.rail'); if (!rail) return;
+  var ua = navigator.userAgent, floatingBar = /Safari/.test(ua) && /iP(hone|od)/.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
+  var BAR = floatingBar ? 96 : 14, BEHIND = floatingBar ? 80 : 0;
+  function fit(){
+    main.classList.remove('pg-hfit'); main.style.removeProperty('--hx'); main.style.removeProperty('--hm');
+    if (!matchMedia('(orientation:portrait) and (max-width:760px)').matches) return;
+    main.classList.add('pg-hfit');
+    var y = window.scrollY, h = window.innerHeight;
+    var spare = h - BAR - (rail.getBoundingClientRect().bottom + y);
+    if (spare > 0) main.style.setProperty('--hx', spare + 'px');
+    var next = rail.nextElementSibling; if (!next) return;
+    var gap = h + BEHIND - (next.getBoundingClientRect().top + y);
+    if (gap > 0) main.style.setProperty('--hm', gap + 'px');
+  }
+  var t; function soon(){ clearTimeout(t); t = setTimeout(fit, 150); }
+  window.addEventListener('orientationchange', soon);
+  var lastW = window.innerWidth, lastH = window.innerHeight;
+  window.addEventListener('resize', function(){
+    if (window.innerWidth !== lastW || (window.scrollY < 8 && Math.abs(window.innerHeight - lastH) > 40)) { lastW = window.innerWidth; lastH = window.innerHeight; soon(); }
+  });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit); else window.addEventListener('load', fit);
+  fit();
+})();

@@ -720,3 +720,10 @@ iframe{color-scheme:normal}
   main#top .cards{gap:28px 20px}
   main#top .rail{margin-bottom:18px}
 }
+/* Home page, phones held upright: site.js shares the spare screen height (--hx) between the gap under the reel,
+   the gap above the showreel button and the gap above Latest, and pushes the first post off the screen (--hm) */
+@media (orientation:portrait) and (max-width:760px){
+  main#top.pg-hfit .reelbar{margin-top:calc(16px + var(--hx,0px) * .35);row-gap:calc(16px + var(--hx,0px) * .25)}
+  main#top.pg-hfit .over > section:first-child{padding-top:calc(24px + var(--hx,0px) * .4)}
+  main#top.pg-hfit .over > section:first-child .rail{margin-bottom:calc(18px + var(--hm,0px))}
+}
