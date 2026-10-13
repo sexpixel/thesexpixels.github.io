@@ -710,9 +710,9 @@ iframe{color-scheme:normal}
    (site.js measures the screen and sets --rp and --rm) */
 @media (orientation:portrait) and (max-width:760px){
   /* the spare height is shared: under the banner, between the two lines of controls, and above Reels */
-  main.pg-fit .reelbar{row-gap:calc(16px + var(--rp,0px) * .35)}
-  main.pg-fit .fp-ctrls{row-gap:calc(8px + var(--rp,0px) * .15)}
-  main.pg-fit .fp-reels{padding-top:calc(16px + var(--rp,0px) * .35)!important}
+  main.pg-fit .reelbar{row-gap:calc(16px + var(--rp,0px) * .25)}
+  main.pg-fit .fp-ctrls{row-gap:calc(12px + var(--rp,0px) * .25)}   /* applies twice (above and below the line break): half the spare goes between the two lines of controls */
+  main.pg-fit .fp-reels{padding-top:calc(16px + var(--rp,0px) * .25)!important}
   main.pg-fit .fp-reels .rail{margin-bottom:calc(28px + var(--rm,0px))}
 }
 
@@ -752,6 +752,7 @@ iframe{color-scheme:normal}
   .fp-ctrls::before{content:"";order:5;flex-basis:100%;height:0}
   .fp-ctrls #fp-full{order:10;margin-right:auto}
   .fp-ctrls #fp-sound{order:11;margin-left:auto}
+  .fp-ctrls{row-gap:12px}
 }
 
 /* Phones: the see-through touch layer over the video that catches swipes (next / previous reel) and taps (play / pause) */
