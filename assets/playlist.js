@@ -171,9 +171,13 @@
   // Full screen: the whole player where the browser allows it; iPhones only allow a video itself to go
   // full screen, so there the Vimeo player opens in the phone's own full-screen view.
   document.getElementById('fp-full').addEventListener('click', function(){
-    var fs = stage.requestFullscreen || stage.webkitRequestFullscreen;
-    if (fs) { try { var r = fs.call(stage); if (r && r.catch) r.catch(function(){ if (player && player.requestFullscreen) player.requestFullscreen().catch(function(){}); }); } catch (e) {} }
-    else if (player && player.requestFullscreen) player.requestFullscreen().catch(function(){});
+    var videoFull = function(){ if (player && player.requestFullscreen) player.requestFullscreen().catch(function(){}); };
+    // iPhones (Safari and Chrome alike) don't allow a page element to go full screen, even when the
+    // browser offers the function: there, go straight to the video's own full-screen view.
+    var canPage = document.fullscreenEnabled || document.webkitFullscreenEnabled;
+    var fs = canPage && (stage.requestFullscreen || stage.webkitRequestFullscreen);
+    if (!fs) return videoFull();
+    try { var r = fs.call(stage); if (r && r.catch) r.catch(videoFull); } catch (e) { videoFull(); }
   });
 
   // Start straight away, muted (browsers only allow sound after a click).
