@@ -604,3 +604,14 @@ iframe{color-scheme:normal}
 .pbwrap .fp-title{max-width:min(46ch,100%)}   /* long titles stop short of the scroll cue */
 .pbwrap .fp-title{max-width:calc(50vw - var(--gutter) - 90px)}
 @media (max-width:760px){ .pbwrap{align-self:stretch;width:100%} .pbwrap .fp-title{max-width:100%} }
+
+/* transport: previous reel, back 10s, play/pause, forward 10s, next reel */
+.fp-btn.ic{width:44px;padding:0;display:inline-flex;align-items:center;justify-content:center}
+.fp-btn.ic svg{width:16px;height:16px;fill:currentColor}
+#fp-play{width:52px;border-color:var(--fg)}
+#fp-play svg{width:18px;height:18px}
+#fp-play .pl{display:none}
+#fp-play.paused .pl{display:block}
+#fp-play.paused .pz{display:none}
+@media (max-width:420px){ .fp-ctrls{gap:6px} .fp-btn{padding:0 10px} .fp-btn.ic{width:40px;min-width:40px;min-height:40px} #fp-play{width:46px} }
+.fp-btn.ic{color:var(--fg)} .fp-btn.ic:hover{color:var(--accent-hi)}

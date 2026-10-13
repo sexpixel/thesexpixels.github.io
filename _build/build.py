@@ -728,8 +728,11 @@ def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wid
     <div class="fp-idle"><span class="fp-now">Now showing</span><span class="fp-big">{idle_empty}</span>{extra_links}</div>'''
     ctrls = f'''
         <div class="fp-ctrls">
-          <button type="button" class="fp-btn" id="fp-prev" aria-label="Previous reel">◀</button>
-          <button type="button" class="fp-btn" id="fp-next" aria-label="Next reel">▶</button>
+          <button type="button" class="fp-btn ic" id="fp-prev" aria-label="Previous reel" title="Previous reel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+          <button type="button" class="fp-btn ic" id="fp-back" aria-label="Back 10 seconds" title="Back 10 seconds"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14L3 12zM21 5v14l-9-7z"/></svg></button>
+          <button type="button" class="fp-btn ic" id="fp-play" aria-label="Pause" title="Play / pause"><svg class="pz" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg><svg class="pl" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>
+          <button type="button" class="fp-btn ic" id="fp-fwd" aria-label="Forward 10 seconds" title="Forward 10 seconds"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5v14l9-7zM12 5v14l9-7z"/></svg></button>
+          <button type="button" class="fp-btn ic" id="fp-next" aria-label="Next reel" title="Next reel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
           <button type="button" class="fp-btn" id="fp-sound" aria-pressed="false">Sound on</button>
           <button type="button" class="fp-btn" id="fp-full">Full screen</button>
         </div>''' if has_any else ""
