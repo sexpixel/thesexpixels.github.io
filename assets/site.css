@@ -712,3 +712,11 @@ iframe{color-scheme:normal}
   main.pg-fit .fp-reels{padding-top:calc(16px + var(--rp,0px))!important}
   main.pg-fit .fp-reels .rail{margin-bottom:calc(28px + var(--rm,0px))}
 }
+
+/* Home page, phones held upright: tighter spacing between the banner, Latest and Explore, and between the cards */
+@media (orientation:portrait) and (max-width:760px){
+  main#top section:not(.hero){padding-block:36px}
+  main#top section[aria-labelledby="explore-h"]{padding-top:8px}
+  main#top .cards{gap:28px 20px}
+  main#top .rail{margin-bottom:18px}
+}
