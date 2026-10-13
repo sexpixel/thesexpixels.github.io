@@ -615,3 +615,15 @@ iframe{color-scheme:normal}
 #fp-play.paused .pz{display:none}
 @media (max-width:420px){ .fp-ctrls{gap:6px} .fp-btn{padding:0 10px} .fp-btn.ic{width:40px;min-width:40px;min-height:40px} #fp-play{width:46px} }
 .fp-btn.ic{color:var(--fg)} .fp-btn.ic:hover{color:var(--accent-hi)}
+
+/* Phones held sideways (short screens): the player fits the visible area exactly, whatever the browser's
+   toolbars take (Chrome's are taller than Safari's), and the page banner goes compact so the controls fit. */
+@media (orientation:landscape) and (max-height:500px){
+  .stickyhero,.fp-player.stickyhero{min-height:0;height:100svh;height:100dvh}
+  .stickyhero + .over,.stickyhero ~ .over{margin-top:100svh;margin-top:100dvh}
+  .pbanner .anniv-n{font-size:clamp(48px,18vh,84px)}
+  .pbanner .anniv-t b{font-size:22px}
+  .pbanner .anniv-t em{display:none}
+  .pbwrap{gap:8px}
+  .reelbar{bottom:12px}
+}
