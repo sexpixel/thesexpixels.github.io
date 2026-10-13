@@ -34,7 +34,8 @@ PROJECTS = [
          clips=[("Season 1", "1014300271")]),
     dict(title="The Buccaneers", role="", group="Nuke compositor", fmt="Episodic", co="Absolute Post", yr="",  # ROLE TO CONFIRM
          clips=[("S01E01 The Prairie Trail", "1014151720"), ("S01E01 The Wedding", "1014151499")]),
-    dict(title="1899", role="PostVis artist", group="PostVis", fmt="Episodic", co="Framestore FPS", yr=""),
+    dict(title="1899", role="PostVis artist", group="PostVis", fmt="Episodic", co="Framestore FPS", yr="",
+         clips=[("S01E07 The Storm pt 1", "1014139706")]),
     dict(title="The Little Mermaid", role="PostVis artist", group="PostVis", fmt="Feature film", co="Framestore FPS", yr=""),
     dict(title="Walking With Dinosaurs", role="Compositor", group="Nuke compositor", fmt="Episodic", co="Milk VFX", yr=""),
     dict(title="Tenet", role="Senior compositor", group="Nuke compositor", fmt="Feature film", co="DNEG", yr=""),

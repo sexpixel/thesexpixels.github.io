@@ -692,7 +692,6 @@ NUKE_REELS = [
     dict(title="Showreel 2020", kind="Showreel", video=REEL_2020, phases=["Post-production"]),
     dict(title="Sizzle reel", kind="17 years in 02:30", video="youtube:SDAXjN_sOlE", phases=["Post-production"]),
     # From Mark, 12 Oct. TITLE TO CONFIRM (1014143091, once 'Compositing reel 2', is Moon Knight: The Realm).
-    dict(title="Compositing reel 1", kind="Project reel", video="vimeo:1014139706", phases=["Post-production"]),
 ] + [dict(title=q["title"], kind=" · ".join(x for x in (q["role"], q["co"]) if x), video=q.get("video"), phases=q["phases"])
      for p in PROJECTS if p["group"] in ("Nuke compositor", "PostVis") for q in expand(p)]
 
