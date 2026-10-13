@@ -678,13 +678,14 @@ iframe{color-scheme:normal}
 @media (orientation:portrait) and (max-width:760px){
   .pg-fleapit.pg-fleapit section.hero.stickyhero{padding-top:78px}
   .pg-fleapit .herotop{padding-bottom:8px}
-  .pg-fleapit .reelbar{margin:6px var(--gutter) 0;gap:8px}
+  .pg-fleapit .reelbar{margin:calc(6px + var(--fx,0px) * .2) var(--gutter) 0;gap:8px}
   .pg-fleapit .fp-ctrls{row-gap:4px}
   .pg-fleapit .pbwrap{gap:4px}
   .pg-fleapit .pbanner .anniv-t{gap:3px;padding-bottom:0}
-  .pg-fleapit .fp-reels{padding-top:12px!important}
-  .pg-fleapit .rail{margin-bottom:8px}
-  .pg-fleapit .pagelede{margin-bottom:36px}
+  .pg-fleapit .fp-reels{padding-top:calc(12px + var(--fx,0px) * .3)!important}
+  .pg-fleapit .rail{margin-bottom:calc(8px + var(--fx,0px) * .15)}
+  .pg-fleapit .pagelede{margin-bottom:calc(36px + var(--fx,0px) * .35)}
+  .pg-fleapit .pagelinks{margin-bottom:calc(28px + var(--ft,0px))}
 }
 
 /* The Fleapit: under Reels, the cinema line (what used to sit in the player banner), the programme, then the bio line */

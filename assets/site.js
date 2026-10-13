@@ -190,3 +190,29 @@
       .catch(function(){});
   });
 })();
+
+/* The Fleapit, phones held upright: share any spare screen height between the gaps, so Follow on Instagram sits
+   clear of the browser bar and the tiles start just below the screen. Where there is no spare height (Chrome),
+   nothing changes. */
+(function(){
+  var main = document.querySelector('main.pg-fleapit'); if (!main) return;
+  var BAR = 100;   // room left for a floating browser bar at the bottom (Safari)
+  function fit(){
+    main.style.removeProperty('--fx'); main.style.removeProperty('--ft');
+    if (!matchMedia('(orientation:portrait) and (max-width:760px)').matches) return;
+    var pill = document.querySelector('.pagelinks .pill'), grid = document.querySelector('.fp-grid');
+    if (!pill || !grid) return;
+    var y = window.scrollY, h = window.innerHeight;
+    var spare = h - BAR - (pill.getBoundingClientRect().bottom + y);
+    if (spare <= 0) return;
+    main.style.setProperty('--fx', spare + 'px');
+    var tail = h - (grid.getBoundingClientRect().top + y);
+    if (tail > 0) main.style.setProperty('--ft', tail + 'px');
+  }
+  var t; function soon(){ clearTimeout(t); t = setTimeout(fit, 150); }
+  window.addEventListener('orientationchange', soon);
+  var lastW = window.innerWidth;
+  window.addEventListener('resize', function(){ if (window.innerWidth !== lastW || !main.style.getPropertyValue('--fx')) { lastW = window.innerWidth; soon(); } });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit); else window.addEventListener('load', fit);
+  fit();
+})();
