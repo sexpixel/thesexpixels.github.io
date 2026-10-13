@@ -794,3 +794,7 @@ iframe{color-scheme:normal}
 
 /* Bio page: the documentary's title, set as a proper heading */
 .doctitle{margin:0 0 clamp(16px,2.4vh,28px);font-weight:900;font-size:clamp(40px,7vw,104px);line-height:.88;letter-spacing:-.04em;text-transform:uppercase;font-stretch:85%;text-wrap:balance;color:var(--fg)}
+
+/* Contact: two tiles (LinkedIn, Instagram) side by side */
+.ctiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:520px){.ctiles{grid-template-columns:minmax(0,1fr)}}

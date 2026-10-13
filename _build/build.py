@@ -962,13 +962,12 @@ for n in NEWS:
 ''')
 
 # ---------------------------------------------------------------- contact
-CONTACT_LINKS = [   # only ways to reach Mark (and his CV); everything else lives on the Bio page
-    ("CV", "CV 2026 · PDF", "/cv/"),
+CONTACT_LINKS = [   # only ways to reach Mark; everything else (CV included) lives on the Bio page
     ("LinkedIn", "in/markpinheiro", "https://www.linkedin.com/in/markpinheiro"),
     ("Instagram", "@t_h_e__p_i_x_x_x_e_l_s", INSTAGRAM),
 ]
 clinks = "\n".join(f'        <li><span class="k">{k}</span><a href="{u}" target="_blank" rel="noopener">{E(t)} ↗</a></li>' for k, t, u in CONTACT_LINKS)
-contact = head("Contact · Mark Pinheiro", "Contact Mark Pinheiro: email, LinkedIn and Instagram, with his CV.") + f'''
+contact = head("Contact · Mark Pinheiro", "Contact Mark Pinheiro: email, LinkedIn and Instagram.") + f'''
 <body>
 
 {header("contact")}
