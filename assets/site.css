@@ -670,9 +670,3 @@ iframe{color-scheme:normal}
   .pbanner.live .anniv-t b{white-space:normal;overflow:visible;text-overflow:clip;max-width:40vw;font-size:18px;line-height:1.05}
   .pb-meta dd{white-space:normal;overflow:visible;text-overflow:clip;max-width:40vw}
 }
-
-/* TV mode: your name and the page name fade out together and come back together (same timing) */
-.nav{transition:transform .45s cubic-bezier(.6,0,.2,1),background .3s,opacity .8s ease}
-body.tv .nav{transform:none;opacity:0;pointer-events:none}
-@media (hover:none){ body.tv .nav{pointer-events:auto} }   /* touch: one tap wakes it and works the menu */
-@media (orientation:portrait) and (max-width:760px){ body.tv .nav{opacity:1} }   /* upright phones keep the page name, so the name stays too */
