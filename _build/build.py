@@ -478,6 +478,14 @@ def reel_phases(r):
 def phases_attr(r):
     return " ".join(phase_slug(x) for x in reel_phases(r))
 
+def _fmt_label(f): return " ".join(w.capitalize() for w in f.split())
+def _role_label(x): return " ".join(w.upper() if w[:1].isdigit() else w[:1].upper() + w[1:] for w in x.split())
+def reel_info(r):
+    """Who / What / When for the banner, from Mark's tags (an Other role shows by its name)."""
+    t = TAGS.get(r.get("video") or "", {})
+    roles = [(_role_label(t["other"]) if x == "Other" and t.get("other") else x) for x in t.get("roles", []) if x != "Other" or t.get("other")]
+    fmts = [_fmt_label(f) for f in t.get("formats", [])]
+    return " · ".join(roles), " · ".join(fmts), " · ".join(reel_phases(r))
 def reel_cell(i, r):
     if r["video"]:
         img = ""
@@ -485,7 +493,7 @@ def reel_cell(i, r):
         elif r["video"].startswith("vimeo:"):
             vid, _, h = r["video"][6:].partition(":"); img = f'<img data-vimeo="https://vimeo.com/{vid}{"/" + h if h else ""}" alt="" hidden>'
         elif r["video"].startswith("youtube:"): img = f'<img src="https://i.ytimg.com/vi/{r["video"][8:]}/hqdefault.jpg" alt="" loading="lazy">'
-        return f'''      <button class="fp-cell" type="button" data-i="{i}" data-src="{r["video"]}" data-title="{E(r["title"])}" data-phases="{phases_attr(r)}"{crop_attr(r["video"])}>{img}<span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])}</i></span><span class="play"></span></button>'''
+        return f'''      <button class="fp-cell" type="button" data-i="{i}" data-src="{r["video"]}" data-title="{E(r["title"])}" data-phases="{phases_attr(r)}" data-role="{E(reel_info(r)[0])}" data-format="{E(reel_info(r)[1])}" data-phase="{E(reel_info(r)[2])}"{crop_attr(r["video"])}>{img}<span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])}</i></span><span class="play"></span></button>'''
     return f'''      <div class="fp-cell fp-soon" data-phases="{phases_attr(r)}"><span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])} · coming soon</i></span></div>'''
 
 
@@ -750,7 +758,17 @@ def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wid
     b.setdefault("n", str(len(vids)))
     b.setdefault("word", "Reel" if len(vids) == 1 else "Reels")
     b.setdefault("more", "All reels ↓")
-    pbanner = (f'''<a class="anniv pbanner" href="#reels-h">
+    if vids and not (banner or {}).get("n"):   # a live banner: what's playing now, filled in by playlist.js
+        r0 = vids[0]; proj, _, clip = r0["title"].partition(" · "); ro, fo, ph = reel_info(r0)
+        row = lambda k, v, i: f'<div{"" if v else " hidden"}><dt>{k}</dt><dd id="pb-{i}">{E(v)}</dd></div>'
+        pbanner = f'''<a class="anniv pbanner live" href="#reels-h">
+        <span class="anniv-n" id="pb-n">01</span>
+        <span class="anniv-t"><b id="pb-title">{E(proj)}</b><span id="pb-sub">{E(clip + " · " if clip else "")}1 of {len(vids)}</span>
+          <dl class="pb-meta">{row("Role", ro, "role")}{row("Format", fo, "format")}{row("Phase", ph, "phase")}</dl>
+          <i>All {len(vids)} reels ↓</i></span>
+      </a>'''
+    else:
+        pbanner = (f'''<a class="anniv pbanner" href="#reels-h">
         <span class="anniv-n">{b["n"]}</span>
         <span class="anniv-t"><b>{b["word"]}</b><span>{b.get("line", "")}</span>{f"<em>{E(b['credits'])}</em>" if b["credits"] else ""}<i>{b["more"]}</i></span>
       </a>''' if vids else "")

@@ -65,6 +65,19 @@
     var c = cells[i], spec = c.getAttribute('data-src'), p = spec.split(':'), mine = i;
     cells.forEach(function(x, k){ x.classList.toggle('on', k === i); });
     titleEl.textContent = (noneHere ? 'No reels in this phase yet · ' : '') + 'Now playing · ' + (i + 1) + ' / ' + cells.length + ' · ' + c.getAttribute('data-title');
+    // The banner under the player describes what's playing: project, clip, then Role / Format / Phase.
+    var pb = document.querySelector('.pbanner.live');
+    if (pb) {
+      var t = c.getAttribute('data-title') || '', k = t.indexOf(' · ');
+      var set = function(id, v){ var e = document.getElementById(id); if (e) e.textContent = v; };
+      set('pb-n', (i + 1 < 10 ? '0' : '') + (i + 1));
+      set('pb-title', k > 0 ? t.slice(0, k) : t);
+      set('pb-sub', (k > 0 ? t.slice(k + 3) + ' · ' : '') + (i + 1) + ' of ' + cells.length + (noneHere ? ' · no reels in this phase yet' : ''));
+      ['role', 'format', 'phase'].forEach(function(f){
+        var v = c.getAttribute('data-' + f) || '', dd = document.getElementById('pb-' + f);
+        if (dd) { dd.textContent = v; dd.parentNode.hidden = !v; }
+      });
+    }
     showSound();
     stage.style.removeProperty('--ar');
     // Per-reel crop (set on the tuning page) pushes text in the black bars off screen.

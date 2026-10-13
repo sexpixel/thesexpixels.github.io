@@ -644,3 +644,24 @@ iframe{color-scheme:normal}
     .hero.fp-player .fp-slot iframe,.hero > iframe{width:min(100vw,calc(100dvh * var(--ar,1.7778))) !important;height:min(calc(100vw / var(--ar,1.7778)),100dvh) !important}
   }
 }
+
+/* Live banner: what's playing now. Big pink reel number, project, clip, then Role / Format / Phase. */
+.pbanner.live .anniv-t b{font-size:clamp(24px,2.6vw,42px);max-width:22ch;text-wrap:balance}
+.pbanner.live .anniv-t > span{color:var(--soft)}
+.pb-meta{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:6px 0 4px;font-size:clamp(12px,1vw,14px);line-height:1.35}
+.pb-meta > div{display:contents}
+.pb-meta > div[hidden]{display:none}
+.pb-meta dt{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);padding-top:2px}
+.pb-meta dd{margin:0;color:var(--fg);max-width:48ch}
+.pbanner.live ~ .fp-title{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}   /* the banner says it now; kept for screen readers */
+@media (orientation:landscape) and (max-height:500px){
+  .pbanner.live .anniv-t b{font-size:20px}
+  .pbanner.live .anniv-t > span{display:none}
+  .pb-meta{font-size:12px;gap:2px 10px;margin:2px 0}
+}
+@media (orientation:portrait) and (max-width:760px){ .pbanner.live .anniv-t b{font-size:22px} }
+@media (orientation:landscape) and (max-height:500px){
+  .pbanner.live .anniv-t b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:36vw}
+  .pb-meta > div:not(:first-child){display:none}
+  .pb-meta dd{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:30vw}
+}

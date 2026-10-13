@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,75..125,400..900;1,75..125,400..900&family=IBM+Plex+Mono:wght@400;600&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=8cc18450">
+<link rel="stylesheet" href="/assets/site.css?v=e4e47bfa">
 </head>
 <body>
 
@@ -47,9 +47,11 @@
       <h1 class="herohead">Feature Animation</h1><ol class="phases" aria-label="Filter by production phase"><li><button type="button" data-ph="all" aria-pressed="true"><span class="lg">All</span><span class="sm" aria-hidden="true">All</span></button></li><li><button type="button" data-ph="development" aria-pressed="false"><span class="lg">Development</span><span class="sm" aria-hidden="true">Dev</span></button></li><li><button type="button" data-ph="pre-production" aria-pressed="false"><span class="lg">Pre-production</span><span class="sm" aria-hidden="true">Pre</span></button></li><li><button type="button" data-ph="production" aria-pressed="false"><span class="lg">Production</span><span class="sm" aria-hidden="true">Prod</span></button></li><li><button type="button" data-ph="post-production" aria-pressed="false"><span class="lg">Post-production</span><span class="sm" aria-hidden="true">Post</span></button></li><li><button type="button" data-ph="distribution" aria-pressed="false"><span class="lg">Distribution</span><span class="sm" aria-hidden="true">Dist</span></button></li></ol>
     </div>
     <div class="reelbar heroui">
-      <div class="pbwrap"><a class="anniv pbanner" href="#reels-h">
-        <span class="anniv-n">3</span>
-        <span class="anniv-t"><b>Reels</b><span>Feature animation · stereo &amp; compositing</span><em>Save The 365th Day</em><i>All reels ↓</i></span>
+      <div class="pbwrap"><a class="anniv pbanner live" href="#reels-h">
+        <span class="anniv-n" id="pb-n">01</span>
+        <span class="anniv-t"><b id="pb-title">Save The 365th Day</b><span id="pb-sub">Trailer · 1 of 3</span>
+          <dl class="pb-meta"><div><dt>Role</dt><dd id="pb-role">Filmmaker · VFX Supervisor · Director</dd></div><div><dt>Format</dt><dd id="pb-format">Visualisation · Feature Animation</dd></div><div><dt>Phase</dt><dd id="pb-phase">Development · Pre-production · Production · Post-production · Distribution</dd></div></dl>
+          <i>All 3 reels ↓</i></span>
       </a>
         <span class="fp-title" id="fp-title" aria-live="polite"></span>
       </div>
@@ -71,9 +73,9 @@
     <div class="rail"><span class="n">Reels</span><span id="reels-h">All</span></div>
     <p class="pagelede">Feature animation project reels. Play them all, or pick one from the grid.</p>
     <div class="fp-grid wide">
-      <button class="fp-cell" type="button" data-i="0" data-src="vimeo:55357193" data-title="Save The 365th Day · Trailer" data-phases="development pre-production production post-production distribution"><img data-vimeo="https://vimeo.com/55357193" alt="" hidden><span class="fp-cap"><b>Save The 365th Day · Trailer</b><i>Director · Stereo compositor &amp; stereographer · ECCG China · 2012</i></span><span class="play"></span></button>
-      <button class="fp-cell" type="button" data-i="1" data-src="vimeo:75682310" data-title="Save The 365th Day · Excerpt" data-phases="development pre-production production post-production distribution"><img data-vimeo="https://vimeo.com/75682310" alt="" hidden><span class="fp-cap"><b>Save The 365th Day · Excerpt</b><i>Stereo compositor &amp; stereographer · ECCG China · 2012</i></span><span class="play"></span></button>
-      <button class="fp-cell" type="button" data-i="2" data-src="vimeo:1232958213:ffbea294d7" data-title="Compositing showreel 2026" data-phases="pre-production production post-production"><img data-vimeo="https://vimeo.com/1232958213/ffbea294d7" alt="" hidden><span class="fp-cap"><b>Compositing showreel 2026</b><i>Showreel</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="0" data-src="vimeo:55357193" data-title="Save The 365th Day · Trailer" data-phases="development pre-production production post-production distribution" data-role="Filmmaker · VFX Supervisor · Director" data-format="Visualisation · Feature Animation" data-phase="Development · Pre-production · Production · Post-production · Distribution"><img data-vimeo="https://vimeo.com/55357193" alt="" hidden><span class="fp-cap"><b>Save The 365th Day · Trailer</b><i>Director · Stereo compositor &amp; stereographer · ECCG China · 2012</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="1" data-src="vimeo:75682310" data-title="Save The 365th Day · Excerpt" data-phases="development pre-production production post-production distribution" data-role="Filmmaker · VFX Supervisor · Stereographer" data-format="Feature Animation" data-phase="Development · Pre-production · Production · Post-production · Distribution"><img data-vimeo="https://vimeo.com/75682310" alt="" hidden><span class="fp-cap"><b>Save The 365th Day · Excerpt</b><i>Stereo compositor &amp; stereographer · ECCG China · 2012</i></span><span class="play"></span></button>
+      <button class="fp-cell" type="button" data-i="2" data-src="vimeo:1232958213:ffbea294d7" data-title="Compositing showreel 2026" data-phases="pre-production production post-production" data-role="VFX Supervisor · Nuke Compositor" data-format="Feature Film · Episodic · Visualisation · Feature Animation" data-phase="Pre-production · Production · Post-production"><img data-vimeo="https://vimeo.com/1232958213/ffbea294d7" alt="" hidden><span class="fp-cap"><b>Compositing showreel 2026</b><i>Showreel</i></span><span class="play"></span></button>
     </div>
   </section>
   </div>
@@ -85,6 +87,6 @@
 </footer>
 
 <script src="/assets/site.js?v=0b0f3e8b"></script>
-<script src="/assets/playlist.js?v=48c2e114"></script>
+<script src="/assets/playlist.js?v=f1de0271"></script>
 </body>
 </html>
