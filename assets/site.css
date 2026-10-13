@@ -699,3 +699,9 @@ iframe{color-scheme:normal}
 .pg-fleapit .pbanner .anniv-t span{font-family:var(--display,inherit);font-style:italic;font-weight:400;font-size:13px;letter-spacing:0;text-transform:none;color:var(--dim)}   /* …a word from our sponsors…: a filler card, not a headline */
 /* SCREEN sits over the 1, like the sign over a cinema door */
 .pbanner .anniv-n small{display:block;margin:0 0 .5em .06em;font-family:var(--mono);font-size:10px;font-weight:600;line-height:1;letter-spacing:3px;text-transform:uppercase;color:var(--soft);text-shadow:none}
+
+/* Home page 20 Years banner, phones held upright: the 20 sits up beside YEARS instead of down at the bottom */
+@media (orientation:portrait) and (max-width:760px){
+  .anniv:not(.pbanner){align-items:flex-start}
+  .anniv:not(.pbanner) .anniv-n{margin-top:.04em}
+}
