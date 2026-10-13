@@ -59,6 +59,31 @@
   var swipe = null;   // touch layer over the video (phones), kept on top whenever the slot is refilled
   function clear(){ if (player && player.destroy) { try { player.destroy(); } catch (e) {} } player = null; slot.innerHTML = ''; if (swipe) slot.appendChild(swipe); }
 
+  // The banner under the player describes what's playing: project, clip, then Role / Format / Phase.
+  var pb = document.querySelector('.pbanner.live'), pbText = pb && pb.querySelector('.anniv-t');
+  function fillBanner(c, i){
+    if (!pb) return;
+    var t = c.getAttribute('data-title') || '', k = t.indexOf(' · ');
+    var set = function(id, v){ var e = document.getElementById(id); if (e) e.textContent = v; };
+    set('pb-n', (i + 1 < 10 ? '0' : '') + (i + 1));
+    set('pb-title', k > 0 ? t.slice(0, k) : t);
+    set('pb-sub', (k > 0 ? t.slice(k + 3) + ' · ' : '') + (i + 1) + ' of ' + cells.length + (noneHere ? ' · no reels in this phase yet' : ''));
+    ['role', 'format', 'phase'].forEach(function(f){
+      var v = c.getAttribute('data-' + f) || '', dd = document.getElementById('pb-' + f);
+      if (dd) { dd.textContent = v; dd.parentNode.hidden = !v; }
+    });
+  }
+  // Keep the banner the height of its tallest reel, so moving between reels (buttons, swipes) never makes
+  // the controls and everything under the banner jump.
+  function steadyBanner(){
+    if (!pbText || !cells.length) return;
+    pbText.style.minHeight = '';
+    var tallest = 0;
+    cells.forEach(function(c, j){ fillBanner(c, j); tallest = Math.max(tallest, pbText.getBoundingClientRect().height); });
+    pbText.style.minHeight = Math.ceil(tallest) + 'px';
+    if (cur >= 0 && cells[cur]) fillBanner(cells[cur], cur);
+  }
+
   function play(i){
     if (i < 0) i = cells.length - 1;
     if (i >= cells.length) i = 0;
@@ -67,18 +92,7 @@
     cells.forEach(function(x, k){ x.classList.toggle('on', k === i); });
     titleEl.textContent = (noneHere ? 'No reels in this phase yet · ' : '') + 'Now playing · ' + (i + 1) + ' / ' + cells.length + ' · ' + c.getAttribute('data-title');
     // The banner under the player describes what's playing: project, clip, then Role / Format / Phase.
-    var pb = document.querySelector('.pbanner.live');
-    if (pb) {
-      var t = c.getAttribute('data-title') || '', k = t.indexOf(' · ');
-      var set = function(id, v){ var e = document.getElementById(id); if (e) e.textContent = v; };
-      set('pb-n', (i + 1 < 10 ? '0' : '') + (i + 1));
-      set('pb-title', k > 0 ? t.slice(0, k) : t);
-      set('pb-sub', (k > 0 ? t.slice(k + 3) + ' · ' : '') + (i + 1) + ' of ' + cells.length + (noneHere ? ' · no reels in this phase yet' : ''));
-      ['role', 'format', 'phase'].forEach(function(f){
-        var v = c.getAttribute('data-' + f) || '', dd = document.getElementById('pb-' + f);
-        if (dd) { dd.textContent = v; dd.parentNode.hidden = !v; }
-      });
-    }
+    fillBanner(c, i);
     showSound();
     stage.style.removeProperty('--ar');
     // Per-reel crop (set on the tuning page) pushes text in the black bars off screen.
@@ -160,7 +174,7 @@
     noneHere = !cells.length;   // the phase has projects listed but no reels yet: keep playing everything
     if (noneHere) cells = allCells;
     try { var u = new URL(location.href); if (ph === 'all') u.searchParams.delete('phase'); else u.searchParams.set('phase', ph); history.replaceState(null, '', u); } catch (e) {}
-    if (restart) play(0);
+    if (restart) { play(0); steadyBanner(); }
   }
   phaseBtns.forEach(function(b){ b.addEventListener('click', function(){ if (!b.disabled) setPhase(b.getAttribute('data-ph'), true); }); });
   var wanted = null;
@@ -215,4 +229,8 @@
 
   // Start straight away, muted (browsers only allow sound after a click).
   play(0);
+  steadyBanner();
+  // once the fonts are in, measure again, then let the phone layout refit around the settled banner
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ steadyBanner(); try { window.dispatchEvent(new Event('orientationchange')); } catch (e) {} });
+  var sbT; window.addEventListener('resize', function(){ clearTimeout(sbT); sbT = setTimeout(steadyBanner, 200); });
 })();

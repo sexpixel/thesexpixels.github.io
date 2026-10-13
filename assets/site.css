@@ -774,3 +774,7 @@ iframe{color-scheme:normal}
   .bio.solo .linkrow .pill.iconpill{min-width:0;padding:26px 12px}
   #story .pagelede{max-width:none}
 }
+
+/* Player banner: the reel title always keeps room for two lines, so swiping between a short and a long title
+   doesn't make everything under it jump */
+.pbanner.live .anniv-t b{min-height:1.8em}
