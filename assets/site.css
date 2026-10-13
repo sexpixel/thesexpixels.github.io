@@ -787,3 +787,6 @@ iframe{color-scheme:normal}
 .fp-swipehint.gone{opacity:0}
 .phasewrap{margin-top:12px}
 .phasewrap .phases{margin-top:0 !important}
+
+/* Bio page: the documentary's title, set as a proper heading */
+.doctitle{margin:0 0 clamp(16px,2.4vh,28px);font-weight:900;font-size:clamp(40px,7vw,104px);line-height:.88;letter-spacing:-.04em;text-transform:uppercase;font-stretch:85%;text-wrap:balance;color:var(--fg)}

@@ -635,7 +635,8 @@ about = head("Bio · Mark Pinheiro",
   </section>
 
   <section id="story" style="padding-top:0">
-    <div class="rail"><span class="n">01</span>In his own words · 2000–2014</div>
+    <div class="rail"><span class="n">01</span>The documentary · 2000–2014</div>
+    <h2 class="doctitle">In his own words</h2>
     <p class="pagelede">Eight showreels, each narrated by Mark: the stages of a career in VFX, told as a short documentary. It plays above, chapter by chapter; pick any chapter to jump to it, with sound.</p>
     <div class="fp-grid wide">
 {doc_cells}
