@@ -819,13 +819,15 @@ for _r in NUKE_REELS + FLEAPIT_REELS:   # Nuke first: its plain captions, not Th
     if _r.get("video"): CATALOGUE.setdefault(_r["video"], dict(_r))
 
 player_page("thefleapit/index.html", "fleapit", "The Sex Pixels", 'The Fleapit<span class="dot">.</span>', "SE1", "Filmmaker",
-            "Trailers, fillers, adverts, shorts and public information films. Continuous programme. No latecomers.",
+            '<span class="fp-kicker">1 Screen · The Fleapit. SE1 · Now showing</span>'
+            + '<span class="fp-prog">' + E(" · ".join(r["title"] for r in FLEAPIT_REELS if not r["video"])) + '</span>'
+            + "Trailers, fillers, adverts, shorts and public information films. Continuous programme. No latecomers.",
             FLEAPIT_REELS, False, "The first reel is in the edit",
             f'<a class="pill" href="{INSTAGRAM}" target="_blank" rel="noopener">Follow on Instagram ↗</a>',
             "The Fleapit · Mark Pinheiro",
             "The Fleapit. SE1. Trailers, fillers, adverts, shorts and public information films. Continuous programme. No latecomers.", phases=False,
-            banner=dict(n="1", word="Screen", line="The Fleapit. SE1 · Now showing",
-                        credits=" · ".join(r["title"] for r in FLEAPIT_REELS if not r["video"]), more="Tonight's programme ↓"))   # creative direction across every phase: no filter, not driven by the tags
+            banner=dict(n="1", word="A word from our sponsors", line="",
+                        credits="", more="Tonight's programme ↓"))   # creative direction across every phase: no filter, not driven by the tags
 player_page("nukecompositor/index.html", "nuke", "Nuke Compositor", 'Nuke Compositor', "2D", "Showreels",
             "Compositing showreels and project reels. Play them all, or pick one from the grid.",
             NUKE_REELS, True, "", "", "Nuke Compositor · Mark Pinheiro",
