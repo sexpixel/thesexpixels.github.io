@@ -41,7 +41,7 @@ PROJECTS = [
     dict(title="Tenet", role="Senior compositor", group="Nuke compositor", fmt="Feature film", co="DNEG", yr=""),
     dict(title="Captain Marvel", role="Senior compositor", group="Nuke compositor", fmt="Feature film", co="Trixter", yr=""),
     dict(title="The Crown S2", role="Compositor", group="Nuke compositor", fmt="Episodic", co="", yr=""),
-    dict(title="Save The 365th Day", role="Stereo compositor & stereographer", group="Nuke compositor", fmt="Feature animation", co="ECCG China", yr="2012",
+    dict(title="Save The 365th Day", role="Stereographer", group="Nuke compositor", fmt="Feature animation", co="ECCG China", yr="2012",
          clips=[("Trailer", "55357193", ["Distribution"]), ("Excerpt", "75682310", ["Post-production"])]),
     dict(title="Game of Thrones S6", role="In-house VFX supervision team", group="VFX supervisor", fmt="Episodic", co="Molinare", yr=""),
 ]
