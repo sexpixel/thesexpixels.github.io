@@ -209,7 +209,7 @@
     var y = window.scrollY, h = window.innerHeight;
     var spare = h - BAR - (pill.getBoundingClientRect().bottom + y);
     if (spare > 0) main.style.setProperty('--fx', spare + 'px');
-    var tail = h - (grid.getBoundingClientRect().top + y);
+    var tail = h + (floatingBar ? 80 : 0) - (grid.getBoundingClientRect().top + y);   // Safari: also clear the strip behind its see-through bar
     if (tail > 0) main.style.setProperty('--ft', tail + 'px');
   }
   var t; function soon(){ clearTimeout(t); t = setTimeout(fit, 150); }
