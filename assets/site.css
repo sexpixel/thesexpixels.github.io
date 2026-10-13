@@ -686,7 +686,7 @@ iframe{color-scheme:normal}
   .pg-fleapit .rail{margin-bottom:calc(8px + var(--fx,0px) * .15)}
   .pg-fleapit .pagelede{margin-bottom:calc(36px + var(--fx,0px) * .35)}
   .pg-fleapit .pagelinks{margin-bottom:calc(28px + var(--ft,0px))}
-  .pg-fleapit.fp-float .fp-reels{padding-top:calc(40px + var(--fx,0px) * .3)!important}
+  .pg-fleapit.fp-float .fp-reels{padding-top:calc(72px + var(--fx,0px) * .3)!important}
 }
 
 /* The Fleapit: under Reels, the cinema line (what used to sit in the player banner), the programme, then the bio line */
