@@ -627,3 +627,5 @@ iframe{color-scheme:normal}
   .pbwrap{gap:8px}
   .reelbar{bottom:12px}
 }
+/* Touch screens: in TV mode the controls fade but still take taps, so one tap wakes and presses */
+@media (hover:none){ body.tv .heroui,body.tv .reelbar{pointer-events:auto} }
