@@ -541,15 +541,19 @@ AWARDS = [
     ("HPA", "", "Black Sails, 2017"),
 ]
 EQUIPMENT = [
-    ("Cameras", "iPhone 17 Log · Theta 360 · 15× GoPro · Canon 5D MkII"),
+    ("Scout", "Cadrage · Artemis · Lens Toolkit · Blackmagic Camera"),
+    ("Script", "Shot Lister"),
+    ("Set", "Shot Designer"),
+    ("Camera", "iPhone 17 Log · Theta 360 · 15× GoPro · Canon 5D MkII"),
     ("VFX kit", "Grey / chrome ball rig · 2× large silver balls"),
-    ("Wrangle", "Assimilate Scratch · Gaussian splatting · CaraVR · Kartaverse"),
-    ("Comp", "NukeX · Boris FX Suite"),
-    ("Track", "Mocha · SynthEyes"),
-    ("3D", "Modo · Mari · Katana · Blender"),
+    ("Light", "Sun Seeker · Helios · Magic Hour · Sekonic 550cine · iPhone light-meter apps"),
+    ("Wrangle", "Setellite · VFX Reports · Assimilate Scratch · Gaussian splatting · CaraVR · Kartaverse"),
     ("Real-time", "Unreal Engine"),
-    ("AI", "Claude · ComfyUI"),
     ("Pipeline", "USD · AYON · Deadline"),
+    ("Track", "Mocha · SynthEyes"),
+    ("Comp", "NukeX · Boris FX Suite"),
+    ("3D", "Modo · Mari · Katana · Blender"),
+    ("AI", "Claude · ComfyUI"),
     ("Review", "Nuke Studio · xStudio · RV · Syncsketch"),
     ("Finishing", "DaVinci Resolve Studio"),
 ]
@@ -591,8 +595,8 @@ def laurel(n, k, d):
             f'<svg class="lb r" aria-hidden="true"><use href="#laurel"/></svg></li>')
 lau = "\n".join(laurel(n, k, d) for n, k, d in AWARDS)
 awd = "\n".join(f'        <li><b>{n}</b>{f"<i>{k}</i>" if k else ""}<span>{E(d)}</span></li>' for n, k, d in AWARDS)
-EQUIP_COLS = (["Cameras", "VFX kit", "Wrangle", "Real-time", "Track"],
-              ["Pipeline", "Comp", "3D", "AI", "Review", "Finishing"])
+EQUIP_COLS = (["Scout", "Script", "Set", "Camera", "VFX kit", "Light", "Wrangle", "Real-time"],
+              ["Pipeline", "Track", "Comp", "3D", "AI", "Review", "Finishing"])
 _eq = dict(EQUIPMENT)
 eqp = "\n".join('      <dl class="kit big">\n' + "\n".join(f'        <div><dt>{E(k)}</dt><dd>{E(_eq[k])}</dd></div>' for k in col) + '\n      </dl>' for col in EQUIP_COLS)
 edu = "\n".join(f'        <li><span class="b">{E(b)}</span><span><b>{q}</b> · {w}</span></li>' for b, q, w in EDUCATION)
