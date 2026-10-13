@@ -578,7 +578,10 @@ iframe{color-scheme:normal}
 }
 .phrow .p > button{line-height:14px}
 .phrow .p:not(:last-child) > button::after{line-height:14px;margin-left:14px}
-@media (max-width:1279px){ .nav.open nav{clip-path:inset(84px 0 0 0)} }   /* the long menu scrolls under the name, not over it */
+@media (max-width:1279px){   /* the open menu scrolls under a solid strip holding the name and Close */
+  .nav.open::before{content:"";position:fixed;left:0;right:0;top:0;height:84px;background:var(--bg);z-index:0}
+  .nav.open .mark,.nav.open .menu-btn{position:relative;z-index:1}
+}
 .phrow .p:not(:last-child) > button::after{position:relative;top:-1px}.phrow{align-items:flex-start}
 
 /* page banners on player pages: the home page's anniversary style, one per page */

@@ -93,9 +93,9 @@ def header(current="", sub="VFX Supervisor"):
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
   <nav aria-label="Main" id="menu">
     <ul>
-      {a("/thefleapit/", "Filmmaker", "fleapit", "All phases")}
-      {a("/vfxsupervisor/", "VFX Supervisor", "vfxsup", "Pre-production")}
-      {a("/nukecompositor/", "Nuke Compositor", "nuke", "Post-production")}
+      {a("/thefleapit/", "Filmmaker", "fleapit")}
+      {a("/vfxsupervisor/", "VFX Supervisor", "vfxsup")}
+      {a("/nukecompositor/", "Nuke Compositor", "nuke")}
       <li class="sep" aria-hidden="true"></li>
       <li class="has-sub"><a href="/work/"{' aria-current="page"' if current == "work" else ""}>Work</a>
         <ul class="sub">
@@ -107,7 +107,6 @@ def header(current="", sub="VFX Supervisor"):
       {a("/about/", "About", "about")}
       {a("/contact/", "Contact", "contact")}
     </ul>
-    <ol class="phrow" aria-label="Production phases">{phrow}</ol>
   </nav>
 </header>'''
 
