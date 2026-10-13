@@ -766,13 +766,15 @@ iframe{color-scheme:normal}
 }
 @media (orientation:landscape){ .hero.fp-player{background:#000} }
 
-/* Bio page on desktop: the intro, the link tiles and the documentary's introduction run the full width of the page */
+/* Bio page: the intro and link tiles on the left, Education beside them on the right (stacked on phones) */
+.bioedu{display:grid;gap:clamp(32px,5vh,56px);margin-top:clamp(40px,7vh,72px)}
+.bioedu .bio{margin-top:0}
 @media (min-width:981px){
+  .bioedu{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);column-gap:clamp(40px,6vw,96px);align-items:start}
   .bio.solo{display:block;max-width:none}
-  .bio.solo .biotext p{max-width:none}
-  .bio.solo .linkrow{margin-top:28px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;overflow:visible}
-  .bio.solo .linkrow .pill.iconpill{min-width:0;padding:26px 12px}
-  #story .pagelede{max-width:none}
+  .bio.solo .linkrow{margin-top:24px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;overflow:visible}
+  .bio.solo .linkrow .pill.iconpill{min-width:0;padding:22px 8px}
+}
 }
 
 /* Player banner: the reel title always keeps room for two lines, so swiping between a short and a long title

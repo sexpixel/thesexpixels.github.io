@@ -627,10 +627,18 @@ about = head("Bio · Mark Pinheiro",
 {lau}
     </ul>
     <p class="awards-note">Promax won outright; the others won by the shows and teams he was part of.</p>
+    <div class="bioedu">
     <div class="bio solo">
       <div class="biotext"><p class="lede">A filmmaker at heart, with twenty-six years in visual effects.</p>
       <p>Today he still enjoys exploring methods and practices that use technology to simplify filmmaking. He works through his boutique studio, The Sex Pixels. He is an <strong>agentic coder</strong>: every tool he builds is written with AI. He also designs courses for the NFTS, ECAM Madrid and Escape Studios.</p></div>
       <div class="linkrow">{lnk}</div>
+    </div>
+    <aside id="education" aria-labelledby="edu-h">
+      <div class="rail"><span id="edu-h">Education</span></div>
+      <ul class="edu">
+{edu}
+      </ul>
+    </aside>
     </div>
   </section>
 
@@ -664,12 +672,6 @@ about = head("Bio · Mark Pinheiro",
     </div>
   </section>
 
-  <section id="education" style="padding-top:0">
-    <div class="rail"><span class="n">04</span>Education</div>
-    <ul class="edu">
-{edu}
-    </ul>
-  </section>
   </div>
 </main>
 
