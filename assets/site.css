@@ -835,3 +835,4 @@ iframe{color-scheme:normal}
   .ccompany{grid-template-columns:minmax(0,1fr);grid-template-areas:"lab" "addr" "mail"}
   .ccompany > .coemail{justify-self:start}
 }
+.over .profile.biosec{padding-top:0!important}

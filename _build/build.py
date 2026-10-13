@@ -627,6 +627,18 @@ about = head("Bio · Mark Pinheiro",
 {lau}
     </ul>
     <p class="awards-note">Promax won outright; the others won by the shows and teams he was part of.</p>
+  </section>
+
+  <section id="story" style="padding-top:0">
+    <div class="rail"><span class="n">01</span>The documentary · 2000–2014</div>
+    <h2 class="doctitle">In his own words</h2>
+    <p class="pagelede">Eight showreels, each narrated by Mark: the stages of a career in VFX, told as a short documentary. It plays above, chapter by chapter; pick any chapter to jump to it, with sound.</p>
+    <div class="fp-grid wide">
+{doc_cells}
+    </div>
+  </section>
+
+  <section class="profile biosec" style="padding-top:0">
     <div class="bioedu">
     <div class="bio solo">
       <div class="biotext"><p class="lede">A filmmaker at heart, with twenty-six years in visual effects.</p>
@@ -639,15 +651,6 @@ about = head("Bio · Mark Pinheiro",
 {edu}
       </ul>
     </aside>
-    </div>
-  </section>
-
-  <section id="story" style="padding-top:0">
-    <div class="rail"><span class="n">01</span>The documentary · 2000–2014</div>
-    <h2 class="doctitle">In his own words</h2>
-    <p class="pagelede">Eight showreels, each narrated by Mark: the stages of a career in VFX, told as a short documentary. It plays above, chapter by chapter; pick any chapter to jump to it, with sound.</p>
-    <div class="fp-grid wide">
-{doc_cells}
     </div>
   </section>
 
