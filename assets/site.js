@@ -196,7 +196,10 @@
    nothing changes. */
 (function(){
   var main = document.querySelector('main.pg-fleapit'); if (!main) return;
-  var BAR = 100;   // room left for a floating browser bar at the bottom (Safari)
+  // Room kept under the button: Safari's address bar floats over the bottom of the page, so keep the button above it;
+  // other browsers (Chrome) keep their bars outside the page, so the button sits at the bottom with a small margin.
+  var ua = navigator.userAgent, floatingBar = /Safari/.test(ua) && /iP(hone|od)/.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
+  var BAR = floatingBar ? 100 : 20;
   function fit(){
     main.style.removeProperty('--fx'); main.style.removeProperty('--ft');
     if (!matchMedia('(orientation:portrait) and (max-width:760px)').matches) return;
