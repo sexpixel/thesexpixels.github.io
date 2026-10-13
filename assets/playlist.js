@@ -56,7 +56,8 @@
     try { yp.unloadModule('captions'); } catch (x) {}
     try { yp.unloadModule('cc'); } catch (x) {}
   }
-  function clear(){ if (player && player.destroy) { try { player.destroy(); } catch (e) {} } player = null; slot.innerHTML = ''; }
+  var swipe = null;   // touch layer over the video (phones), kept on top whenever the slot is refilled
+  function clear(){ if (player && player.destroy) { try { player.destroy(); } catch (e) {} } player = null; slot.innerHTML = ''; if (swipe) slot.appendChild(swipe); }
 
   function play(i){
     if (i < 0) i = cells.length - 1;
@@ -192,6 +193,25 @@
     if (!fs) return videoFull();
     try { var r = fs.call(stage); if (r && r.catch) r.catch(videoFull); } catch (e) { videoFull(); }
   });
+
+  // Phones and tablets: swipe the video left for the next reel, right for the previous one; a tap plays or pauses.
+  // The video players swallow touches, so a see-through layer over the video catches them. Up and down still
+  // scroll the page; only a clearly sideways swipe changes the reel.
+  if (window.matchMedia && matchMedia('(hover:none) and (pointer:coarse)').matches) {
+    swipe = document.createElement('div'); swipe.className = 'fp-swipe'; swipe.setAttribute('aria-hidden', 'true');
+    slot.appendChild(swipe);
+    var sx = 0, sy = 0, st = 0, moved = false;
+    swipe.addEventListener('touchstart', function(e){ var t = e.touches[0]; sx = t.clientX; sy = t.clientY; st = Date.now(); moved = false; }, { passive: true });
+    swipe.addEventListener('touchmove', function(e){ var t = e.touches[0]; if (Math.abs(t.clientX - sx) > 10 || Math.abs(t.clientY - sy) > 10) moved = true; }, { passive: true });
+    swipe.addEventListener('touchend', function(e){
+      var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        var dir = dx < 0 ? 1 : -1;
+        try { slot.animate([{ transform: 'translateX(0)', opacity: 1 }, { transform: 'translateX(' + (dir > 0 ? -40 : 40) + 'px)', opacity: .2 }], { duration: 180, easing: 'ease-in' }); } catch (x) {}
+        setTimeout(function(){ sound = true; play(cur + dir); }, 170);
+      } else if (!moved && Date.now() - st < 400 && playBtn) { togglePlay(); }
+    }, { passive: true });
+  }
 
   // Start straight away, muted (browsers only allow sound after a click).
   play(0);

@@ -753,3 +753,6 @@ iframe{color-scheme:normal}
   .fp-ctrls #fp-full{order:10;margin-right:auto}
   .fp-ctrls #fp-sound{order:11;margin-left:auto}
 }
+
+/* Phones: the see-through touch layer over the video that catches swipes (next / previous reel) and taps (play / pause) */
+.fp-swipe{position:absolute;inset:0;z-index:3;touch-action:pan-y;-webkit-tap-highlight-color:transparent}
