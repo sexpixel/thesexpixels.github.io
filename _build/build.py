@@ -563,6 +563,18 @@ EDUCATION = [
     ("BTEC", "Business &amp; Finance", "SFX"),
 ]
 # The commentated showreels: Mark narrates each stage of his career (Vimeo showcase 3003648).
+# The player's controls, shared by every player page and the About documentary.
+CTRLS = '''
+        <div class="fp-ctrls">
+          <button type="button" class="fp-btn ic" id="fp-prev" aria-label="Previous reel" title="Previous reel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+          <button type="button" class="fp-btn ic" id="fp-back" aria-label="Back 10 seconds" title="Back 10 seconds"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14L3 12zM21 5v14l-9-7z"/></svg></button>
+          <button type="button" class="fp-btn ic" id="fp-play" aria-label="Pause" title="Play / pause"><svg class="pz" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg><svg class="pl" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>
+          <button type="button" class="fp-btn ic" id="fp-fwd" aria-label="Forward 10 seconds" title="Forward 10 seconds"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5v14l9-7zM12 5v14l9-7z"/></svg></button>
+          <button type="button" class="fp-btn ic" id="fp-next" aria-label="Next reel" title="Next reel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+          <button type="button" class="fp-btn" id="fp-sound" aria-pressed="false">Sound on</button>
+          <button type="button" class="fp-btn" id="fp-full">Full screen</button>
+        </div>'''
+
 DOC_CHAPTERS = [
     ("2000–2004", "103943083"), ("2004–2006", "103945879"), ("2006–2008", "103949083"), ("2007–2010", "103933560"),
     ("2008–2010", "103953638"), ("2010–2012", "103959201"), ("2012–2013", "103979619"), ("2013–2014", "103982611"),
@@ -598,13 +610,13 @@ about = head("About · Mark Pinheiro",
       <h1 class="herohead">About</h1>
     </div>
     <div class="reelbar heroui">
-      <span class="fp-title" id="fp-title" aria-live="polite"></span>
-        <div class="fp-ctrls">
-          <button type="button" class="fp-btn" id="fp-prev" aria-label="Previous chapter">◀</button>
-          <button type="button" class="fp-btn" id="fp-next" aria-label="Next chapter">▶</button>
-          <button type="button" class="fp-btn" id="fp-sound" aria-pressed="false">Sound on</button>
-          <button type="button" class="fp-btn" id="fp-full">Full screen</button>
-        </div>
+      <div class="pbwrap"><a class="anniv pbanner live" href="#story">
+        <span class="anniv-n" id="pb-n">01</span>
+        <span class="anniv-t"><b id="pb-title">{E(DOC_REELS[0]["title"])}</b><span id="pb-sub">1 of {len(DOC_REELS)}</span>
+          <i>All {len(DOC_REELS)} reels ↓</i></span>
+      </a>
+        <span class="fp-title" id="fp-title" aria-live="polite"></span>
+      </div>{CTRLS}
     </div>
     <div class="scrollcue heroui" aria-hidden="true">Scroll</div>
   </section>
@@ -742,16 +754,7 @@ def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wid
     has_any = any(r["video"] for r in reels)
     idle = "" if has_any else f'''
     <div class="fp-idle"><span class="fp-now">Now showing</span><span class="fp-big">{idle_empty}</span>{extra_links}</div>'''
-    ctrls = f'''
-        <div class="fp-ctrls">
-          <button type="button" class="fp-btn ic" id="fp-prev" aria-label="Previous reel" title="Previous reel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
-          <button type="button" class="fp-btn ic" id="fp-back" aria-label="Back 10 seconds" title="Back 10 seconds"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14L3 12zM21 5v14l-9-7z"/></svg></button>
-          <button type="button" class="fp-btn ic" id="fp-play" aria-label="Pause" title="Play / pause"><svg class="pz" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg><svg class="pl" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>
-          <button type="button" class="fp-btn ic" id="fp-fwd" aria-label="Forward 10 seconds" title="Forward 10 seconds"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5v14l9-7zM12 5v14l9-7z"/></svg></button>
-          <button type="button" class="fp-btn ic" id="fp-next" aria-label="Next reel" title="Next reel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
-          <button type="button" class="fp-btn" id="fp-sound" aria-pressed="false">Sound on</button>
-          <button type="button" class="fp-btn" id="fp-full">Full screen</button>
-        </div>''' if has_any else ""
+    ctrls = CTRLS if has_any else ""
     # The page's banner, in the home page's anniversary style: a big pink number, a word, the page's line,
     # the projects on the page, and a link down to the grid. The Fleapit passes its own in-world banner.
     vids = [r for r in reels if r.get("video")]
