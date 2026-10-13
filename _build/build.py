@@ -991,12 +991,10 @@ contact = head("Contact · Mark Pinheiro", "Contact Mark Pinheiro: email, Linked
 {chr(10).join(f'      <li><a href="{u}" target="_blank" rel="noopener"><span class="clabel">{icon(k, "ic big")}{k}</span><span class="cval">{E(t)} <span class="arr">↗</span></span></a></li>' for k, t, u in CONTACT_LINKS)}
     </ul>
     <div class="ccompany">
-      <span class="clabel">{icon("Company", "ic big")}The Sex Pixels Ltd.</span>
-      <div class="caddr">
-        <div><span class="olabel">Studio</span><address>Old Bank Chambers, The Slip, 217 Grange Road, Bermondsey, London SE1 3AA</address></div>
-        <div><span class="olabel">Registered office</span><address>Fifth Floor, Mariner House, 62 Prince Street, Bristol BS1 4QD</address></div>
-      </div>
-      <a class="coemail" href="mailto:info@thesexpixels.com">info@thesexpixels.com</a>
+      <div class="cco"><span class="clabel">{icon("Company", "ic big")}The Sex Pixels Ltd.</span>
+        <a class="coemail" href="mailto:info@thesexpixels.com">info@thesexpixels.com</a></div>
+      <div class="cad"><span class="olabel">Studio</span><address>Old Bank Chambers<br>The Slip<br>217 Grange Road<br>Bermondsey<br>London SE1 3AA</address></div>
+      <div class="cad"><span class="olabel">Registered office</span><address>Fifth Floor<br>Mariner House<br>62 Prince Street<br>Bristol<br>BS1 4QD</address></div>
     </div>
   </section>
 </main>

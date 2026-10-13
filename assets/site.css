@@ -836,3 +836,39 @@ iframe{color-scheme:normal}
   .ccompany > .coemail{justify-self:start}
 }
 .over .profile.biosec{padding-top:0!important}
+/* contact v3: spread over the page height; company row lines up with the three contact columns */
+.contactpage{min-height:calc(100svh - 80px)}
+.contactpage .ctitlerow{margin-top:clamp(8px,2vh,24px)}
+.contactpage .cways{padding:clamp(28px,6vh,72px) 0}
+.contactpage .cways a{gap:clamp(10px,2vh,20px)}
+.contactpage .ccompany{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-areas:none;gap:24px;align-items:start;padding:clamp(28px,6vh,72px) 0 clamp(24px,4vh,48px)}
+.contactpage .ccompany > *{grid-area:auto}
+.cco{display:grid;gap:clamp(10px,2vh,20px);justify-items:start}
+.cco .coemail{margin:0;font-family:var(--mono);font-size:14px}
+.cad{display:grid;gap:10px;align-content:start}
+.cad address{font-style:normal;font-size:clamp(15px,1.25vw,18px);line-height:1.6;color:var(--soft)}
+@media (max-width:860px){
+  .contactpage .ccompany{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px 20px}
+  .cco{grid-column:1/-1}
+}
+/* contact links bigger, centred in the frame */
+@media (min-width:861px){
+  .contactpage{display:flex;flex-direction:column}
+  .contactpage .cways{flex:1;align-content:center;padding:clamp(32px,7vh,96px) 0}
+  .contactpage .cways .cval{font-size:clamp(22px,2.25vw,40px)}
+  .contactpage .cways .clabel .ic{width:clamp(44px,3.6vw,60px);height:auto}
+}
+.contactpage .cways .cval{font-size:clamp(22px,6.4vw,30px)}
+@media (min-width:861px){
+  .contactpage .pagetitle{font-size:min(11vw,13.5vh,168px)}
+  .contactpage .cways .cval{white-space:nowrap;font-size:min(2.25vw,4.6vh,40px)}
+  .contactpage .cways{padding:clamp(24px,6vh,96px) 0}
+  .contactpage .ccompany{padding:clamp(20px,4.5vh,72px) 0 clamp(16px,3vh,48px)}
+  .cad address{font-size:min(1.25vw,2.3vh,18px);line-height:1.5}
+}
+@media (min-width:861px){
+  .contactpage .ctitlerow{margin-top:0}
+  .contactpage .cways{padding:clamp(20px,5vh,96px) 0}
+  .contactpage .ccompany{padding:clamp(18px,4vh,72px) 0 clamp(16px,3vh,48px)}
+}
+@media (max-width:860px){ .contactpage .ccompany > .cco{grid-column:1/-1} }
