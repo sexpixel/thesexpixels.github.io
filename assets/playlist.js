@@ -61,6 +61,8 @@
 
   // The banner under the player describes what's playing: project, clip, then Role / Format / Phase.
   var pb = document.querySelector('.pbanner.live'), pbText = pb && pb.querySelector('.anniv-t');
+  var SHORT = { 'VFX Supervisor': 'Supervisor', 'Nuke Compositor': 'Compositor', 'Feature Film': 'Film', 'Visualisation': 'Vis',
+    'Feature Animation': 'Anim', 'Development': 'Dev', 'Pre-production': 'Pre', 'Production': 'Prod', 'Post-production': 'Post', 'Distribution': 'Dist' };
   function fillBanner(c, i){
     if (!pb) return;
     var t = c.getAttribute('data-title') || '', k = t.indexOf(' · ');
@@ -70,7 +72,11 @@
     set('pb-sub', (k > 0 ? t.slice(k + 3) + ' · ' : '') + (i + 1) + ' of ' + cells.length + (noneHere ? ' · no reels in this phase yet' : ''));
     ['role', 'format', 'phase'].forEach(function(f){
       var v = c.getAttribute('data-' + f) || '', dd = document.getElementById('pb-' + f);
-      if (dd) { dd.textContent = v; dd.parentNode.hidden = !v; }
+      if (dd) {   // full words, plus a short form that phones show so all three lines stay complete
+        var sh = v.split(' · ').map(function(x){ return SHORT[x] || x; }).join(' · ');
+        dd.innerHTML = '<span class="lg"></span><span class="sm" aria-hidden="true"></span>';
+        dd.firstChild.textContent = v; dd.lastChild.textContent = sh; dd.parentNode.hidden = !v;
+      }
     });
   }
   // Keep the banner the height of its tallest reel, so moving between reels (buttons, swipes) never makes
