@@ -507,7 +507,7 @@ def filter_strip(label, attr, options, have):
 
 
 def _fmt_label(f): return " ".join(w.capitalize() for w in f.split())
-def _role_label(x): return " ".join(w.upper() if w[:1].isdigit() else w[:1].upper() + w[1:] for w in x.split())
+def _role_label(x): return _nice_role(x)
 def reel_info(r):
     """Who / What / When for the banner, from Mark's tags (an Other role shows by its name)."""
     t = TAGS.get(r.get("video") or "", {})
@@ -775,7 +775,8 @@ def phase_strip(reels):
             '<ol class="phases" aria-label="Filter by phase">' + "".join(btns) + '</ol></div>')
 
 def _nice_role(x):
-    return " ".join(w.upper() if w[:1].isdigit() else w[:1].upper() + w[1:] for w in x.split())
+    cap = lambda w: w.upper() if w[:1].isdigit() else w[:1].upper() + w[1:]
+    return " ".join("-".join(cap(h) for h in w.split("-")) for w in x.split())   # Multi-Camera, not Multi-camera
 
 def tagged_reels(reels, page):
     """The page's videos as Mark tagged them (When/Who/What): a tagged video stays only if its tags name this
