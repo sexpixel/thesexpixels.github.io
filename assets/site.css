@@ -927,3 +927,8 @@ iframe{color-scheme:normal}
 @media (orientation:portrait) and (max-width:760px){
   main[class^="pg-"]:not(.pg-fleapit) .pbanner.live{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:end;align-content:start}
 }
+/* player banners: the title always takes two lines' height and sits on the lower line(s), so one-line and
+   two-line titles keep the subtitle, Role / Format / Phase and the number in the same place */
+.pbanner.live .anniv-t b{display:flex;flex-direction:column;justify-content:flex-end;min-height:1.8em;min-height:2lh}
+/* the short words in the phone banner read as plain text (not the spaced capitals of the filter buttons), so lines don't wrap */
+.pb-meta dd .sm{font-family:inherit;font-size:inherit;font-weight:inherit;letter-spacing:0;text-transform:none}

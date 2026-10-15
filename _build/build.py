@@ -512,7 +512,8 @@ def reel_info(r):
     """Who / What / When for the banner, from Mark's tags (an Other role shows by its name)."""
     t = TAGS.get(r.get("video") or "", {})
     roles = [(_role_label(t["other"]) if x == "Other" and t.get("other") else x) for x in t.get("roles", []) if x != "Other" or t.get("other")]
-    fmts = [_fmt_label(f) for f in t.get("formats", [])]
+    if not roles: roles = reel_roles(r)   # untagged reels: the project's role and format
+    fmts = [_fmt_label(f) for f in (t.get("formats") or reel_formats(r))]
     return " · ".join(roles), " · ".join(fmts), " · ".join(reel_phases(r))
 def reel_cell(i, r):
     if r["video"]:
