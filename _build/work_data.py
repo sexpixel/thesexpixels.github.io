@@ -21,6 +21,8 @@ PROJECTS = [
          clips=[("Nightcall", "youtube:OZYw0MQp_fI")]),
     dict(title="Little Nikki", role="VFX supervisor", group="VFX supervisor", fmt="Shorts", co="The Sex Pixels", yr="2013",
          clips=[("Little Nikki Says", "youtube:xSW3vtpHOak")]),
+    dict(title="Ou Est Le Swimming Pool", role="VFX supervisor and compositor", group="VFX supervisor", fmt="Shorts", co="", yr="",
+         clips=[("Jackson's Last Stand", "youtube:F7eMXvvaQgQ")]),
     dict(title="Klaxons", role="Compositor", group="Nuke compositor", fmt="Shorts", co="Blind Pig", yr="2010",
          clips=[("Twin Flames", "youtube:umS0sw8_D30")]),
     dict(title="Reel 2 Real ft. The Mad Stuntman", role="VFX supervisor", group="VFX supervisor", fmt="Shorts", co="The Sex Pixels", yr="2010",
