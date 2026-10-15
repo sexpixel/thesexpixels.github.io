@@ -17,7 +17,7 @@ PROJECTS = [
     dict(title="Spotify", role="", group="Director", fmt="Shorts", co="The Sex Pixels", yr="",
          clips=[("Happy Ending", "143586386"), ("Run Your Way", "143586363"), ("Procrastinator", "143586362")]),
     # Music videos, clean copies on YouTube (added 15 Oct 2026). credits from Mark 15 Oct; newest first.
-    dict(title="M.I.A.", role="VFX supervisor", group="VFX supervisor", fmt="Shorts", co="Spring 69", yr="2015",
+    dict(title="M.I.A.", role="VFX supervisor", group="VFX supervisor", fmt="Shorts", co="Prettybird", yr="2015",
          clips=[("Borders", "youtube:NpttHOHEKMo")]),
     dict(title="London Grammar", role="VFX supervisor", group="VFX supervisor", fmt="Shorts", co="Phink", yr="2013",
          clips=[("Nightcall", "youtube:OZYw0MQp_fI")]),
