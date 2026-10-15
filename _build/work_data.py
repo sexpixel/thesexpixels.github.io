@@ -16,6 +16,15 @@ PROJECTS = [
     dict(title="I Am Nobody S2", role="VFX consultant", group="VFX supervisor", fmt="Episodic", co="Horizon VFX", yr=""),
     dict(title="Spotify", role="Director", group="Director", fmt="Shorts", co="The Sex Pixels", yr="",
          clips=[("Happy Ending", "143586386"), ("Run Your Way", "143586363"), ("Procrastinator", "143586362")]),
+    # Music videos, clean copies on YouTube (added 15 Oct 2026). ROLE, COMPANY AND YEAR TO CONFIRM; newest first.
+    dict(title="London Grammar", role="", group="VFX supervisor", fmt="Shorts", co="", yr="",
+         clips=[("Nightcall", "youtube:OZYw0MQp_fI")]),
+    dict(title="Little Nikki", role="", group="VFX supervisor", fmt="Shorts", co="", yr="",
+         clips=[("Little Nikki Says", "youtube:xSW3vtpHOak")]),
+    dict(title="Klaxons", role="", group="VFX supervisor", fmt="Shorts", co="", yr="2010",
+         clips=[("Twin Flames", "youtube:umS0sw8_D30")]),
+    dict(title="Reel 2 Real ft. The Mad Stuntman", role="", group="VFX supervisor", fmt="Shorts", co="", yr="2010",
+         clips=[("I Like To Move It", "youtube:2z2D7AYlSuw")]),
     # Zinga Poker (Compositor · ICHI Worldwide · 2024): reel unavailable, tile removed 13 Oct at Mark's request. Credit kept for the CV.
     # dict(title="Zinga Poker", role="Compositor", group="Nuke compositor", fmt="Shorts", co="ICHI Worldwide", yr="2024"),
     dict(title="Damsel", role="Lead PostVis artist", group="PostVis", fmt="Feature film", co="Proof", yr="2023",
