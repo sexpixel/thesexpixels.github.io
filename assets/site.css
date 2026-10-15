@@ -923,3 +923,7 @@ iframe{color-scheme:normal}
   main[class^="pg-"]:not(.pg-fleapit) .pb-meta dd .sm{display:inline}
   main[class^="pg-"]:not(.pg-fleapit) .pbanner.live .anniv-t > i{display:none}
 }
+/* phones upright: the reel number sits level with the Phase line; any reserved height goes below */
+@media (orientation:portrait) and (max-width:760px){
+  main[class^="pg-"]:not(.pg-fleapit) .pbanner.live{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:end;align-content:start}
+}

@@ -83,10 +83,13 @@
   // the controls and everything under the banner jump.
   function steadyBanner(){
     if (!pbText || !cells.length) return;
-    pbText.style.minHeight = '';
+    // Phones upright reserve the height on the whole banner, so the number can sit level with the last line (Phase);
+    // elsewhere the text column keeps it, as before.
+    var box = matchMedia('(orientation:portrait) and (max-width:760px)').matches ? pb : pbText;
+    pbText.style.minHeight = ''; pb.style.minHeight = '';
     var tallest = 0;
-    cells.forEach(function(c, j){ fillBanner(c, j); tallest = Math.max(tallest, pbText.getBoundingClientRect().height); });
-    pbText.style.minHeight = Math.ceil(tallest) + 'px';
+    cells.forEach(function(c, j){ fillBanner(c, j); tallest = Math.max(tallest, box.getBoundingClientRect().height); });
+    box.style.minHeight = Math.ceil(tallest) + 'px';
     if (cur >= 0 && cells[cur]) fillBanner(cells[cur], cur);
   }
 
