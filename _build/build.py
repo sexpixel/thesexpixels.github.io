@@ -847,7 +847,7 @@ def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wid
     <div class="fp-slot" id="fp-slot"></div>{idle}
     <div class="herotitle herotop heroui">
       <span class="lab"><b>{rail_n}</b> · {rail_label}</span>
-      <h1 class="herohead">{title_html}</h1>{"" if not (has_any and phases) else (('<div class="filterrows">' + (format_strip(reels) if tag_page in ROLE_PAGES else role_strip(reels)) + phase_strip(reels) + '</div>') if tag_page else phase_strip(reels))}
+      <h1 class="herohead">{title_html}</h1>{"" if not (has_any and phases) else (('<div class="filterrows"><span class="phlab phlab-all" aria-hidden="true">Filter by ' + ("format" if tag_page in ROLE_PAGES else "role") + ' &amp; phase</span>' + (format_strip(reels) if tag_page in ROLE_PAGES else role_strip(reels)) + phase_strip(reels) + '</div>') if tag_page else phase_strip(reels))}
     </div>
     <div class="reelbar heroui">
       <div class="pbwrap">{pbanner}

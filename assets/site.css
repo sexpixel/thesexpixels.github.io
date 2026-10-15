@@ -884,3 +884,29 @@ iframe{color-scheme:normal}
 /* two filter rows on role and format pages: format (or role) above, production phase below */
 .filterrows{display:flex;flex-direction:column;gap:10px;margin-top:12px}
 .filterrows .phasewrap{margin-top:0}
+/* phones upright: the two filter bars share one label and sit closer; the banner's Role / Format / Phase go on one line */
+.phlab-all{display:none}
+@media (orientation:portrait) and (max-width:760px){
+  .filterrows{gap:6px;margin-top:10px}
+  .filterrows .phasewrap .phlab{display:none}
+  .filterrows .phlab-all{display:block}
+  .filterrows .phases button{padding-top:6px;padding-bottom:6px}
+  main[class^="pg-"]:not(.pg-fleapit) .pb-meta{display:flex;flex-wrap:wrap;gap:0;margin:4px 0}
+  main[class^="pg-"]:not(.pg-fleapit) .pb-meta > div:not([hidden]){display:flex}
+  main[class^="pg-"]:not(.pg-fleapit) .pb-meta dt{display:none}
+  main[class^="pg-"]:not(.pg-fleapit) .pb-meta dd{max-width:none;white-space:normal}
+  main[class^="pg-"]:not(.pg-fleapit) .pb-meta > div:not([hidden]) + div:not([hidden]) dd::before{content:"·";margin:0 7px;color:var(--accent)}
+}
+/* phones upright: the Role · Format · Phase line stays one line (long lists end in …), so the banner doesn't grow for the busiest reel */
+@media (orientation:portrait) and (max-width:760px){
+  main[class^="pg-"]:not(.pg-fleapit) .pb-meta{flex-wrap:nowrap;overflow:hidden;white-space:nowrap;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}
+  main[class^="pg-"]:not(.pg-fleapit) .pb-meta > div:not([hidden]){flex:none}
+  main[class^="pg-"]:not(.pg-fleapit) .pb-meta dd{white-space:nowrap}
+}
+/* phones upright, two filter bars: start the spacing tighter; the fit script hands any spare height back */
+@media (orientation:portrait) and (max-width:760px){
+  main.pg-fit .reelbar{row-gap:calc(8px + var(--rp,0px) * .25)}
+  main.pg-fit .fp-ctrls{row-gap:calc(8px + var(--rp,0px) * .25)}
+  main.pg-fit .fp-reels{padding-top:calc(8px + var(--rp,0px) * .25)!important}
+  .filterrows{gap:5px;margin-top:6px}
+}
