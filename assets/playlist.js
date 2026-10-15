@@ -79,7 +79,7 @@
       }
     });
   }
-  // Keep the banner the height of its tallest reel, so moving between reels (buttons, swipes) never makes
+  // Keep the banner the height of the page's tallest reel, so moving between reels (buttons, swipes) never makes
   // the controls and everything under the banner jump.
   function steadyBanner(){
     if (!pbText || !cells.length) return;
@@ -88,7 +88,8 @@
     var box = matchMedia('(orientation:portrait) and (max-width:760px)').matches ? pb : pbText;
     pbText.style.minHeight = ''; pb.style.minHeight = '';
     var tallest = 0;
-    cells.forEach(function(c, j){ fillBanner(c, j); tallest = Math.max(tallest, box.getBoundingClientRect().height); });
+    // Measured over every reel on the page, not just the current filter, so changing format or phase doesn't move the controls either.
+    allCells.forEach(function(c, j){ fillBanner(c, j); tallest = Math.max(tallest, box.getBoundingClientRect().height); });
     box.style.minHeight = Math.ceil(tallest) + 'px';
     if (cur >= 0 && cells[cur]) fillBanner(cells[cur], cur);
   }
