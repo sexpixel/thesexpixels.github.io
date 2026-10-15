@@ -932,3 +932,22 @@ iframe{color-scheme:normal}
 .pbanner.live .anniv-t b{display:flex;flex-direction:column;justify-content:flex-end;min-height:1.8em;min-height:2lh}
 /* the short words in the phone banner read as plain text (not the spaced capitals of the filter buttons), so lines don't wrap */
 .pb-meta dd .sm{font-family:inherit;font-size:inherit;font-weight:inherit;letter-spacing:0;text-transform:none}
+/* Phones held sideways: the page title and both filter bars share the top of the screen with the banner, so
+   the title is smaller and the two bars sit side by side in short words under one label, leaving the
+   banner and controls clear space below. */
+@media (orientation:landscape) and (max-height:500px){
+  .filterrows{flex-direction:row;flex-wrap:wrap;align-items:flex-end;gap:6px 10px;margin-top:8px}
+  .filterrows .phlab-all{display:block;flex-basis:100%}
+  .filterrows .phasewrap .phlab{display:none}
+  .filterrows .phases{flex-wrap:nowrap;font-size:10px;letter-spacing:1.5px}
+  .filterrows .phases li{padding:0}
+  .filterrows .phases button{padding:6px 11px}
+  .filterrows .phases .lg{display:none}
+  .filterrows .phases .sm{display:inline}
+  main[class^="pg-"]:not(.pg-fleapit) .herohead{font-size:clamp(36px,12vh,60px)}
+  main[class^="pg-"]:not(.pg-fleapit) .pbanner.live .anniv-t > i{display:none}
+}
+@media (orientation:landscape) and (max-height:500px) and (max-width:760px){
+  .filterrows .phases{letter-spacing:1px}
+  .filterrows .phases button{padding:6px 8px}
+}
