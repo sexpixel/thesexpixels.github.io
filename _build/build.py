@@ -770,8 +770,8 @@ def phase_strip(reels):
         dis = "" if ph in have else " disabled"
         btns.append(f'<li><button type="button" data-ph="{phase_slug(ph)}" aria-pressed="false"{dis}>'
                     f'<span class="lg">{ph}</span><span class="sm" aria-hidden="true">{short[ph]}</span></button></li>')
-    return ('<div class="phasewrap"><span class="phlab" aria-hidden="true">Filter by production phase</span>'
-            '<ol class="phases" aria-label="Filter by production phase">' + "".join(btns) + '</ol></div>')
+    return ('<div class="phasewrap"><span class="phlab" aria-hidden="true">Filter by phase</span>'
+            '<ol class="phases" aria-label="Filter by phase">' + "".join(btns) + '</ol></div>')
 
 def _nice_role(x):
     return " ".join(w.upper() if w[:1].isdigit() else w[:1].upper() + w[1:] for w in x.split())
