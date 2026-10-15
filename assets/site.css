@@ -876,3 +876,8 @@ iframe{color-scheme:normal}
 .kitcols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:clamp(24px,4vw,56px);align-items:start}
 .kitcols .kit.big{display:block}
 @media (max-width:860px){.kitcols{grid-template-columns:minmax(0,1fr)}}
+/* contact links: size each address to its own column so wide fonts never overlap the next one */
+.contactpage .cways li{container-type:inline-size;min-width:0}
+@media (min-width:861px){
+  .contactpage .cways .cval{white-space:normal;overflow-wrap:anywhere;font-size:min(5.8cqi,4.6vh,40px)}
+}
