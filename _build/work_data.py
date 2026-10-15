@@ -25,6 +25,9 @@ PROJECTS = [
          clips=[("Twin Flames", "youtube:umS0sw8_D30")]),
     dict(title="Reel 2 Real ft. The Mad Stuntman", role="VFX supervisor", group="VFX supervisor", fmt="Shorts", co="The Sex Pixels", yr="2010",
          clips=[("I Like To Move It", "youtube:2z2D7AYlSuw")]),
+    # Promax Gold 1996, Best Corporate Promo. Cut from the TVC/promo anthology (SD original, 1995), uploaded 15 Oct 2026.
+    dict(title="VH-1", role="Director", group="Director", fmt="Shorts", co="", yr="1995",
+         clips=[("Nobody Does It Better", "1236267195")]),
     # Zinga Poker (Compositor · ICHI Worldwide · 2024): reel unavailable, tile removed 13 Oct at Mark's request. Credit kept for the CV.
     # dict(title="Zinga Poker", role="Compositor", group="Nuke compositor", fmt="Shorts", co="ICHI Worldwide", yr="2024"),
     dict(title="Damsel", role="Lead PostVis artist", group="PostVis", fmt="Feature film", co="Proof", yr="2023",
