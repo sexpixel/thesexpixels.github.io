@@ -881,3 +881,6 @@ iframe{color-scheme:normal}
 @media (min-width:861px){
   .contactpage .cways .cval{white-space:normal;overflow-wrap:anywhere;font-size:min(5.8cqi,4.6vh,40px)}
 }
+/* two filter rows on role and format pages: format (or role) above, production phase below */
+.filterrows{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.filterrows .phasewrap{margin-top:0}

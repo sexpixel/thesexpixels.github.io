@@ -163,23 +163,33 @@
     c.addEventListener('click', function(){ sound = true; play(Math.max(0, cells.indexOf(c))); stage.scrollIntoView({ behavior: 'smooth', block: 'center' }); });
   });
 
-  // Production-phase filter: All, Development … Distribution. Filters the grid and the playlist.
-  var phaseBtns = [].slice.call(document.querySelectorAll('.phases button[data-ph]'));
+  // Filters: production phase (data-ph), plus format (data-fm) on role pages or role (data-ro) on format pages.
+  // They combine: e.g. VFX Supervisor + Episodic + Production. They filter the grid and the playlist.
   var tiles = [].slice.call(document.querySelectorAll('.fp-grid .fp-cell'));
-  function inPhase(el, ph){ return ph === 'all' || (' ' + (el.getAttribute('data-phases') || '') + ' ').indexOf(' ' + ph + ' ') >= 0; }
-  function setPhase(ph, restart){
-    phaseBtns.forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-ph') === ph ? 'true' : 'false'); });
-    tiles.forEach(function(t){ t.hidden = !inPhase(t, ph); });
-    cells = allCells.filter(function(c){ return inPhase(c, ph); });
-    noneHere = !cells.length;   // the phase has projects listed but no reels yet: keep playing everything
+  var FILTERS = [['ph', 'data-phases', 'phase'], ['fm', 'data-fms', 'format'], ['ro', 'data-ros', 'role']];
+  var sel = { ph: 'all', fm: 'all', ro: 'all' };
+  function btnsOf(k){ return [].slice.call(document.querySelectorAll('.phases button[data-' + k + ']')); }
+  function has(el, attr, v){ return v === 'all' || (' ' + (el.getAttribute(attr) || '') + ' ').indexOf(' ' + v + ' ') >= 0; }
+  function passes(el){ return FILTERS.every(function(f){ return has(el, f[1], sel[f[0]]); }); }
+  function apply(restart){
+    FILTERS.forEach(function(f){ btnsOf(f[0]).forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-' + f[0]) === sel[f[0]] ? 'true' : 'false'); }); });
+    tiles.forEach(function(t){ t.hidden = !passes(t); });
+    cells = allCells.filter(passes);
+    noneHere = !cells.length;   // nothing matches yet: keep playing everything
     if (noneHere) cells = allCells;
-    try { var u = new URL(location.href); if (ph === 'all') u.searchParams.delete('phase'); else u.searchParams.set('phase', ph); history.replaceState(null, '', u); } catch (e) {}
+    try { var u = new URL(location.href); FILTERS.forEach(function(f){ if (sel[f[0]] === 'all') u.searchParams.delete(f[2]); else u.searchParams.set(f[2], sel[f[0]]); }); history.replaceState(null, '', u); } catch (e) {}
     if (restart) { play(0); steadyBanner(); }
   }
-  phaseBtns.forEach(function(b){ b.addEventListener('click', function(){ if (!b.disabled) setPhase(b.getAttribute('data-ph'), true); }); });
-  var wanted = null;
-  try { wanted = new URL(location.href).searchParams.get('phase'); } catch (e) {}
-  if (wanted && phaseBtns.some(function(b){ return b.getAttribute('data-ph') === wanted && !b.disabled; })) setPhase(wanted, false);
+  function setPhase(ph, restart){ sel.ph = ph; apply(restart); }   // kept for other callers
+  FILTERS.forEach(function(f){
+    btnsOf(f[0]).forEach(function(b){ b.addEventListener('click', function(){ if (!b.disabled) { sel[f[0]] = b.getAttribute('data-' + f[0]); apply(true); } }); });
+  });
+  var anyWanted = false;
+  try {
+    var q = new URL(location.href).searchParams;
+    FILTERS.forEach(function(f){ var w = q.get(f[2]); if (w && btnsOf(f[0]).some(function(b){ return b.getAttribute('data-' + f[0]) === w && !b.disabled; })) { sel[f[0]] = w; anyWanted = true; } });
+  } catch (e) {}
+  if (anyWanted) apply(false);
   var start = document.getElementById('fp-start');
   if (start) start.addEventListener('click', function(){ sound = true; play(0); });
   document.getElementById('fp-prev').addEventListener('click', function(){ sound = true; play(cur - 1); });

@@ -482,6 +482,30 @@ def reel_phases(r):
 def phases_attr(r):
     return " ".join(phase_slug(x) for x in reel_phases(r))
 
+def fmt_slug(f): return f.lower().replace(" ", "-")
+def reel_formats(r):
+    """A reel's formats: Mark's What tag wins, then the project's format."""
+    t = TAGS.get(r.get("video") or "")
+    return (t and t.get("formats")) or globals().get("VIDEO_FMTS", {}).get(r.get("video") or "") or r.get("fmts") or []
+def formats_attr(r): return " ".join(fmt_slug(x) for x in reel_formats(r))
+def role_slug(x): return x.lower().replace(" ", "-")
+def reel_roles(r):
+    t = TAGS.get(r.get("video") or "", {})
+    return [x for x in t.get("roles", []) if x != "Other"] or globals().get("VIDEO_ROLES", {}).get(r.get("video") or "") or r.get("roles") or []
+def roles_attr(r): return " ".join(role_slug(x) for x in reel_roles(r))
+
+def filter_strip(label, attr, options, have):
+    """A second filter row like the phase one: All, then each option; options with no reels here can't be picked."""
+    btns = [f'<li><button type="button" data-{attr}="all" aria-pressed="true"><span class="lg">All</span><span class="sm" aria-hidden="true">All</span></button></li>']
+    for name, short in options:
+        sl = name.lower().replace(" ", "-")
+        dis = "" if sl in have else " disabled"
+        btns.append(f'<li><button type="button" data-{attr}="{sl}" aria-pressed="false"{dis}>'
+                    f'<span class="lg">{name}</span><span class="sm" aria-hidden="true">{short}</span></button></li>')
+    return (f'<div class="phasewrap"><span class="phlab" aria-hidden="true">Filter by {label}</span>'
+            f'<ol class="phases" aria-label="Filter by {label}">' + "".join(btns) + '</ol></div>')
+
+
 def _fmt_label(f): return " ".join(w.capitalize() for w in f.split())
 def _role_label(x): return " ".join(w.upper() if w[:1].isdigit() else w[:1].upper() + w[1:] for w in x.split())
 def reel_info(r):
@@ -497,8 +521,8 @@ def reel_cell(i, r):
         elif r["video"].startswith("vimeo:"):
             vid, _, h = r["video"][6:].partition(":"); img = f'<img data-vimeo="https://vimeo.com/{vid}{"/" + h if h else ""}" alt="" hidden>'
         elif r["video"].startswith("youtube:"): img = f'<img src="https://i.ytimg.com/vi/{r["video"][8:]}/hqdefault.jpg" alt="" loading="lazy">'
-        return f'''      <button class="fp-cell" type="button" data-i="{i}" data-src="{r["video"]}" data-title="{E(r["title"])}" data-phases="{phases_attr(r)}" data-role="{E(reel_info(r)[0])}" data-format="{E(reel_info(r)[1])}" data-phase="{E(reel_info(r)[2])}"{crop_attr(r["video"])}>{img}<span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])}</i></span><span class="play"></span></button>'''
-    return f'''      <div class="fp-cell fp-soon" data-phases="{phases_attr(r)}"><span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])} · coming soon</i></span></div>'''
+        return f'''      <button class="fp-cell" type="button" data-i="{i}" data-src="{r["video"]}" data-title="{E(r["title"])}" data-phases="{phases_attr(r)}" data-fms="{formats_attr(r)}" data-ros="{roles_attr(r)}" data-role="{E(reel_info(r)[0])}" data-format="{E(reel_info(r)[1])}" data-phase="{E(reel_info(r)[2])}"{crop_attr(r["video"])}>{img}<span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])}</i></span><span class="play"></span></button>'''
+    return f'''      <div class="fp-cell fp-soon" data-phases="{phases_attr(r)}" data-fms="{formats_attr(r)}" data-ros="{roles_attr(r)}"><span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])} · coming soon</i></span></div>'''
 
 
 # Simple line icons for the contact page (original drawings, not the brands' own logos).
@@ -700,6 +724,14 @@ REEL_2020 = "vimeo:389670596"
 # Every video the site knows, keyed by its spec, with its usual title and caption. The tags then decide
 # which pages each one appears on.
 CATALOGUE = {}
+GROUP_ROLE = {"VFX supervisor": ["VFX Supervisor"], "Nuke compositor": ["Nuke Compositor"], "PostVis": ["Nuke Compositor"]}
+VIDEO_ROLES = {}  # video -> role page from the project group, used when Mark hasn't tagged a video's Who
+VIDEO_FMTS = {}   # video -> formats from the project data, used when Mark hasn't tagged a video's What
+for _p in PROJECTS:
+    for _q in expand(_p):
+        if _q.get("video"):
+            VIDEO_FMTS.setdefault(_q["video"], [f for f in FORMATS if in_format(_p, f)])
+            VIDEO_ROLES.setdefault(_q["video"], GROUP_ROLE.get(_p["group"], []))
 for _p in PROJECTS:
     for _q in expand(_p):
         if _q.get("video"):
@@ -715,10 +747,19 @@ NUKE_REELS = [
     dict(title="Showreel 2020", kind="Showreel", video=REEL_2020, phases=["Post-production"]),
     dict(title="Sizzle reel", kind="17 years in 02:30", video="youtube:SDAXjN_sOlE", phases=["Post-production"]),
     # From Mark, 12 Oct. TITLE TO CONFIRM (1014143091, once 'Compositing reel 2', is Moon Knight: The Realm).
-] + [dict(title=q["title"], kind=" · ".join(x for x in (q["role"], q["co"]) if x), video=q.get("video"), phases=q["phases"])
+] + [dict(title=q["title"], kind=" · ".join(x for x in (q["role"], q["co"]) if x), video=q.get("video"), phases=q["phases"], fmts=[f for f in FORMATS if in_format(q, f)], roles=GROUP_ROLE.get(q["group"], []))
      for p in PROJECTS if p["group"] in ("Nuke compositor", "PostVis") for q in expand(p)]
 
 PHASES = WPHASES
+FMT_SHORT = {"Feature film": "Film", "Episodic": "Episodic", "Visualisation": "Vis", "Shorts": "Shorts", "Feature animation": "Anim"}
+def format_strip(reels):
+    have = {fmt_slug(f) for r in reels if r.get("video") for f in reel_formats(r)}
+    return filter_strip("format", "fm", [(f, FMT_SHORT[f]) for f in FORMATS], have)
+ROLE_OPTS = [("VFX Supervisor", "Supervisor"), ("Nuke Compositor", "Compositor")]
+def role_strip(reels):
+    have = {role_slug(x) for r in reels if r.get("video") for x in reel_roles(r)}
+    return filter_strip("role", "ro", ROLE_OPTS, have)
+
 def phase_strip(reels):
     """The production phases as a filter: All, then Development → Distribution. Phases with no work on
     this page are shown but can't be picked."""
@@ -760,6 +801,7 @@ def tagged_reels(reels, page):
         out.append(r)
     return out + [r for r in reels if not r.get("video")]
 
+ROLE_PAGES = ("VFX Supervisor", "Nuke Compositor")
 def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wide, idle_empty, extra_links, page_title, desc, tag_page=None, phases=True, banner=None):
     reels = tagged_reels(reels, tag_page)
     cells = "\n".join(reel_cell(i, r) for i, r in enumerate(reels))
@@ -805,7 +847,7 @@ def player_page(path, key, sub, title_html, rail_n, rail_label, lede, reels, wid
     <div class="fp-slot" id="fp-slot"></div>{idle}
     <div class="herotitle herotop heroui">
       <span class="lab"><b>{rail_n}</b> · {rail_label}</span>
-      <h1 class="herohead">{title_html}</h1>{phase_strip(reels) if has_any and phases else ""}
+      <h1 class="herohead">{title_html}</h1>{"" if not (has_any and phases) else (('<div class="filterrows">' + (format_strip(reels) if tag_page in ROLE_PAGES else role_strip(reels)) + phase_strip(reels) + '</div>') if tag_page else phase_strip(reels))}
     </div>
     <div class="reelbar heroui">
       <div class="pbwrap">{pbanner}
@@ -882,7 +924,7 @@ write("fleapit/index.html", '''<!doctype html>
 
 # ---------------------------------------------------------------- vfx supervisor (player + grid; showreel first)
 SUP_REELS = [dict(title="Gangs of London S4 · Official teaser", kind="On-set VFX supervisor · The Sex Pixels · 2026", video=next((r["video"] for r in REELS if r["role"] == "VFX supervisor"), None), phases=["Pre-production", "Production", "Post-production"])] + \
-    [dict(title=q["title"], kind=" · ".join(x for x in (q["role"], q["co"]) if x), video=q.get("video"), phases=q["phases"])
+    [dict(title=q["title"], kind=" · ".join(x for x in (q["role"], q["co"]) if x), video=q.get("video"), phases=q["phases"], fmts=[f for f in FORMATS if in_format(q, f)], roles=GROUP_ROLE.get(q["group"], []))
      for p in PROJECTS if p["group"] == "VFX supervisor" for q in expand(p)]
 player_page("vfxsupervisor/index.html", "vfxsup", "VFX Supervisor", "VFX Supervisor", "SUP", "Showreels",
             "On-set and in-facility supervision across feature film, episodic and commercials. The showreel plays first; pick a project from the grid to play its reel.",
@@ -908,7 +950,7 @@ FORMAT_LEDES = {
 for i, f in enumerate(FORMATS, 1):
     if f not in PLAYER_FORMATS: continue
     items = [q for p in PROJECTS if in_format(p, f) for q in expand(p)]
-    reels = [dict(title=q["title"], kind=" · ".join(x for x in (q["role"], q["co"], q["yr"]) if x), video=q.get("video"), phases=q["phases"])
+    reels = [dict(title=q["title"], kind=" · ".join(x for x in (q["role"], q["co"], q["yr"]) if x), video=q.get("video"), phases=q["phases"], fmts=[f for f in FORMATS if in_format(q, f)], roles=GROUP_ROLE.get(q["group"], []))
              for q in items]
     reels = [r for r in reels if r["video"]] + [r for r in reels if not r["video"]]
     title = fmt_title(f)
