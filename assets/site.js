@@ -278,3 +278,29 @@
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit); else window.addEventListener('load', fit);
   fit();
 })();
+
+// Phones turned sideways: iPhone Safari and Chrome can keep the tap areas of the player controls where they
+// were before turning (the controls look right but taps land where they used to be). After each turn, take
+// the overlays (title, filters, banner and controls) out of the page for an instant and put them back, so the
+// browser works out where they are again. The video itself isn't touched, so it keeps playing.
+(function(){
+  var ui = [].slice.call(document.querySelectorAll('.heroui'));
+  if (!ui.length) return;
+  var land = null;
+  function refresh(){
+    ui.forEach(function(e){ e.style.display = 'none'; });
+    void document.body.offsetHeight;
+    ui.forEach(function(e){ e.style.display = ''; });
+    window.scrollTo(window.scrollX, window.scrollY);
+  }
+  function check(){
+    var now = window.innerWidth > window.innerHeight;
+    if (land === null) { land = now; return; }
+    if (now === land) return;
+    land = now;
+    [60, 350, 900].forEach(function(t){ setTimeout(refresh, t); });   // the browser settles its bars over a few frames
+  }
+  check();
+  window.addEventListener('orientationchange', function(){ setTimeout(check, 0); setTimeout(check, 300); });
+  window.addEventListener('resize', check);
+})();
