@@ -1006,3 +1006,12 @@ iframe{color-scheme:normal}
   .reelbar .fp-ctrls #fp-full{grid-column:1;grid-row:1;justify-self:start}
   .reelbar .fp-ctrls #fp-sound{grid-column:7;grid-row:1;justify-self:end}
 }
+/* Phones sideways: Role, Format and Phase all show again, in the short words (Supervisor, Film, Prod…) used by
+   the upright phone and the filter buttons, so each line stays compact */
+@media (orientation:landscape) and (max-height:500px){
+  .pb-meta > div:not(:first-child):not([hidden]){display:contents}
+  .pb-meta{gap:1px 10px;margin:3px 0 0}
+  .pb-meta dd{max-width:none}
+  .pb-meta dd .lg{display:none}
+  .pb-meta dd .sm{display:inline}
+}
