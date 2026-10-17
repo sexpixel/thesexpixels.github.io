@@ -951,3 +951,13 @@ iframe{color-scheme:normal}
   .filterrows .phases{letter-spacing:1px}
   .filterrows .phases button{padding:6px 8px}
 }
+/* Phones sideways: the phase bar sits against the right margin, lined up with the Menu button */
+@media (orientation:landscape) and (max-height:500px){
+  .filterrows{width:100%}
+  .filterrows .phasewrap:last-child{margin-left:auto}
+}
+/* Phones sideways: the phase bar lines up with the right margin (under MENU), the format bar stays on the left */
+@media (orientation:landscape) and (max-height:500px){
+  .filterrows{width:100%;justify-content:space-between}
+  .filterrows .phasewrap + .phasewrap{margin-left:auto}
+}
