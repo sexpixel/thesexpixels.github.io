@@ -980,3 +980,22 @@ iframe{color-scheme:normal}
 @media (orientation:landscape) and (max-height:500px){
   .fp-swipehint{bottom:72px}
 }
+/* With the transport centred, the reel banner sits on its own line just above the controls, so long titles
+   and Role / Format / Phase never run under the buttons */
+@media not all and (orientation:portrait) and (max-width:760px){
+  .reelbar .pbwrap{margin-bottom:calc(var(--ctrlh,64px) + 14px)}
+}
+@media (orientation:landscape) and (max-height:500px){
+  .reelbar{--ctrlh:48px}
+  .reelbar .pbwrap{margin-bottom:58px}
+}
+/* The hints keep clear of the banner too: "Scroll for reels" sits under the controls at the foot of the screen,
+   and on phones sideways "Swipe for more reels" shows in the middle of the picture before it fades */
+@media not all and (orientation:portrait) and (max-width:760px){
+  .reelbar{bottom:max(clamp(20px,4vh,40px),34px)}
+  .scrollcue{bottom:10px}
+}
+@media (orientation:landscape) and (max-height:500px){
+  .fp-swipehint{bottom:auto;top:50%;transform:translate(-50%,-50%)}
+  .reelbar{bottom:12px}
+}
