@@ -1021,3 +1021,26 @@ iframe{color-scheme:normal}
   .filterrows{position:relative;margin-top:10px}
   .filterrows .phlab-all{position:absolute;right:0;bottom:100%;margin-bottom:14px;flex-basis:auto;white-space:nowrap}
 }
+/* Desktop: same arrangement as phones sideways. One "Filter by …" label on the page name's line at the right
+   margin; the two bars side by side under the page name, format/role on the left, phase against the right margin */
+@media (min-width:761px) and (min-height:501px){
+  .filterrows{position:relative;flex-direction:row;flex-wrap:nowrap;align-items:flex-end;justify-content:space-between;width:100%;gap:16px;margin-top:14px}
+  .filterrows .phlab-all{display:block;position:absolute;right:0;bottom:100%;margin-bottom:18px;white-space:nowrap}
+  .filterrows .phasewrap .phlab{display:none}
+  .filterrows .phasewrap + .phasewrap{margin-left:auto}
+}
+/* narrower desktops: the bars use the short words so both fit on one line */
+@media (min-width:761px) and (min-height:501px) and (max-width:1499px){
+  .filterrows .phases .lg{display:none}
+  .filterrows .phases .sm{display:inline}
+}
+/* the page name is a touch smaller on filter pages, so the label always has room on its line */
+@media (min-width:761px) and (min-height:501px){
+  .herotop:has(.filterrows) .herohead{font-size:clamp(44px,7.4vw,124px)}
+}
+/* Desktop too: Full screen against the left margin, the transport centred, Sound against the right margin */
+@media not all and (orientation:portrait) and (max-width:760px){
+  .reelbar .fp-ctrls .fp-side{display:contents}
+  .reelbar .fp-ctrls #fp-full{grid-column:1;grid-row:1;justify-self:start}
+  .reelbar .fp-ctrls #fp-sound{grid-column:7;grid-row:1;justify-self:end}
+}
