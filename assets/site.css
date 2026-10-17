@@ -961,3 +961,22 @@ iframe{color-scheme:normal}
   .filterrows{width:100%;justify-content:space-between}
   .filterrows .phasewrap + .phasewrap{margin-left:auto}
 }
+/* Player controls: the five transport buttons sit in the centre of the screen; Sound and Full screen keep to the
+   right margin. Phones held upright keep their own two-line layout (Sound and Full screen loose in the row). */
+.fp-side{display:contents}
+@media not all and (orientation:portrait) and (max-width:760px){
+  .reelbar .fp-ctrls{position:absolute;left:0;right:0;bottom:0;display:grid;grid-template-columns:1fr repeat(5,auto) 1fr;align-items:center;column-gap:8px;pointer-events:none}
+  .reelbar .fp-ctrls > *{pointer-events:auto}
+  .reelbar .fp-ctrls #fp-prev{grid-column:2}
+  .fp-side{display:flex;gap:8px;grid-column:7;justify-self:end}
+  body.tv .reelbar .fp-ctrls > *{pointer-events:none}
+}
+@media (hover:none){ body.tv .reelbar .fp-ctrls > *{pointer-events:auto} }
+/* With the transport in the centre, the "Scroll for reels" and "Swipe for more reels" hints sit just above it, not behind it */
+@media not all and (orientation:portrait) and (max-width:760px){
+  .scrollcue{bottom:calc(clamp(20px,4vh,40px) + 82px)}
+  .scrollcue::after{display:none}
+}
+@media (orientation:landscape) and (max-height:500px){
+  .fp-swipehint{bottom:72px}
+}

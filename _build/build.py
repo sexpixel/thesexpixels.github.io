@@ -600,8 +600,8 @@ CTRLS = '''
           <button type="button" class="fp-btn ic" id="fp-play" aria-label="Pause" title="Play / pause"><svg class="pz" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg><svg class="pl" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>
           <button type="button" class="fp-btn ic" id="fp-fwd" aria-label="Forward 10 seconds" title="Forward 10 seconds"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5v14l9-7zM12 5v14l9-7z"/></svg></button>
           <button type="button" class="fp-btn ic" id="fp-next" aria-label="Next reel" title="Next reel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
-          <button type="button" class="fp-btn" id="fp-sound" aria-pressed="false">Sound on</button>
-          <button type="button" class="fp-btn" id="fp-full">Full screen</button>
+          <span class="fp-side"><button type="button" class="fp-btn" id="fp-sound" aria-pressed="false">Sound on</button>
+          <button type="button" class="fp-btn" id="fp-full">Full screen</button></span>
         </div>'''
 
 DOC_CHAPTERS = [
