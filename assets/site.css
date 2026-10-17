@@ -999,3 +999,10 @@ iframe{color-scheme:normal}
   .fp-swipehint{bottom:auto;top:50%;transform:translate(-50%,-50%)}
   .reelbar{bottom:12px}
 }
+/* Phones sideways: Full screen on the left of the transport (against the left margin), Sound on the right,
+   as on phones held upright */
+@media (orientation:landscape) and (max-height:500px){
+  .reelbar .fp-ctrls .fp-side{display:contents}
+  .reelbar .fp-ctrls #fp-full{grid-column:1;grid-row:1;justify-self:start}
+  .reelbar .fp-ctrls #fp-sound{grid-column:7;grid-row:1;justify-self:end}
+}
