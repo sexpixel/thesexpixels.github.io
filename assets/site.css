@@ -1015,3 +1015,9 @@ iframe{color-scheme:normal}
   .pb-meta dd .lg{display:none}
   .pb-meta dd .sm{display:inline}
 }
+/* Phones sideways: "Filter by format & phase" sits on the page name's line, against the right margin above the
+   phase bar, and the filter bars move up directly under the page name */
+@media (orientation:landscape) and (max-height:500px){
+  .filterrows{position:relative;margin-top:10px}
+  .filterrows .phlab-all{position:absolute;right:0;bottom:100%;margin-bottom:14px;flex-basis:auto;white-space:nowrap}
+}
