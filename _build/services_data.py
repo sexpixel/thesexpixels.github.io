@@ -2,6 +2,9 @@
 # LIVE = False keeps the page a draft: the build writes it to _mock/services/ (never published, not in the menu).
 # Set LIVE = True when Mark says "open Services": the page is written to /services/ and added to the menu.
 LIVE = False
+# While not LIVE, the page is also published at this unlisted address so Mark can see it on the real site.
+# Not in the menu, noindex, but anyone given the address can open it. Set to None to take it down.
+PREVIEW_PATH = "services-g1kaq0"
 
 LEDE = "From the first draft of the script to the final deliverable. Six phases of production, supervised by one person who has worked in each of them."
 

@@ -1205,4 +1205,11 @@ services = head("Services · Mark Pinheiro", "VFX supervision and compositing se
 </body>
 </html>
 '''
-write("services/index.html" if SV.LIVE else "_mock/services/index.html", services)
+if SV.LIVE:
+    write("services/index.html", services)
+else:
+    write("_mock/services/index.html", services)
+    if SV.PREVIEW_PATH:   # unlisted preview on the real site: Services shows in this page's own menu only
+        write(f"{SV.PREVIEW_PATH}/index.html", services.replace(
+            '<li><a href="/skills/">Skills</a></li>',
+            f'<li><a href="/{SV.PREVIEW_PATH}/" aria-current="page">Services</a></li>\n      <li><a href="/skills/">Skills</a></li>', 1))
