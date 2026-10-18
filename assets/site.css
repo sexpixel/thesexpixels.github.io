@@ -1082,3 +1082,25 @@ main section.sv-phase{padding:0;max-width:none;margin:0}
 main section.page.servicespage{padding-top:60px}
 .sv-head{margin:0 0 22px}
 @media (max-width:760px){ main section.page.servicespage{padding-top:52px} }
+/* Services, wiki layout at every size: the contents column is the navigator on the left, the chosen phase on
+   the right. The contents stay in view while the phase scrolls, in their own column, so nothing passes over them. */
+.sv-layout{display:grid;grid-template-columns:minmax(200px,280px) minmax(0,1fr);gap:40px 56px;align-items:start}
+.sv-toc{position:sticky;top:96px;max-width:none;align-self:start;max-height:calc(100vh - 110px);max-height:calc(100dvh - 110px);overflow:auto}
+.sv-main{min-width:0}
+@media (max-width:760px){
+  .sv-layout{grid-template-columns:116px minmax(0,1fr);gap:18px}
+  .sv-toc{position:sticky;top:84px;max-height:calc(100dvh - 96px)}
+  .sv-toc ol{padding-top:6px}
+  .sv-toc a{padding:8px 6px;gap:6px;font-size:13px;line-height:1.25;min-height:44px;align-items:center}
+  .sv-toc .num{min-width:16px;font-size:10px}
+  .sv-start{font-size:11px!important;padding:8px 6px;text-align:center;letter-spacing:0}
+  .sv-cards{grid-template-columns:1fr;gap:10px}
+  .sv-card{padding:16px;min-height:0}
+  .sv-card b{font-size:17px}
+  .sv-phase h2{font-size:30px}
+  .sv-intro{font-size:16px}
+  .sv-chips li{font-size:13px;padding:6px 11px}
+  .sv-across{padding:18px}
+  .sv-pager{flex-direction:column;gap:0}
+}
+@media (orientation:landscape) and (max-height:500px){ .sv-toc{top:16px;max-height:calc(100dvh - 32px)} }
