@@ -1153,11 +1153,12 @@ services = head("Services · Mark Pinheiro", "VFX supervision and compositing se
                 '' if SV.LIVE else '<meta name="robots" content="noindex">\n') + f'''
 <body>
 
-{header("services")}
+{header("services", None)}
 
 <main>
   <section class="page servicespage">
-{page_intro("03", "Services", "Services", E(SV.LEDE))}
+    <h1 class="herohead sv-head">Services</h1>
+    <p class="pagelede">{E(SV.LEDE)}</p>
     <div class="sv-layout">
       <aside class="sv-toc" aria-label="Services contents">
         <p class="sv-lab">Contents</p>

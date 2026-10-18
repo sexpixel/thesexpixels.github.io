@@ -1078,3 +1078,7 @@ iframe{color-scheme:normal}
 .sv-pager a:hover{color:var(--fg)}
 @media (max-width:760px){ .sv-toc{position:static;max-width:none} }
 main section.sv-phase{padding:0;max-width:none;margin:0}
+/* Services: the page name sits directly under MARK PINHEIRO, as on the player pages */
+main section.page.servicespage{padding-top:60px}
+.sv-head{margin:0 0 22px}
+@media (max-width:760px){ main section.page.servicespage{padding-top:52px} }
