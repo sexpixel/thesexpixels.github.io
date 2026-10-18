@@ -14,6 +14,7 @@ from work_data import PROJECTS, ROLE_GROUPS, FORMATS, FORMAT_SLUGS, expand, in_f
 from news_data import NEWS
 from crops import CROPS, crop_of, crop_str
 from phase_tags import TAGS
+import services_data as SV
 try:
     from page_order import ORDER as PAGE_ORDER
 except ImportError:
@@ -106,7 +107,7 @@ def header(current="", sub="VFX Supervisor"):
           {sub_items}
         </ul>
       </li>
-      {a("/skills/", "Skills", "skills")}
+      {(a("/services/", "Services", "services") + chr(10) + "      ") if SV.LIVE else ""}{a("/skills/", "Skills", "skills")}
       {a("/news/", "News", "news")}
       {a("/about/", "Bio", "about")}
       {a("/contact/", "Contact", "contact")}
@@ -1118,3 +1119,89 @@ write("tuner/index.html", tuner)
 
 
 print("built: index, work, skills, thefleapit, nukecompositor, vfxsupervisor, news, about, contact, tuner")
+
+# ---------------------------------------------------------------- services (draft until services_data.LIVE)
+def _svc_item(t):
+    if t.endswith(" *"):
+        return f'<li>{E(t[:-2])}<span class="sv-tag">In development</span></li>'
+    return f'<li>{E(t)}</li>'
+_n = len(SV.PHASES)
+_toc = '\n'.join(f'        <li><a href="#{p["slug"]}" data-sv="{p["slug"]}"><span class="num">{i+1:02d}</span>{E(p["name"])}</a></li>'
+                 for i, p in enumerate(SV.PHASES))
+_cards = '\n'.join(f'        <a class="sv-card" href="#{p["slug"]}" data-sv="{p["slug"]}"><span class="num">{i+1:02d}</span><b>{E(p["name"])}</b><span>{E(p["line"])}</span></a>'
+                   for i, p in enumerate(SV.PHASES))
+def _svc_section(i, p):
+    notes = ''.join(f'<p class="sv-note"><span>{E(k)}</span>{E(v)}</p>' for k, v in p["notes"])
+    sk = ('<a class="sv-skills" href="/skills/">Compositing in detail <span aria-hidden="true">→</span> Skills</a>'
+          if p.get("skills_link") else '')
+    prev = SV.PHASES[i-1] if i > 0 else None
+    nxt = SV.PHASES[i+1] if i < _n - 1 else None
+    pager = (f'<a href="#{prev["slug"]}" data-sv="{prev["slug"]}">← {E(prev["name"])}</a>' if prev else '<a href="#overview" data-sv="overview">← Overview</a>') + \
+            (f'<a href="#{nxt["slug"]}" data-sv="{nxt["slug"]}">{E(nxt["name"])} →</a>' if nxt else '<a href="#overview" data-sv="overview">Overview →</a>')
+    chips = ''.join(_svc_item(t) for t in p["items"])
+    return (f'      <section class="sv-phase" id="{p["slug"]}" aria-labelledby="{p["slug"]}-h">\n'
+            f'        <p class="sv-of">Phase {i+1:02d} of {_n:02d}</p>\n'
+            f'        <h2 id="{p["slug"]}-h">{E(p["name"])}</h2>\n'
+            f'        <p class="sv-intro">{E(p["intro"])}</p>\n'
+            f'        <ul class="sv-chips">{chips}</ul>\n'
+            f'        {sk}{notes}\n'
+            f'        <nav class="sv-pager" aria-label="Phases">{pager}</nav>\n'
+            f'      </section>')
+_across = ''.join(f'<p><b>{E(k)}</b> — {E(v)}</p>' for k, v in SV.ACROSS)
+_sections = "\n".join(_svc_section(i, p) for i, p in enumerate(SV.PHASES))
+services = head("Services · Mark Pinheiro", "VFX supervision and compositing services across six phases of production, from script to delivery.",
+                '' if SV.LIVE else '<meta name="robots" content="noindex">\n') + f'''
+<body>
+
+{header("services")}
+
+<main>
+  <section class="page servicespage">
+{page_intro("03", "Services", "Services", E(SV.LEDE))}
+    <div class="sv-layout">
+      <aside class="sv-toc" aria-label="Services contents">
+        <p class="sv-lab">Contents</p>
+        <ol>
+        <li><a href="#overview" data-sv="overview"><span class="num">00</span>Overview</a></li>
+{_toc}
+        </ol>
+        <a class="sv-start" href="mailto:mark@thesexpixels.com">Start a project →</a>
+      </aside>
+      <div class="sv-main">
+      <section class="sv-phase" id="overview" aria-label="Overview">
+        <div class="sv-cards">
+{_cards}
+        </div>
+        <div class="sv-across"><p class="sv-lab">Across the whole show</p>{_across}</div>
+      </section>
+{_sections}
+      </div>
+    </div>
+  </section>
+</main>
+
+{FOOTER}
+<script>
+// Contents menu: one phase at a time (Overview first); each phase has its own address (#production, …).
+(function(){{
+  var secs = document.querySelectorAll('.sv-phase'), links = document.querySelectorAll('.sv-toc a[data-sv]');
+  function show(id, scroll){{
+    var el = document.getElementById(id);
+    if (!el || !el.classList.contains('sv-phase')) id = 'overview';
+    secs.forEach(function(s){{ s.hidden = s.id !== id; }});
+    links.forEach(function(a){{ a.setAttribute('aria-current', a.getAttribute('data-sv') === id ? 'true' : 'false'); }});
+    if (scroll) document.querySelector('.sv-layout').scrollIntoView({{behavior:'smooth', block:'start'}});
+  }}
+  document.addEventListener('click', function(e){{
+    var a = e.target.closest('a[data-sv]'); if (!a) return;
+    e.preventDefault(); var id = a.getAttribute('data-sv');
+    history.replaceState(null, '', id === 'overview' ? location.pathname : '#' + id); show(id, true);
+  }});
+  window.addEventListener('hashchange', function(){{ show(location.hash.slice(1)); }});
+  show(location.hash.slice(1));
+}})();
+</script>
+</body>
+</html>
+'''
+write("services/index.html" if SV.LIVE else "_mock/services/index.html", services)
