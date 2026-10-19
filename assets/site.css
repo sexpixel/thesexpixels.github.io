@@ -1139,3 +1139,6 @@ a.sk-card:hover{border-color:var(--accent)}
 .sk-card.locked .sk-stage{color:var(--dim)}
 .sk-card.locked li::before{color:var(--dim)}
 @media (max-width:420px){ .sk-card ul{columns:1} }
+/* locked cards: the whole box greys out, not just the text */
+.sk-card.locked{opacity:.5;background:transparent;border-style:dashed}
+.sk-card.locked.target{opacity:.8}

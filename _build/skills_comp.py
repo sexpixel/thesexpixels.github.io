@@ -21,7 +21,7 @@ STAGES = [
              credits="The Ballad of a Small Player", demo=None),
         dict(slug="ai-assisted-comp", title="AI-assisted comp",
              points=["Normal and depth map extraction", "Clean-up and object removal", "Face replacement",
-                     "Geometry extraction from plates", "Camera tracking via computer vision", "ComfyUI and LTX Studio workflows"],
+                     "Geometry extraction from plates", "Camera tracking via computer vision", "CopyCat training in Nuke", "ComfyUI and LTX Studio workflows"],
              credits="ComfyUI · LTX Studio · NukeGeoTools", demo=None),
     ]),
     ("02", "Solve the plate", [
