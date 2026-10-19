@@ -267,7 +267,7 @@ home = head("Mark Pinheiro · Filmmaker / VFX / AI",
         <div class="thumb" aria-hidden="true">{TREE}</div>
         <div class="meta">
           <span class="kicker">Skills · R&amp;D</span>
-          <h3>21 disciplines, 7 stages</h3>
+          <h3>Compositing: 15 disciplines, 5 stages</h3>
           <span class="go">Skills →</span>
         </div>
       </a>
@@ -408,59 +408,56 @@ for i, f in enumerate(FORMATS, 1):
 '''
     write(f"work/{FORMAT_SLUGS[f]}/index.html", pg)
 
-# ---------------------------------------------------------------- skills
-filters = "\n".join(f'      <button type="button" data-f="{n}" aria-pressed="false">{n} · {E(name)}</button>' for n, name, _ in stages)
-tiles = []
-for n, name, cards in stages:
-    for i, (title, items, credit) in enumerate(cards, 1):
-        no = f"{n}.{i}"
-        line = E(" · ".join(items))
-        if no == "00.1":
-            tiles.append(f'''      <a class="card" href="/pipeline/" data-stage="{n}">
-        <div class="thumb" aria-hidden="true">{TREE}</div>
-        <div class="meta">
-          <span class="kicker">{no} · {E(name)}</span>
-          <span class="client">{E(credit)}</span>
-          <h3>{E(title)}</h3>
-          <p>{line}</p>
-          <span class="go">Open the demo: Scale dictates structure →</span>
-        </div>
-      </a>''')
+# ---------------------------------------------------------------- skills (= CV page 2: compositing, 15 disciplines, 5 stages)
+import skills_comp as SK
+def _demo_href(d):
+    if d.startswith("vimeo:"):
+        p = d.split(":"); return f"https://vimeo.com/{p[1]}" + (f"/{p[2]}" if len(p) > 2 else "")
+    if d.startswith("youtube:"): return f"https://youtu.be/{d[8:]}"
+    return d
+_sk_n = 0
+_sk_tiles = []
+for sn, sname, cards in SK.STAGES:
+    for c in cards:
+        _sk_n += 1
+        pts = "".join(f"<li>{E(p)}</li>" for p in c["points"])
+        live = bool(c.get("demo"))
+        body = (f'<div class="sk-img" aria-hidden="true"><img src="/assets/skills/{_sk_n:02d}.jpg" alt="" loading="lazy" width="661" height="79"><span>{_sk_n:02d}</span></div>'
+                f'<div class="sk-body"><span class="sk-stage">{sn} · {E(sname)}</span><h3>{E(c["title"])}</h3>'
+                f'<ul>{pts}</ul><p class="sk-credits">{E(c["credits"])}</p>'
+                + ('<span class="sk-go">Watch the demo →</span>' if live else '<span class="sk-soon">In development</span>') + '</div>')
+        if live:
+            _sk_tiles.append(f'      <a class="sk-card" id="{c["slug"]}" data-stage="{sn}" href="{E(_demo_href(c["demo"]))}" target="_blank" rel="noopener">{body}</a>')
         else:
-            tiles.append(f'''      <div class="card" data-stage="{n}">
-        {slate(f"{n} · {name}", no)}
-        <div class="meta">
-          <span class="kicker">{no} · {E(name)}</span>
-          <span class="client">{E(credit)}</span>
-          <h3>{E(title)}</h3>
-          <p>{line}</p>
-          <span class="go soon">Demo in production</span>
-        </div>
-      </div>''')
+            _sk_tiles.append(f'      <article class="sk-card locked" id="{c["slug"]}" data-stage="{sn}" aria-label="{E(c["title"])}, in development">{body}</article>')
+_sk_live = sum(1 for _, _, cs in SK.STAGES for c in cs if c.get("demo"))
+_sk_filters = "\n".join(f'      <button type="button" data-f="{n}" aria-pressed="false">{n} · {E(name)}</button>' for n, name, _ in SK.STAGES)
 skills = head("Skills · Mark Pinheiro",
-              "Mark Pinheiro's skills and R&D: 21 disciplines across 7 stages of production, from planning the shoot to final delivery.") + f'''
+              f"Mark Pinheiro's compositing skills: {_sk_n} disciplines in {len(SK.STAGES)} stages, each with a demo as it is made.") + f'''
 <body>
 
-{header("skills")}
+{header("skills", None)}
 
 <main>
-  <section class="page">
-{page_intro("02", "Skills · R&amp;D", "Skills", "21 disciplines across 7 stages of production. Each gets a working demo as it is made, and new areas are added as I explore them.")}
+  <section class="page skillspage">
+    <h1 class="herohead sv-head">Skills</h1>
+    <p class="pagelede">{E(SK.TITLE_LEDE)}</p>
+    <p class="sk-count"><b>Compositing</b> · {_sk_n} disciplines · {len(SK.STAGES)} stages · {_sk_live} of {_sk_n} demos ready</p>
     <div class="filters" role="group" aria-label="Filter by stage">
       <button type="button" data-f="all" aria-pressed="true">All</button>
-{filters}
+{_sk_filters}
     </div>
-    <div class="cards skills3" id="tiles">
-{chr(10).join(tiles)}
+    <div class="sk-grid" id="tiles">
+{chr(10).join(_sk_tiles)}
     </div>
   </section>
 </main>
 
 {FOOTER}
 <script>
-// Stage filters, like the category filters on Framestore's work page.
+// Stage filters. A link to one card (/skills/#keying-extraction) shows every stage and highlights that card.
 (function(){{
-  var btns = document.querySelectorAll('.filters button'), tiles = document.querySelectorAll('#tiles .card');
+  var btns = document.querySelectorAll('.filters button'), tiles = document.querySelectorAll('#tiles .sk-card');
   btns.forEach(function(b){{
     b.addEventListener('click', function(){{
       var f = b.getAttribute('data-f');
@@ -468,6 +465,10 @@ skills = head("Skills · Mark Pinheiro",
       tiles.forEach(function(t){{ t.hidden = !(f === 'all' || t.getAttribute('data-stage') === f); }});
     }});
   }});
+  function mark(){{
+    tiles.forEach(function(t){{ t.classList.toggle('target', '#' + t.id === location.hash); }});
+  }}
+  window.addEventListener('hashchange', mark); mark();
 }})();
 </script>
 </body>

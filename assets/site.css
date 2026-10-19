@@ -1107,3 +1107,35 @@ main section.page.servicespage{padding-top:60px}
 /* Services page name: the same size as the role and format pages (VFX Supervisor, Nuke Compositor, Shorts…) */
 @media (min-width:761px) and (min-height:501px){ .sv-head{font-size:clamp(44px,7.4vw,124px)} }
 @media (orientation:landscape) and (max-height:500px){ .sv-head{font-size:clamp(36px,12vh,60px)} }
+
+/* Skills = CV page 2: the page name under MARK PINHEIRO; cards in three columns, locked until their demo is ready */
+main section.page.skillspage{padding-top:60px}
+@media (max-width:760px){ main section.page.skillspage{padding-top:52px} }
+.sk-count{margin:0 0 18px;font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
+.sk-count b{color:var(--accent);font-weight:600}
+.skillspage .filters{margin-bottom:24px}
+.sk-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:1000px){ .sk-grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:620px){ .sk-grid{grid-template-columns:1fr} }
+.sk-card{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--edge);border-radius:10px;overflow:hidden;color:var(--fg);text-decoration:none;scroll-margin-top:100px}
+a.sk-card:hover{border-color:var(--accent)}
+.sk-card.target{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.sk-img{position:relative;height:52px;overflow:hidden;border-bottom:1px solid var(--edge)}
+.sk-img img{width:100%;height:100%;object-fit:cover;display:block}
+.sk-img span{position:absolute;right:10px;bottom:6px;font-family:var(--mono);font-size:11px;color:var(--fg);text-shadow:0 1px 3px rgba(0,0,0,.8)}
+.sk-body{display:flex;flex-direction:column;gap:10px;padding:16px 18px 18px;flex:1}
+.sk-stage{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent)}
+.sk-card h3{margin:0;font-size:20px;font-weight:800;font-stretch:112%;line-height:1.1;text-wrap:balance}
+.sk-card ul{margin:0;padding:0;list-style:none;columns:2;column-gap:16px;font-size:13.5px;line-height:1.4;color:var(--soft)}
+.sk-card li{break-inside:avoid;padding-left:12px;text-indent:-12px;margin-bottom:4px}
+.sk-card li::before{content:"– ";color:var(--accent)}
+.sk-credits{margin:auto 0 0;font-family:var(--mono);font-size:11px;line-height:1.5;color:var(--dim)}
+.sk-go,.sk-soon{align-self:flex-start;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;border-radius:999px;padding:5px 10px}
+.sk-go{background:var(--accent);color:var(--ink)}
+.sk-soon{border:1px solid var(--edge);color:var(--dim)}
+/* locked: greyed until the demo exists */
+.sk-card.locked .sk-img img{filter:grayscale(1) brightness(.55)}
+.sk-card.locked h3,.sk-card.locked ul{color:var(--dim)}
+.sk-card.locked .sk-stage{color:var(--dim)}
+.sk-card.locked li::before{color:var(--dim)}
+@media (max-width:420px){ .sk-card ul{columns:1} }
