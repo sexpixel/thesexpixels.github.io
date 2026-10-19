@@ -39,9 +39,9 @@ STAGES = [
              credits="The Ballad of a Small Player", demo=None),
     ]),
     ("03", "Build the shot", [
-        dict(slug="environments-dmp", title="Environments & DMP",
-             points=["Set extensions", "Projection mapping (3D / 2.5D)", "Nuke 3D camera projection", "Matte painting integration",
-                     "Multi-plane environments", "Parallax builds", "Sky replacements"],
+        dict(slug="environments-dmp", title="Environments, DMP & USD",
+             points=["Set extensions", "Projection mapping (3D / 2.5D)", "Nuke 3D (USD) camera projection", "USD scene assembly in Nuke",
+                     "Matte painting integration", "Multi-plane environments", "Parallax builds", "Sky replacements"],
              credits="The Buccaneers · Great Expectations", demo=None),
         dict(slug="cg-aov-integration", title="CG & AOV integration",
              points=["Multi-pass assembly", "AOV rebuilds", "Creature and vehicle integration", "Lighting matched from on-set HDRI and ball refs",
