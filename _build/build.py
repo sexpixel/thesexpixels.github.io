@@ -440,7 +440,7 @@ skills = head("Skills · Mark Pinheiro",
 
 <main>
   <section class="page skillspage">
-    <h1 class="herohead sv-head">Skills</h1>
+    <div class="sk-titlerow"><h1 class="herohead sv-head">Skills</h1>{'<span class="sk-wip">In development</span>' if _sk_live < _sk_n else ''}</div>
     <p class="pagelede">{E(SK.TITLE_LEDE)}</p>
     <p class="sk-count"><b>Compositing</b> · {_sk_n} disciplines · {len(SK.STAGES)} stages · {_sk_live} of {_sk_n} demos ready</p>
     <div class="filters" role="group" aria-label="Filter by stage">

@@ -1142,3 +1142,8 @@ a.sk-card:hover{border-color:var(--accent)}
 /* locked cards: the whole box greys out, not just the text */
 .sk-card.locked{opacity:.5;background:transparent;border-style:dashed}
 .sk-card.locked.target{opacity:.8}
+/* Skills: the whole page is marked as a work in progress until every demo exists */
+.sk-titlerow{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 20px;margin-bottom:22px}
+.sk-titlerow .sv-head{margin:0}
+.sk-wip{margin-bottom:.6em;border:1px solid var(--accent);color:var(--accent-hi);border-radius:999px;padding:6px 14px;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;white-space:nowrap}
+@media (max-width:760px){ .sk-wip{font-size:9px;letter-spacing:2px;padding:4px 10px;margin-bottom:.35em} .sk-titlerow{gap:6px 12px} }
