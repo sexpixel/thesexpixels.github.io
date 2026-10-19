@@ -1161,3 +1161,20 @@ a.sk-card:hover{border-color:var(--accent)}
 .sk-section{grid-column:1/-1;margin:26px 0 4px;padding-top:18px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
 .sk-section b{color:var(--accent);font-weight:600}
 .sk-count b{margin-left:0}
+/* Skills on phones held upright: still three per row (one stage per row), as compact tiles */
+@media (max-width:620px){
+  .sk-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .sk-img{height:26px}
+  .sk-img span{font-size:9px;right:5px;bottom:3px}
+  .sk-body{padding:8px 7px 9px;gap:5px}
+  .sk-stage{display:none}
+  .sk-card h3{font-size:12.5px;line-height:1.15;letter-spacing:-.01em;hyphens:auto}
+  .sk-card ul,.sk-card ul{columns:1;font-size:10px;line-height:1.3}
+  .sk-card li{margin-bottom:3px;padding-left:7px;text-indent:-7px}
+  .sk-card li::before{content:"–"}
+  .sk-credits{font-size:8.5px;line-height:1.35}
+  .sk-go,.sk-soon{font-size:7.5px;letter-spacing:1px;padding:3px 6px}
+  .sk-card{border-radius:7px}
+  .sk-section{margin-top:18px}
+}
+@media (max-width:420px){ .sk-card ul{columns:1} }
