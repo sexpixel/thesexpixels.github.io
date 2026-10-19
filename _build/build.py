@@ -256,7 +256,7 @@ home = head("Mark Pinheiro · Filmmaker / VFX / AI",
     <div class="rail"><span class="n">02</span><span id="explore-h">Explore</span></div>
     <div class="cards">
       <a class="card" href="/work/">
-        {slate("Feature film · Episodic · Visualisation · Shorts", "Work")}
+        {slate("Feature film · Episodic · Shorts · Visualisation", "Work")}
         <div class="meta">
           <span class="kicker">Work</span>
           <h3>Project reels by format</h3>
@@ -376,7 +376,7 @@ write("work/index.html", work)
 
 # One page per format. Formats in PLAYER_FORMATS get the full-screen player layout (built further down,
 # after player_page); the rest keep this list layout.
-PLAYER_FORMATS = ["Feature film", "Episodic", "Visualisation", "Shorts", "Feature animation"]
+PLAYER_FORMATS = ["Feature film", "Episodic", "Shorts", "Visualisation", "Feature animation"]
 for i, f in enumerate(FORMATS, 1):
     if f in PLAYER_FORMATS: continue
     items = [q for p in PROJECTS if in_format(p, f) for q in expand(p)]

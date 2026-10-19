@@ -2,7 +2,7 @@
 # Each project: title, role label as credited, role group (filter), format (filter), company, year or "".
 # A project's reels go in clips=[("clip name", "vimeo id"), ...]; each clip becomes its own playable tile.
 ROLE_GROUPS = ["Nuke compositor", "VFX supervisor", "PostVis", "Director"]
-FORMATS = ["Feature film", "Episodic", "Visualisation", "Shorts", "Feature animation"]
+FORMATS = ["Feature film", "Episodic", "Shorts", "Visualisation", "Feature animation"]
 FORMAT_SLUGS = {"Feature film": "feature-film", "Episodic": "episodic", "Visualisation": "visualisation", "Shorts": "shorts", "Feature animation": "feature-animation"}
 PROJECTS = [
     dict(title="Gangs of London S4", role="On-set VFX supervisor", group="VFX supervisor", fmt="Episodic", co="The Sex Pixels", yr="2026", phases=["Pre-production", "Production"]),
