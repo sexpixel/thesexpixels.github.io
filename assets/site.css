@@ -1104,3 +1104,6 @@ main section.page.servicespage{padding-top:60px}
   .sv-pager{flex-direction:column;gap:0}
 }
 @media (orientation:landscape) and (max-height:500px){ .sv-toc{top:16px;max-height:calc(100dvh - 32px)} }
+/* Services page name: the same size as the role and format pages (VFX Supervisor, Nuke Compositor, Shorts…) */
+@media (min-width:761px) and (min-height:501px){ .sv-head{font-size:clamp(44px,7.4vw,124px)} }
+@media (orientation:landscape) and (max-height:500px){ .sv-head{font-size:clamp(36px,12vh,60px)} }
