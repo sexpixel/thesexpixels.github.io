@@ -1147,3 +1147,14 @@ a.sk-card:hover{border-color:var(--accent)}
 .sk-titlerow .sv-head{margin:0}
 .sk-wip{margin-bottom:.6em;border:1px solid var(--accent);color:var(--accent-hi);border-radius:999px;padding:6px 14px;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;white-space:nowrap}
 @media (max-width:760px){ .sk-wip{font-size:9px;letter-spacing:2px;padding:4px 10px;margin-bottom:.35em} .sk-titlerow{gap:6px 12px} }
+/* Skills: always 3 cards per row (one stage per row) wherever there's room; one column on phones held upright */
+.sk-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:1000px){
+  .sk-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .sk-card ul{columns:1;font-size:12.5px}
+  .sk-body{padding:12px 12px 14px;gap:8px}
+  .sk-card h3{font-size:16px}
+  .sk-img{height:40px}
+}
+@media (max-width:620px){ .sk-grid{grid-template-columns:1fr} .sk-card ul{columns:2} }
+@media (max-width:420px){ .sk-card ul{columns:1} }
