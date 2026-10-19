@@ -6,7 +6,7 @@
 # demo = "vimeo:ID" / "vimeo:ID:HASH" / "youtube:ID" / "/path/" -> the card unlocks and opens its demo.
 # Card images: assets/skills/NN.jpg (the strips from the CV).
 
-TITLE_LEDE = ("Compositing in 15 disciplines and 5 stages, the same as page 2 of my CV, then VFX supervision. "
+TITLE_LEDE = ("VFX supervision, then compositing in 15 disciplines and 5 stages, the same as page 2 of my CV. "
               "Each card opens a demo of that skill when it is ready; greyed cards are still in development.")
 
 STAGES = [

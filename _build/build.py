@@ -417,15 +417,24 @@ def _demo_href(d):
     return d
 _sk_n = 0
 _sk_tiles = []
-_sk_all = list(SK.STAGES) + [SK.SUPERVISION]
+_sk_all = [SK.SUPERVISION] + list(SK.STAGES)   # supervision (00) first, then the 15 compositing cards of CV page 2
+_sk_comp_n = 0
 for sn, sname, cards in _sk_all:
-    if (sn, sname, cards) == SK.SUPERVISION:
-        _sk_tiles.append(f'      <h2 class="sk-section" data-stage="{sn}" id="supervision"><b>VFX supervision</b> · {len(cards)} disciplines</h2>')
-    for c in cards:
+    sup = (sn, sname, cards) == SK.SUPERVISION
+    if sup:
+        _sk_tiles.append(f'      <h2 class="sk-section first" data-stage="{sn}" id="supervision"><b>VFX supervision</b> · {len(cards)} disciplines</h2>')
+    elif sn == SK.STAGES[0][0]:
+        _sk_tiles.append(f'      <h2 class="sk-section" data-stage="comp" id="compositing"><b>Compositing</b> · {sum(len(x[2]) for x in SK.STAGES)} disciplines · {len(SK.STAGES)} stages · page 2 of my CV</h2>')
+    for k, c in enumerate(cards, 1):
         _sk_n += 1
+        if sup:
+            label, img = f"00.{k}", f"{15 + k:02d}"      # strips 16-18 belong to the supervision cards
+        else:
+            _sk_comp_n += 1
+            label = img = f"{_sk_comp_n:02d}"              # 01-15, the CV's own numbers
         pts = "".join(f"<li>{E(p)}</li>" for p in c["points"])
         live = bool(c.get("demo"))
-        body = (f'<div class="sk-img" aria-hidden="true"><img src="/assets/skills/{_sk_n:02d}.jpg" alt="" loading="lazy" width="661" height="79"><span>{_sk_n:02d}</span></div>'
+        body = (f'<div class="sk-img" aria-hidden="true"><img src="/assets/skills/{img}.jpg" alt="" loading="lazy" width="661" height="79"><span>{label}</span></div>'
                 f'<div class="sk-body"><span class="sk-stage">{sn} · {E(sname)}</span><h3>{E(c["title"])}</h3>'
                 f'<ul>{pts}</ul><p class="sk-credits">{E(c["credits"])}</p>'
                 + ('<span class="sk-go">Watch the demo →</span>' if live else '<span class="sk-soon">In development</span>') + '</div>')
@@ -446,7 +455,7 @@ skills = head("Skills · Mark Pinheiro",
   <section class="page skillspage">
     <div class="sk-titlerow"><h1 class="herohead sv-head">Skills</h1>{'<span class="sk-wip">In development</span>' if _sk_live < _sk_n else ''}</div>
     <p class="pagelede">{E(SK.TITLE_LEDE)}</p>
-    <p class="sk-count"><b>Compositing</b> · {_sk_comp} disciplines · {len(SK.STAGES)} stages · <b>VFX supervision</b> · {len(SK.SUPERVISION[2])} disciplines · {_sk_live} of {_sk_n} demos ready</p>
+    <p class="sk-count"><b>VFX supervision</b> · {len(SK.SUPERVISION[2])} disciplines · <b>Compositing</b> · {_sk_comp} disciplines · {len(SK.STAGES)} stages · {_sk_live} of {_sk_n} demos ready</p>
     <div class="filters" role="group" aria-label="Filter by stage">
       <button type="button" data-f="all" aria-pressed="true">All</button>
 {_sk_filters}
@@ -466,7 +475,7 @@ skills = head("Skills · Mark Pinheiro",
     b.addEventListener('click', function(){{
       var f = b.getAttribute('data-f');
       btns.forEach(function(x){{ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); }});
-      tiles.forEach(function(t){{ t.hidden = !(f === 'all' || t.getAttribute('data-stage') === f); }});
+      tiles.forEach(function(t){{ var st = t.getAttribute('data-stage'); t.hidden = !(f === 'all' || st === f || (st === 'comp' && f !== '00')); }});
     }});
   }});
   function mark(){{

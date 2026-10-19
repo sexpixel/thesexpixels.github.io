@@ -1178,3 +1178,4 @@ a.sk-card:hover{border-color:var(--accent)}
   .sk-section{margin-top:18px}
 }
 @media (max-width:420px){ .sk-card ul{columns:1} }
+.sk-section.first{margin-top:4px;border-top:0;padding-top:0}
