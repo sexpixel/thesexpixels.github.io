@@ -94,6 +94,9 @@
   // The page name sits directly under Mark's name in the menu bar.
   window.TSPplaceTitle = function(){
     var t = document.querySelector('.herotop'), n = document.getElementById('nav'), mk = n && n.querySelector('.mark');
+    // Pages without a player (Services, Skills): the same gap under the name, set as the page's top padding.
+    var pg = document.querySelector('section.page.servicespage, section.page.skillspage');
+    if (pg && mk) pg.style.paddingTop = (mk.getBoundingClientRect().bottom - n.getBoundingClientRect().top + 4) + 'px';
     if (!t || !mk) return;
     var pr = n.querySelector('.phrow'), low = (pr && pr.offsetParent) ? pr : mk;   // under the phase row when it shows
     var y = (low.getBoundingClientRect().bottom - n.getBoundingClientRect().top + 4) + 'px', hero = t.closest('.hero');
