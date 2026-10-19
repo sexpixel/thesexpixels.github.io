@@ -6,7 +6,7 @@
 # demo = "vimeo:ID" / "vimeo:ID:HASH" / "youtube:ID" / "/path/" -> the card unlocks and opens its demo.
 # Card images: assets/skills/NN.jpg (the strips from the CV).
 
-TITLE_LEDE = ("Compositing in 15 disciplines and 5 stages, the same as page 2 of my CV. "
+TITLE_LEDE = ("Compositing in 15 disciplines and 5 stages, the same as page 2 of my CV, then VFX supervision. "
               "Each card opens a demo of that skill when it is ready; greyed cards are still in development.")
 
 STAGES = [
@@ -81,3 +81,19 @@ STAGES = [
              credits="NukeGeoTools", demo=None),
     ]),
 ]
+
+# VFX supervision: a second section under the 15 compositing cards (not on the comp CV page).
+SUPERVISION = ("06", "Supervise the show", [
+    dict(slug="pre-production-planning", title="Pre-production & planning",
+         points=["Script breakdown for VFX shots", "Bid input and feasibility", "Methodology definition",
+                 "Previs, postvis and techvis direction"],
+         credits="Framestore FPS, Lead PostVis · Playmaker", demo=None),
+    dict(slug="on-set-supervision", title="On-set supervision",
+         points=["On-set decision making", "Director and DP liaison", "HDRI, chrome and grey ball capture", "LIDAR",
+                 "Witness camera arrays", "Lens and camera data"],
+         credits="Gangs of London S3 & S4 · The Ballad of a Small Player, dir. Edward Berger", demo=None),
+    dict(slug="client-creative-leadership", title="Client & creative leadership",
+         points=["Dailies leadership", "Sequence continuity", "Final shot sign-off", "Client review",
+                 "Mentoring artists and comp leads"],
+         credits="Game of Thrones S6 · Man in an Orange Shirt · Panda Plan", demo=None),
+])

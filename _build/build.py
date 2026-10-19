@@ -417,7 +417,10 @@ def _demo_href(d):
     return d
 _sk_n = 0
 _sk_tiles = []
-for sn, sname, cards in SK.STAGES:
+_sk_all = list(SK.STAGES) + [SK.SUPERVISION]
+for sn, sname, cards in _sk_all:
+    if (sn, sname, cards) == SK.SUPERVISION:
+        _sk_tiles.append(f'      <h2 class="sk-section" data-stage="{sn}" id="supervision"><b>VFX supervision</b> · {len(cards)} disciplines</h2>')
     for c in cards:
         _sk_n += 1
         pts = "".join(f"<li>{E(p)}</li>" for p in c["points"])
@@ -430,8 +433,9 @@ for sn, sname, cards in SK.STAGES:
             _sk_tiles.append(f'      <a class="sk-card" id="{c["slug"]}" data-stage="{sn}" href="{E(_demo_href(c["demo"]))}" target="_blank" rel="noopener">{body}</a>')
         else:
             _sk_tiles.append(f'      <article class="sk-card locked" id="{c["slug"]}" data-stage="{sn}" aria-label="{E(c["title"])}, in development">{body}</article>')
-_sk_live = sum(1 for _, _, cs in SK.STAGES for c in cs if c.get("demo"))
-_sk_filters = "\n".join(f'      <button type="button" data-f="{n}" aria-pressed="false">{n} · {E(name)}</button>' for n, name, _ in SK.STAGES)
+_sk_live = sum(1 for _, _, cs in _sk_all for c in cs if c.get("demo"))
+_sk_comp = sum(len(cs) for _, _, cs in SK.STAGES)
+_sk_filters = "\n".join(f'      <button type="button" data-f="{n}" aria-pressed="false">{n} · {E(name)}</button>' for n, name, _ in _sk_all)
 skills = head("Skills · Mark Pinheiro",
               f"Mark Pinheiro's compositing skills: {_sk_n} disciplines in {len(SK.STAGES)} stages, each with a demo as it is made.") + f'''
 <body>
@@ -442,7 +446,7 @@ skills = head("Skills · Mark Pinheiro",
   <section class="page skillspage">
     <div class="sk-titlerow"><h1 class="herohead sv-head">Skills</h1>{'<span class="sk-wip">In development</span>' if _sk_live < _sk_n else ''}</div>
     <p class="pagelede">{E(SK.TITLE_LEDE)}</p>
-    <p class="sk-count"><b>Compositing</b> · {_sk_n} disciplines · {len(SK.STAGES)} stages · {_sk_live} of {_sk_n} demos ready</p>
+    <p class="sk-count"><b>Compositing</b> · {_sk_comp} disciplines · {len(SK.STAGES)} stages · <b>VFX supervision</b> · {len(SK.SUPERVISION[2])} disciplines · {_sk_live} of {_sk_n} demos ready</p>
     <div class="filters" role="group" aria-label="Filter by stage">
       <button type="button" data-f="all" aria-pressed="true">All</button>
 {_sk_filters}
@@ -457,7 +461,7 @@ skills = head("Skills · Mark Pinheiro",
 <script>
 // Stage filters. A link to one card (/skills/#keying-extraction) shows every stage and highlights that card.
 (function(){{
-  var btns = document.querySelectorAll('.filters button'), tiles = document.querySelectorAll('#tiles .sk-card');
+  var btns = document.querySelectorAll('.filters button'), tiles = document.querySelectorAll('#tiles .sk-card, #tiles .sk-section');
   btns.forEach(function(b){{
     b.addEventListener('click', function(){{
       var f = b.getAttribute('data-f');
