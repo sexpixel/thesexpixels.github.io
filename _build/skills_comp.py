@@ -83,7 +83,7 @@ STAGES = [
 ]
 
 # VFX supervision: a second section under the 15 compositing cards (not on the comp CV page).
-SUPERVISION = ("06", "Supervise the show", [
+SUPERVISION = ("00", "Supervise the show", [
     dict(slug="pre-production-planning", title="Pre-production & planning",
          points=["Script breakdown for VFX shots", "Bid input and feasibility", "Methodology definition",
                  "Previs, postvis and techvis direction"],
