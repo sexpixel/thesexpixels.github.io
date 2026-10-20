@@ -417,13 +417,13 @@ def _demo_href(d):
     return d
 _sk_n = 0
 _sk_tiles = []
-_sk_all = [SK.SUPERVISION] + list(SK.STAGES)   # supervision (00) first, then the 15 compositing cards of CV page 2
+_sk_all = ([SK.SUPERVISION] if SK.SHOW_SUPERVISION else []) + list(SK.STAGES)   # supervision (00) first, then the 15 compositing cards of CV page 2
 _sk_comp_n = 0
 for sn, sname, cards in _sk_all:
     sup = (sn, sname, cards) == SK.SUPERVISION
     if sup:
         _sk_tiles.append(f'      <h2 class="sk-section first" data-stage="{sn}" id="supervision"><b>VFX supervision</b> · {len(cards)} disciplines</h2>')
-    elif sn == SK.STAGES[0][0]:
+    elif sn == SK.STAGES[0][0] and SK.SHOW_SUPERVISION:
         _sk_tiles.append(f'      <h2 class="sk-section" data-stage="comp" id="compositing"><b>Compositing</b> · {sum(len(x[2]) for x in SK.STAGES)} disciplines · {len(SK.STAGES)} stages · page 2 of my CV</h2>')
     for k, c in enumerate(cards, 1):
         _sk_n += 1
@@ -455,7 +455,7 @@ skills = head("Skills · Mark Pinheiro",
   <section class="page skillspage">
     <div class="sk-titlerow"><h1 class="herohead sv-head">Skills</h1>{'<span class="sk-wip">In development</span>' if _sk_live < _sk_n else ''}</div>
     <p class="pagelede">{E(SK.TITLE_LEDE)}</p>
-    <p class="sk-count"><b>VFX supervision</b> · {len(SK.SUPERVISION[2])} disciplines · <b>Compositing</b> · {_sk_comp} disciplines · {len(SK.STAGES)} stages · {_sk_live} of {_sk_n} demos ready</p>
+    <p class="sk-count">{(f'<b>VFX supervision</b> · {len(SK.SUPERVISION[2])} disciplines · ') if SK.SHOW_SUPERVISION else ''}<b>Compositing</b> · {_sk_comp} disciplines · {len(SK.STAGES)} stages · {_sk_live} of {_sk_n} demos ready</p>
     <div class="filters" role="group" aria-label="Filter by stage">
       <button type="button" data-f="all" aria-pressed="true">All</button>
 {_sk_filters}

@@ -6,7 +6,7 @@
 # demo = "vimeo:ID" / "vimeo:ID:HASH" / "youtube:ID" / "/path/" -> the card unlocks and opens its demo.
 # Card images: assets/skills/NN.jpg (the strips from the CV).
 
-TITLE_LEDE = ("VFX supervision, then compositing in 15 disciplines and 5 stages, the same as page 2 of my CV. "
+TITLE_LEDE = ("Compositing in 15 disciplines and 5 stages, the same as page 2 of my CV. "
               "Each card opens a demo of that skill when it is ready; greyed cards are still in development.")
 
 STAGES = [
@@ -81,6 +81,10 @@ STAGES = [
              credits="NukeGeoTools", demo=None),
     ]),
 ]
+
+# Supervision lives on the Services page (VFX supervisor practice); Skills is compositing only.
+# Set SHOW_SUPERVISION = True to bring the 00 row back onto Skills.
+SHOW_SUPERVISION = False
 
 # VFX supervision: a second section under the 15 compositing cards (not on the comp CV page).
 SUPERVISION = ("00", "Supervise the show", [
