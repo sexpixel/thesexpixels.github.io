@@ -353,6 +353,7 @@
   var cineT = null, realFs = false;
   function cineWake(){ stage.classList.remove('cine-hide'); clearTimeout(cineT); cineT = setTimeout(function(){ stage.classList.add('cine-hide'); }, 2500); }
   function cineOn(){ return stage.classList.contains('cinema'); }
+  function recropNow(){ if (window.TSPcrop) window.TSPcrop(stage, slot.querySelector('iframe')); }
   function recropSoon(){ [0, 80, 300, 700, 1200].forEach(function(ms){ setTimeout(function(){ if (window.TSPcrop) window.TSPcrop(stage, slot.querySelector('iframe')); }, ms); }); }
   function cineTurn(){ stage.classList.toggle('turned', cineOn() && !inFs() && matchMedia('(orientation:portrait)').matches); recropSoon(); }
   function cineStart(){
@@ -369,7 +370,7 @@
   }
   function cineOff(){
     if (!cineOn()) return;
-    stage.classList.remove('cinema', 'turned', 'cine-hide'); document.documentElement.classList.remove('cine-lock'); document.body.classList.remove('cinema');
+    stage.classList.remove('cinema', 'turned', 'cine-hide', 'cine-fill'); document.documentElement.classList.remove('cine-lock'); document.body.classList.remove('cinema');
     clearTimeout(cineT);
     try { screen.orientation.unlock(); } catch (x) {}
     if (inFs()) { try { var x = (document.exitFullscreen || document.webkitExitFullscreen).call(document); if (x && x.catch) x.catch(function(){}); } catch (y) {} }
@@ -424,17 +425,22 @@
       setTimeout(function(){ if (hint) hint.classList.add('gone'); }, 5000);
     }
     var sx = 0, sy = 0, st = 0, moved = false, wasTv = false;
-    // Two-finger pinch on the video, as on an iPhone video: spread the fingers apart for cinema mode, pinch them
-    // together to leave it.
+    // Two-finger pinch on the video, as in the iPhone's own video player. Spread the fingers: page → cinema mode
+    // (Full screen) → fill the screen (edges trimmed). Pinch them together: fill → fit → back to the page.
     var pinch0 = 0, pinched = false;
     var spread = function(e){ var a = e.touches[0], c = e.touches[1]; return Math.hypot(a.clientX - c.clientX, a.clientY - c.clientY); };
     swipe.addEventListener('touchstart', function(e){ if (e.touches.length === 2) { pinch0 = spread(e); pinched = false; } }, { passive: true });
     swipe.addEventListener('touchmove', function(e){
       if (e.touches.length !== 2 || !pinch0 || pinched) return;
       if (e.cancelable) e.preventDefault();   // no page zoom while pinching the video
-      var k = spread(e) / pinch0;
-      if (k > 1.35 && !cineOn()) { pinched = true; cineStart(); }
-      else if (k < 0.7 && cineOn()) { pinched = true; cineOff(); }
+      var k = spread(e) / pinch0, filled = stage.classList.contains('cine-fill');
+      if (k > 1.3) {
+        pinched = true;
+        if (!cineOn()) cineStart(); else if (!filled) { stage.classList.add('cine-fill'); recropNow(); }
+      } else if (k < 0.75) {
+        pinched = true;
+        if (filled) { stage.classList.remove('cine-fill'); recropNow(); } else if (cineOn()) cineOff();
+      }
     }, { passive: false });
     ['gesturestart', 'gesturechange'].forEach(function(ev){ swipe.addEventListener(ev, function(e){ e.preventDefault(); }, { passive: false }); });   // iPhone: keep its own pinch-zoom off the video
     swipe.addEventListener('touchstart', function(e){ wasTv = document.body.classList.contains('tv'); var t = e.touches[0]; sx = t.clientX; sy = t.clientY; st = Date.now(); moved = false; }, { passive: true });

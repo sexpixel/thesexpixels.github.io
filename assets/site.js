@@ -102,7 +102,8 @@
     var c = (stage.getAttribute('data-crop') || '').split(',').map(Number);
     var props = ['width', 'height', 'left', 'top', 'transform', 'clip-path'];
     if (window.TSPplaceTitle) window.TSPplaceTitle();
-    if (c.length < 4 || !(c[0] || c[1] || c[2] || c[3])) { props.forEach(function(k){ frame.style.removeProperty(k); }); return; }
+    if (stage.classList.contains('cine-fill')) c = [c[0] || 0, c[1] || 0, c[2] || 0, c[3] || 0, 1];   // pinched open in cinema mode: fill the screen
+    if (c.length < 4 || !(c[0] || c[1] || c[2] || c[3] || stage.classList.contains('cine-fill'))) { props.forEach(function(k){ frame.style.removeProperty(k); }); return; }
     // A fill crop (cut to the picture and fill the width) only applies in cinema mode (Full screen); otherwise
     // the reel shows its original frame.
     if (c[4] === 1 && stage.classList.contains('fp-player') && !stage.classList.contains('cinema')) { props.forEach(function(k){ frame.style.removeProperty(k); }); return; }
@@ -112,6 +113,7 @@
     if (window.matchMedia('(orientation:portrait)').matches && box === stage) box = frame;
     var vw = box.clientWidth, vh = box.clientHeight, fw = Math.max(0.05, 1 - l - r), fh = Math.max(0.05, 1 - t - b), W;
     if (vw < vh) W = fill ? vw / fw : vw;   // phone held upright: fit the width, never crop the sides
+    else if (stage.classList.contains('cine-fill')) W = Math.max(vw / fw, vh * ar / fh);   // cinema, pinched open: cover the screen, trimming the edges
     else if (stage.classList.contains('fp-player')) W = fill ? Math.min(vw / fw, vh * ar / fh) : Math.min(vw, vh * ar);   // players: never trim, the whole (cropped) frame fits the window
     else if (fill) W = Math.max(vw / fw, vh * ar / fh); else W = Math.max(vw, vh * ar);
     var H = W / ar, cx = fill ? W * (l + fw / 2) : W / 2, cy = fill ? H * (t + fh / 2) : H / 2;
