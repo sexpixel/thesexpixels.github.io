@@ -45,7 +45,18 @@
   function showSound(){ if (soundBtn) { soundBtn.textContent = !sound ? 'Sound on' : blocked ? 'Tap for sound' : 'Sound off'; soundBtn.setAttribute('aria-pressed', sound && !blocked ? 'true' : 'false'); } }
   // Play / pause button shows the state; 'paused' class swaps the icon.
   var playBtn = document.getElementById('fp-play');
-  function showPaused(p){ if (!playBtn) return; playBtn.classList.toggle('paused', p); playBtn.setAttribute('aria-label', p ? 'Play' : 'Pause'); }
+  // Keep the screen awake while a reel plays (phones otherwise dim and lock, because the video plays inside the
+  // Vimeo or YouTube frame where the phone doesn't notice it). Let it sleep again when paused.
+  var wake = null, wantWake = false;
+  function holdScreen(on){
+    wantWake = on;
+    if (!navigator.wakeLock) return;
+    if (on && !wake) navigator.wakeLock.request('screen').then(function(w){ wake = w; w.addEventListener('release', function(){ wake = null; }); if (!wantWake) w.release(); }).catch(function(){});
+    if (!on && wake) { try { wake.release(); } catch (x) {} wake = null; }
+  }
+  document.addEventListener('visibilitychange', function(){ if (document.visibilityState === 'visible' && wantWake) holdScreen(true); });   // the phone drops it when the page is hidden
+  document.addEventListener('click', function(){ if (wantWake && !wake) holdScreen(true); }, true);   // some phones only allow it after a tap
+  function showPaused(p){ holdScreen(!p); if (!playBtn) return; playBtn.classList.toggle('paused', p); playBtn.setAttribute('aria-label', p ? 'Play' : 'Pause'); }
   function isYT(){ return player && typeof player.getPlayerState === 'function'; }
   function togglePlay(){
     if (!player) return;
