@@ -186,7 +186,8 @@ ANNIV = next(n for n in NEWS if n["slug"] == "the-sex-pixels-at-20")  # the 20th
 # Homepage "Latest": always the newest news post.
 import datetime
 def nice_date(d): return datetime.date.fromisoformat(d).strftime("%-d %B %Y")
-LATEST_NEWS = max(NEWS, key=lambda n: n["date"])  # first listed wins a tie
+LATEST_NEWS = ANNIV   # the 20th anniversary story stays the main story (Mark, 26 Oct 2026)
+NEXT_NEWS = max((n for n in NEWS if n is not ANNIV), key=lambda n: n["date"])   # then the newest other post
 LATEST_THUMB = ('<div class="thumb anniv-thumb" aria-hidden="true"><span>20</span><i>2006–2026</i></div>'
                 if LATEST_NEWS is ANNIV else news_thumb(LATEST_NEWS))
 home = head("Mark Pinheiro · Filmmaker / VFX / AI",
@@ -226,6 +227,15 @@ home = head("Mark Pinheiro · Filmmaker / VFX / AI",
           <span class="kicker">News · {nice_date(LATEST_NEWS["date"])}</span>
           <h3>{LATEST_NEWS["title"]}</h3>
           <p>{LATEST_NEWS.get("summary") or LATEST_NEWS["body"][0]}</p>
+          <span class="go">Read →</span>
+        </div>
+      </a>
+      <a class="card" href="/news/{NEXT_NEWS["slug"]}/">
+        {news_thumb(NEXT_NEWS)}
+        <div class="meta">
+          <span class="kicker">News · {nice_date(NEXT_NEWS["date"])}</span>
+          <h3>{NEXT_NEWS["title"]}</h3>
+          <p>{NEXT_NEWS.get("summary") or NEXT_NEWS["body"][0]}</p>
           <span class="go">Read →</span>
         </div>
       </a>
