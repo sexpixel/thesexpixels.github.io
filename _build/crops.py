@@ -5,8 +5,8 @@
 # "vimeo:ID" : dict(top=0, bottom=0, left=0, right=0, fill=False),
 CROPS = {
     "youtube:9KZPd8__8ys": dict(top=13.7, bottom=0, left=0, right=0, fill=False),  # Gangs of London S4 official teaser (VFX Supervisor page), set by Mark 12 Oct 2026
-    "vimeo:389670596": dict(top=12, bottom=0, left=0, right=0, fill=False),
-    "youtube:F7eMXvvaQgQ": dict(top=23.7, bottom=23.7, left=12.5, right=12.5, fill=True),  # Ou Est Le Swimming Pool: a 4:3 480p frame (pillarboxed in the 16:9 player) with a ~2.5:1 picture inside; crop to the picture and fill the width (measured from Mark's screenshot, 26 Oct 2026)  # Showreel 2020 (The Fleapit), set by Mark 12 Oct 2026
+    "vimeo:389670596": dict(top=12, bottom=0, left=0, right=0, fill=False),  # Showreel 2020 (The Fleapit), set by Mark 12 Oct 2026
+    "youtube:F7eMXvvaQgQ": dict(top=23.7, bottom=23.7, left=12.5, right=12.5, fill=True),  # Ou Est Le Swimming Pool: a 4:3 480p frame (pillarboxed in the 16:9 player) with a ~2.5:1 picture inside; crop to the picture and fill the width (measured from Mark's screenshot, 26 Oct 2026)
 }
 
 # Fade in and out, in seconds: a black veil and the sound ramp over that time. For "youtube:ID:START:END"
