@@ -8,6 +8,18 @@
   var cells = allCells;   // the reels that play: all of them, or just those in the chosen production phase
   var stage = document.getElementById('fp-player'), slot = document.getElementById('fp-slot'), titleEl = document.getElementById('fp-title');
   var cur = -1, player = null, sound = false, vimeoReady, ytReady;
+  // Phones and tablets only let a new video start by itself while muted: a swipe, or the tap that loads the next
+  // reel, doesn't count as permission for the new player. So there every reel starts muted, and once it's playing
+  // the sound comes back on if it was wanted; if the browser pauses it for that, it carries on muted.
+  var touch = !!(window.matchMedia && matchMedia('(hover:none) and (pointer:coarse)').matches);
+  function soundBack(isPlaying, unmute, mute, resume, mine){
+    if (!touch || !sound) return;
+    try { unmute(); } catch (x) {}
+    setTimeout(function(){
+      if (cur !== mine) return;
+      isPlaying(function(on){ if (!on) { sound = false; showSound(); try { mute(); resume(); } catch (x) {} } });
+    }, 700);
+  }
   var soundBtn = document.getElementById('fp-sound');
   function showSound(){ if (soundBtn) { soundBtn.textContent = sound ? 'Sound off' : 'Sound on'; soundBtn.setAttribute('aria-pressed', sound ? 'true' : 'false'); } }
   // Play / pause button shows the state; 'paused' class swaps the icon.
@@ -119,7 +131,7 @@
         // using the video's real shape, so 4:3, 16:9 and scope reels all fill edge to edge.
         var f = document.createElement('iframe');
         f.src = 'https://player.vimeo.com/video/' + p[1] + '?' + (p[2] ? 'h=' + p[2] + '&' : '') +
-          'autoplay=1&autopause=0&transparent=0&controls=0&texttrack=false&muted=' + (sound ? 0 : 1) + '&title=0&byline=0&portrait=0&dnt=1&playsinline=1';
+          'autoplay=1&autopause=0&transparent=0&controls=0&texttrack=false&muted=' + (sound && !touch ? 0 : 1) + '&title=0&byline=0&portrait=0&dnt=1&playsinline=1';
         f.title = c.getAttribute('data-title');
         f.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media');
         f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');   // lets Vimeo see the site, for domain-restricted videos
@@ -127,7 +139,11 @@
         if (window.TSPcrop) window.TSPcrop(stage, f);
         player = new window.Vimeo.Player(f);
         player.on('ended', next);
-        player.on('play', function(){ showPaused(false); });
+        var vfirst = true;
+        player.on('play', function(){ showPaused(false);
+          if (!vfirst) return; vfirst = false; var vq = player;
+          soundBack(function(cb){ vq.getPaused().then(function(p){ cb(!p); }).catch(function(){}); },
+                    function(){ vq.setMuted(false); vq.setVolume(1); }, function(){ vq.setMuted(true); vq.setVolume(0); }, function(){ vq.play(); }, mine); });
         player.on('pause', function(){ showPaused(true); });
         player.on('error', function(){ setTimeout(next, 1500); });   // a video that can't play (privacy, removed) is skipped
         if (window.TSPnoSubs) window.TSPnoSubs(player); else if (player.disableTextTrack) player.disableTextTrack().catch(function(){});   // no subtitles, even if Vimeo turns them on later
@@ -146,7 +162,7 @@
     } else if (p[0] === 'youtube') {
       yt().then(function(){
         if (cur !== mine) return;
-        var pv = { autoplay: 1, controls: 0, mute: sound ? 0 : 1, rel: 0, modestbranding: 1, playsinline: 1, cc_load_policy: 0, iv_load_policy: 3 };
+        var pv = { autoplay: 1, controls: 0, mute: sound && !touch ? 0 : 1, rel: 0, modestbranding: 1, playsinline: 1, cc_load_policy: 0, iv_load_policy: 3 };
         if (p[2]) pv.start = +p[2]; if (p[3]) pv.end = +p[3];   // "youtube:ID:START:END": play only that stretch of a longer video
         player = new window.YT.Player(box, { videoId: p[1], playerVars: pv,
           events: { onReady: function(e){
@@ -160,6 +176,8 @@
                     onError: function(){ setTimeout(next, 1500); },   // unplayable YouTube video: skip it
                     onStateChange: function(e){
                       if (e.data === 1 || e.data === 2) showPaused(e.data === 2);
+                      if (e.data === 1 && !e.target._tspSnd) { e.target._tspSnd = 1; var yq = e.target;
+                        soundBack(function(cb){ cb(yq.getPlayerState() === 1); }, function(){ yq.unMute(); yq.setVolume(100); }, function(){ yq.mute(); }, function(){ yq.playVideo(); }, mine); }
                       if (e.data === 1) { noCaptions(e.target); setTimeout(function(){ noCaptions(e.target); }, 1500); }   // playing
                       if (e.data === 0) next(); } } });
       }).catch(function(){});
