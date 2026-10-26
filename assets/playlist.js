@@ -24,6 +24,9 @@
     var tok = pl._tok;
     if (tok !== seq || pl !== player) return;
     if (!sound) { mutePl(pl); return; }
+    // A fresh player on a phone has no permission for sound yet. Asking for it there makes iPhones pause the
+    // reel, so it plays on muted and the button offers "Tap for sound" instead.
+    if (touch && pl._firstTok === tok) { blocked = true; showSound(); return; }
     unmutePl(pl);
     setTimeout(function(){
       if (tok !== seq || pl !== player) return;
@@ -204,7 +207,7 @@
         f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');   // lets Vimeo see the site, for domain-restricted videos
         slot.replaceChild(f, box);
         if (window.TSPcrop) window.TSPcrop(stage, f);
-        var pl = player = new window.Vimeo.Player(f); kind = 'vimeo'; pl._tok = tok;
+        var pl = player = new window.Vimeo.Player(f); kind = 'vimeo'; pl._tok = pl._firstTok = tok;
         pl.on('ended', function(){ if (pl === player) play(cur + 1); });
         pl.on('play', function(){ if (pl !== player) return; showPaused(false); if (pl._settled !== pl._tok) { pl._settled = pl._tok; settleSound(pl); } });
         pl.on('pause', function(){ if (pl === player) showPaused(true); });
@@ -242,7 +245,7 @@
                       if (e.data === 1 && yp._settled !== yp._tok) { yp._settled = yp._tok; settleSound(yp); }
                       if (e.data === 1) { noCaptions(yp); setTimeout(function(){ noCaptions(yp); }, 1500); }   // playing
                       if (e.data === 0) play(cur + 1); } } });
-        kind = 'youtube'; yp._tok = tok;
+        kind = 'youtube'; yp._tok = yp._firstTok = tok;
         rescue(yp);
       }).catch(function(){});
     } else if (p[0] === 'instagram') {
