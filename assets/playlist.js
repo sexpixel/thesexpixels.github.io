@@ -69,7 +69,8 @@
     try { yp.unloadModule('cc'); } catch (x) {}
   }
   var swipe = null;   // touch layer over the video (phones), kept on top whenever the slot is refilled
-  function clear(){ if (player && player.destroy) { try { player.destroy(); } catch (e) {} } player = null; slot.innerHTML = ''; if (swipe) slot.appendChild(swipe); }
+  var fadeT = null;
+  function clear(){ clearInterval(fadeT); fadeT = null; if (player && player.destroy) { try { player.destroy(); } catch (e) {} } player = null; slot.innerHTML = ''; if (swipe) slot.appendChild(swipe); }
 
   // The banner under the player describes what's playing: project, clip, then Role / Format / Phase.
   var pb = document.querySelector('.pbanner.live'), pbText = pb && pb.querySelector('.anniv-t');
@@ -123,6 +124,25 @@
     showPaused(false);
     clear();
     var box = document.createElement('div'); slot.appendChild(box);
+    // Fade in and out (data-fade, seconds): a black veil over the video and the sound ramp at the in and out points.
+    var fade = +c.getAttribute('data-fade') || 0;
+    if (fade) {
+      var veil = document.createElement('span'); veil.style.cssText = 'position:absolute;inset:0;background:#000;opacity:1;pointer-events:none;z-index:2';
+      slot.appendChild(veil);
+      var fIn = +p[2] || 0, fOut = +p[3] || 0;
+      var shade = function(t, end){
+        var o = Math.max(0, Math.min(1, (t - fIn) / fade, end ? (end - t) / fade : 1));
+        veil.style.opacity = (1 - o).toFixed(3);
+        try { if (sound && player) { if (player.setVolume && player.unMute) player.setVolume(Math.round(100 * o)); else if (player.setVolume) player.setVolume(o); } } catch (x) {}
+      };
+      fadeT = setInterval(function(){
+        if (cur !== mine || !player) return;
+        try {
+          if (player.getCurrentTime && player.getDuration && player.unMute) shade(player.getCurrentTime(), fOut || player.getDuration());   // YouTube
+          else if (player.getCurrentTime) Promise.all([player.getCurrentTime(), player.getDuration()]).then(function(d){ shade(d[0], fOut || d[1]); }).catch(function(){});
+        } catch (x) {}
+      }, 50);
+    }
     var next = function(){ if (cur === mine) play(cur + 1); };
     if (p[0] === 'vimeo') {
       vimeo().then(function(){

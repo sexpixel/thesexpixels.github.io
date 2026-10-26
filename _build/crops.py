@@ -8,6 +8,12 @@ CROPS = {
     "vimeo:389670596": dict(top=12, bottom=0, left=0, right=0, fill=False),  # Showreel 2020 (The Fleapit), set by Mark 12 Oct 2026
 }
 
+# Fade in and out, in seconds: a black veil and the sound ramp over that time at the start and end of the reel
+# (its in and out points, for "youtube:ID:START:END" stretches).
+FADES = {
+    "youtube:NSJe0wIv718:30:74": 5,  # Guardians of the Galaxy · Prison Break, asked by Mark 26 Oct 2026
+}
+
 def crop_of(spec):
     return CROPS.get(spec)
 
