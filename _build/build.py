@@ -211,7 +211,7 @@ home = head("Mark Pinheiro · Filmmaker / VFX / AI",
       </a>
       <div class="reelside">
         <span class="lab"><b>Compositing showreel</b> · 2026</span>
-        <a class="pill" href="https://vimeo.com/1232958213/ffbea294d7" data-video="{REEL_2026}"><i></i>Watch full screen</a>
+        <a class="pill" href="/nukecompositor/?cinema=1"><i></i>Watch full screen</a>
       </div>
     </div>
     <div class="scrollcue heroui" aria-hidden="true">Scroll</div>

@@ -483,6 +483,12 @@
 
   // Start straight away, muted (browsers only allow sound after a click).
   play(0);
+  // Arriving with ?cinema=1 (the home page's "Watch full screen"): start straight in cinema mode, in the site's own
+  // player. Without a tap, browsers won't allow real full screen, so the player fills the window instead.
+  try {
+    var cu = new URL(location.href);
+    if (cu.searchParams.get('cinema') === '1') { cu.searchParams.delete('cinema'); history.replaceState(null, '', cu); cineStart(); }
+  } catch (e) {}
   steadyBanner();
   // once the fonts are in, measure again, then let the phone layout refit around the settled banner
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ steadyBanner(); try { window.dispatchEvent(new Event('orientationchange')); } catch (e) {} });
