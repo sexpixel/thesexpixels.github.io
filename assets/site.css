@@ -1206,3 +1206,10 @@ body.cinema .nav{display:none !important}
 .cine-bar .cplay .pl{display:none}
 .cine-bar .cplay.paused .pz{display:none}
 .cine-bar .cplay.paused .pl{display:inline}
+
+/* A video in a news post: full column width, 16:9 */
+.postvideo{position:relative;width:100%;max-width:960px;aspect-ratio:16/9;background:#000;margin:8px 0 28px}
+.postvideo iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+/* News posts are <article class="page post">: give them the same gutters and top space as the other pages */
+main article.page{padding:clamp(120px,18vh,180px) var(--gutter) clamp(56px,10vh,112px);max-width:1440px;margin:0 auto;display:block}

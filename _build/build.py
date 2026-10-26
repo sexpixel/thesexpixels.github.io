@@ -132,6 +132,12 @@ TREE = '''<div class="tree">
             <div style="--c:#5fe0c8;--a:18px;--b:0px"><span></span>Deliverables</div>
           </div>'''
 
+def news_thumb(n):
+    """A news post's card picture: its video's frame, or the date slate."""
+    v = n.get("video", "")
+    if v.startswith("youtube:"): return f'<div class="thumb" aria-hidden="true"><img src="https://i.ytimg.com/vi/{v.split(":")[1]}/hqdefault.jpg" alt="" loading="lazy"><span class="play"></span></div>'
+    return slate(nice_date(n["date"]), "News")
+
 def slate(top, big):
     return f'<div class="thumb" aria-hidden="true"><div class="slate"><span class="st">{E(top)}</span><span class="no">{E(big)}</span></div></div>'
 
@@ -182,7 +188,7 @@ import datetime
 def nice_date(d): return datetime.date.fromisoformat(d).strftime("%-d %B %Y")
 LATEST_NEWS = max(NEWS, key=lambda n: n["date"])  # first listed wins a tie
 LATEST_THUMB = ('<div class="thumb anniv-thumb" aria-hidden="true"><span>20</span><i>2006–2026</i></div>'
-                if LATEST_NEWS is ANNIV else slate(nice_date(LATEST_NEWS["date"]), "News"))
+                if LATEST_NEWS is ANNIV else news_thumb(LATEST_NEWS))
 home = head("Mark Pinheiro · Filmmaker / VFX / AI",
             "Mark Pinheiro: filmmaker, Nuke compositor and VFX supervisor. The Sex Pixels, 20 years: 2006–2026.") + f'''
 <body>
@@ -984,11 +990,11 @@ for i, f in enumerate(FORMATS, 1):
 import datetime
 def nice_date(d): return datetime.date.fromisoformat(d).strftime("%-d %B %Y")
 news_cards = "\n".join(f'''      <a class="card" href="/news/{n["slug"]}/">
-        {slate(nice_date(n["date"]), "News")}
+        {news_thumb(n)}
         <div class="meta">
           <span class="kicker">{nice_date(n["date"])}</span>
           <h3>{n["title"]}</h3>
-          <p>{n["body"][0]}</p>
+          <p>{n.get("summary") or n["body"][0]}</p>
           <span class="go">Read →</span>
         </div>
       </a>''' for n in NEWS)
@@ -1011,6 +1017,11 @@ news = head("News · Mark Pinheiro", "News and updates from Mark Pinheiro.") + f
 </html>
 '''
 write("news/index.html", news)
+def post_video(n):
+    v = n.get("video", "")
+    if not v.startswith("youtube:"): return ""
+    return (f'    <div class="postvideo"><iframe src="https://www.youtube-nocookie.com/embed/{v.split(":")[1]}?rel=0&amp;modestbranding=1&amp;playsinline=1&amp;cc_load_policy=0&amp;iv_load_policy=3" '
+            f'title="{E(n["title"])}" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen loading="lazy"></iframe></div>')
 for n in NEWS:
     body = "\n".join(f"      <p>{para}</p>" for para in n["body"])
     write(f"news/{n['slug']}/index.html", head(f"{n['title']} · News · Mark Pinheiro", n["body"][0]) + f'''
@@ -1023,6 +1034,7 @@ for n in NEWS:
     <a class="back" href="/news/">&larr; News</a>
     <div class="rail"><span class="n">{nice_date(n["date"])}</span>News</div>
     <h1 class="pagetitle">{n["title"]}</h1>
+{post_video(n)}
     <div class="postbody">
 {body}
     </div>
