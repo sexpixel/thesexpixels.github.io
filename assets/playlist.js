@@ -125,7 +125,11 @@
     clear();
     var box = document.createElement('div'); slot.appendChild(box);
     // Fade in and out (data-fade, seconds): a black veil over the video and the sound ramp at the in and out points.
+    // The in and out points are where the picture is fully up: the fade starts that long before the in point
+    // and ends that long after the out point (e.g. 0:30–1:14 with 5 s plays 0:25–1:19).
     var fade = +c.getAttribute('data-fade') || 0;
+    if (fade && p[2]) p[2] = String(Math.max(0, +p[2] - fade));
+    if (fade && p[3]) p[3] = String(+p[3] + fade);
     if (fade) {
       var veil = document.createElement('span'); veil.style.cssText = 'position:absolute;inset:0;background:#000;opacity:1;pointer-events:none;z-index:2';
       slot.appendChild(veil);
