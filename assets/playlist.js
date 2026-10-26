@@ -424,9 +424,23 @@
       setTimeout(function(){ if (hint) hint.classList.add('gone'); }, 5000);
     }
     var sx = 0, sy = 0, st = 0, moved = false, wasTv = false;
+    // Two-finger pinch on the video, as on an iPhone video: spread the fingers apart for cinema mode, pinch them
+    // together to leave it.
+    var pinch0 = 0, pinched = false;
+    var spread = function(e){ var a = e.touches[0], c = e.touches[1]; return Math.hypot(a.clientX - c.clientX, a.clientY - c.clientY); };
+    swipe.addEventListener('touchstart', function(e){ if (e.touches.length === 2) { pinch0 = spread(e); pinched = false; } }, { passive: true });
+    swipe.addEventListener('touchmove', function(e){
+      if (e.touches.length !== 2 || !pinch0 || pinched) return;
+      if (e.cancelable) e.preventDefault();   // no page zoom while pinching the video
+      var k = spread(e) / pinch0;
+      if (k > 1.35 && !cineOn()) { pinched = true; cineStart(); }
+      else if (k < 0.7 && cineOn()) { pinched = true; cineOff(); }
+    }, { passive: false });
+    ['gesturestart', 'gesturechange'].forEach(function(ev){ swipe.addEventListener(ev, function(e){ e.preventDefault(); }, { passive: false }); });   // iPhone: keep its own pinch-zoom off the video
     swipe.addEventListener('touchstart', function(e){ wasTv = document.body.classList.contains('tv'); var t = e.touches[0]; sx = t.clientX; sy = t.clientY; st = Date.now(); moved = false; }, { passive: true });
     swipe.addEventListener('touchmove', function(e){ var t = e.touches[0]; if (Math.abs(t.clientX - sx) > 10 || Math.abs(t.clientY - sy) > 10) moved = true; }, { passive: true });
     swipe.addEventListener('touchend', function(e){
+      if (pinch0) { if (!e.touches.length) pinch0 = 0; return; }   // the end of a pinch is neither a swipe nor a tap
       var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
       if (stage.classList.contains('turned')) { var q = dx; dx = dy; dy = -q; }   // cinema mode turned on its side: the picture's left-right runs down the screen
       if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
