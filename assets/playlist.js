@@ -280,6 +280,17 @@
     cells = allCells.filter(passes);
     noneHere = !cells.length;   // nothing matches yet: keep playing everything
     if (noneHere) cells = allCells;
+    // The Reels line under the player names the filters in use (e.g. "Film · Prod"), or "All".
+    var rh = document.getElementById('reels-h');
+    if (rh && FILTERS.some(function(f){ return btnsOf(f[0]).length; })) {
+      var on = [];
+      FILTERS.slice().reverse().forEach(function(f){   // format or role first, then phase, as on the filter bars
+        if (sel[f[0]] === 'all') return;
+        var b = btnsOf(f[0]).filter(function(x){ return x.getAttribute('data-' + f[0]) === sel[f[0]]; })[0];
+        if (b) { var sm = b.querySelector('.sm'); on.push((sm || b).textContent.trim()); }   // the short label, as on phones
+      });
+      rh.textContent = on.length ? on.join(' · ') : 'All';
+    }
     try { var u = new URL(location.href); FILTERS.forEach(function(f){ if (sel[f[0]] === 'all') u.searchParams.delete(f[2]); else u.searchParams.set(f[2], sel[f[0]]); }); history.replaceState(null, '', u); } catch (e) {}
     if (restart) { play(0); steadyBanner(); }
   }
