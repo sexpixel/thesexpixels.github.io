@@ -127,15 +127,16 @@
     // Fade in and out (data-fade, seconds): a black veil over the video and the sound ramp at the in and out points.
     // The in and out points are where the picture is fully up: the fade starts that long before the in point
     // and ends that long after the out point (e.g. 0:30–1:14 with 5 s plays 0:25–1:19).
-    var fade = +c.getAttribute('data-fade') || 0;
-    if (fade && p[2]) p[2] = String(Math.max(0, +p[2] - fade));
-    if (fade && p[3]) p[3] = String(+p[3] + fade);
+    // data-fade="IN,OUT" seconds (one number sets both).
+    var fd = (c.getAttribute('data-fade') || '').split(','), fadeIn = +fd[0] || 0, fadeOut = fd.length > 1 ? +fd[1] || 0 : fadeIn, fade = fadeIn || fadeOut;
+    if (fade && p[2]) p[2] = String(Math.max(0, +p[2] - fadeIn));
+    if (fade && p[3]) p[3] = String(+p[3] + fadeOut);
     if (fade) {
       var veil = document.createElement('span'); veil.style.cssText = 'position:absolute;inset:0;background:#000;opacity:1;pointer-events:none;z-index:2';
       slot.appendChild(veil);
       var fIn = +p[2] || 0, fOut = +p[3] || 0;
       var shade = function(t, end){
-        var o = Math.max(0, Math.min(1, (t - fIn) / fade, end ? (end - t) / fade : 1));
+        var o = Math.max(0, Math.min(1, fadeIn ? (t - fIn) / fadeIn : 1, end && fadeOut ? (end - t) / fadeOut : 1));
         veil.style.opacity = (1 - o).toFixed(3);
         try { if (sound && player) { if (player.setVolume && player.unMute) player.setVolume(Math.round(100 * o)); else if (player.setVolume) player.setVolume(o); } } catch (x) {}
       };

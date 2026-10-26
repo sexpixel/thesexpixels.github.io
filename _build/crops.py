@@ -11,7 +11,7 @@ CROPS = {
 # Fade in and out, in seconds: a black veil and the sound ramp over that time. For "youtube:ID:START:END"
 # stretches the fade sits outside the points: fade in ends at START, fade out starts at END.
 FADES = {
-    "youtube:NSJe0wIv718:30:74": 5,  # Guardians of the Galaxy · Prison Break, asked by Mark 26 Oct 2026
+    "youtube:NSJe0wIv718:30:74": (5, 2),  # (in, out) seconds; a single number sets both. Guardians of the Galaxy · Prison Break, asked by Mark 26 Oct 2026
 }
 
 def crop_of(spec):

@@ -23,7 +23,7 @@ except ImportError:
 def crop_attr(spec):
     c = crop_str(spec)
     from crops import FADES
-    return (f' data-crop="{c}"' if c else "") + (f' data-fade="{FADES[spec]}"' if spec in FADES else "")
+    return (f' data-crop="{c}"' if c else "") + (f' data-fade="{",".join(str(x) for x in (FADES[spec] if isinstance(FADES[spec], tuple) else (FADES[spec],)))}"' if spec in FADES else "")
 
 
 E = html.escape
