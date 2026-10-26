@@ -68,13 +68,20 @@
     // over it, like YouTube; touches and the browser bar sliding away don't wake it there.
     var land = window.matchMedia && matchMedia('(orientation:landscape) and (hover:none) and (pointer:coarse)');
     var isLand = function(){ return !!(land && land.matches); };
-    var tx = 0, ty = 0, tt = 0, lastY = window.scrollY;
+    var tx = 0, tt = 0, ty = 0, lastY = window.scrollY;
+    // Sideways, the banner and the scroll cue are part of the screen to tap, not links to the reel grid
+    // (they cover much of the picture, so taps there kept jumping to the grid).
+    var PASS = '.pbanner, .scrollcue';
+    document.addEventListener('click', function(e){
+      if (isLand() && e.target.closest && e.target.closest(PASS)) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
     window.addEventListener('touchstart', function(e){ var t = e.touches[0]; tx = t.clientX; ty = t.clientY; tt = Date.now(); if (!isLand()) wake(); }, {passive:true});
     window.addEventListener('touchend', function(e){
       if (!isLand() || !onHero()) return;
       var t = e.changedTouches[0];
-      if (Math.abs(t.clientX - tx) > 10 || Math.abs(t.clientY - ty) > 10 || Date.now() - tt > 400) return;
-      if (e.target.closest && e.target.closest('a,button,input,select,textarea,label')) return;   // buttons do their own job
+      if (Math.abs(t.clientX - tx) > 18 || Math.abs(t.clientY - ty) > 18 || Date.now() - tt > 700) return;
+      var hit = e.target.closest && e.target.closest('a,button,input,select,textarea,label');
+      if (hit && !hit.matches(PASS)) return;   // buttons do their own job
       if (window.TSPfsTap && window.TSPfsTap()) return;   // first tap after turning the phone: go full screen
       if (document.body.classList.contains('tv')) wake(); else { clearTimeout(idle); document.body.classList.add('tv'); }
     }, {passive:true});
