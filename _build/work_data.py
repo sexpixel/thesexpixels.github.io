@@ -40,6 +40,8 @@ PROJECTS = [
          clips=[("The Tiki Bar Attack", "1014294324"), ("Car Pool Karaoke", "1014294008")]),
     dict(title="Wonka", role="Lead PostVis artist", group="PostVis", fmt="Feature film", co="Framestore FPS", yr="",
          clips=[("Giraffe, parts 1 & 2", "1014150213"), ("Giraffe, part 3", "1014149873")]),
+    dict(title="Guardians of the Galaxy", role="Compositor", group="Nuke compositor", fmt="Feature film", co="MPC", yr="2014",
+         clips=[("Prison Break", "youtube:NSJe0wIv718:30:74", ["Post-production"])]),
     dict(title="Guardians of the Galaxy Vol. 3", role="Lead PostVis artist", group="PostVis", fmt="Feature film", co="Framestore FPS", yr="",
          clips=[("Guardians of the Galaxy Vol. 3", "1014147480")]),
     dict(title="Moon Knight", role="Lead PostVis artist", group="PostVis", fmt="Episodic", co="Framestore FPS", yr="",
@@ -77,7 +79,7 @@ def expand(p):
         if len(clip) > 2: q["phases"] = clip[2]
         q["title"] = p["title"] if name == p["title"] else f"{p['title']} · {name}"
         if vid.startswith("youtube:"):
-            q["video"] = vid; q["url"] = f"https://youtu.be/{vid[8:]}"
+            y = vid.split(":"); q["video"] = vid; q["url"] = f"https://youtu.be/{y[1]}" + (f"?t={y[2]}" if len(y) > 2 else "")   # "youtube:ID:START:END" plays one stretch
         else:
             q["video"] = f"vimeo:{vid}"; q["url"] = f"https://vimeo.com/{vid}"
         out.append(q)

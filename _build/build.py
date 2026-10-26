@@ -36,7 +36,7 @@ def _ver(rel):
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # ---------------------------------------------------------------- reels
-# Add a reel by filling in its video: "vimeo:ID:HASH" or "youtube:ID". None = coming soon.
+# Add a reel by filling in its video: "vimeo:ID:HASH" or "youtube:ID" ("youtube:ID:START:END" in seconds plays one stretch). None = coming soon.
 REEL_2026 = "vimeo:1232958213:ffbea294d7"
 REELS = [
     dict(id="reel-compositor", role="Nuke compositor", title="Compositing showreel", note="Showreel · 2026",
@@ -299,7 +299,7 @@ def proj_tile(p):
     attrs = f'data-group="{E(p["group"])}"'
     if p.get("video"):
         img = (f'<img data-vimeo="{p["url"]}" alt="" hidden>' if p["video"].startswith("vimeo") else
-               f'<img src="https://i.ytimg.com/vi/{p["video"][8:]}/hqdefault.jpg" alt="" loading="lazy">' if p["video"].startswith("youtube:") else "")
+               f'<img src="https://i.ytimg.com/vi/{p["video"].split(":")[1]}/hqdefault.jpg" alt="" loading="lazy">' if p["video"].startswith("youtube:") else "")
         return f'''      <a class="card" id="{slug(p["title"])}" href="{p["url"]}" data-video="{p["video"]}" {attrs}>
         <div class="thumb">{img}<span class="play"></span></div>
         <div class="meta">
@@ -413,7 +413,7 @@ import skills_comp as SK
 def _demo_href(d):
     if d.startswith("vimeo:"):
         p = d.split(":"); return f"https://vimeo.com/{p[1]}" + (f"/{p[2]}" if len(p) > 2 else "")
-    if d.startswith("youtube:"): return f"https://youtu.be/{d[8:]}"
+    if d.startswith("youtube:"): y = d.split(":"); return f"https://youtu.be/{y[1]}" + (f"?t={y[2]}" if len(y) > 2 else "")
     return d
 _sk_n = 0
 _sk_tiles = []
@@ -536,7 +536,7 @@ def reel_cell(i, r):
         if r.get("thumb"): img = f'<img src="{r["thumb"]}" alt="" loading="lazy">'
         elif r["video"].startswith("vimeo:"):
             vid, _, h = r["video"][6:].partition(":"); img = f'<img data-vimeo="https://vimeo.com/{vid}{"/" + h if h else ""}" alt="" hidden>'
-        elif r["video"].startswith("youtube:"): img = f'<img src="https://i.ytimg.com/vi/{r["video"][8:]}/hqdefault.jpg" alt="" loading="lazy">'
+        elif r["video"].startswith("youtube:"): img = f'<img src="https://i.ytimg.com/vi/{r["video"].split(":")[1]}/hqdefault.jpg" alt="" loading="lazy">'
         return f'''      <button class="fp-cell" type="button" data-i="{i}" data-src="{r["video"]}" data-title="{E(r["title"])}" data-phases="{phases_attr(r)}" data-fms="{formats_attr(r)}" data-ros="{roles_attr(r)}" data-role="{E(reel_info(r)[0])}" data-format="{E(reel_info(r)[1])}" data-phase="{E(reel_info(r)[2])}"{crop_attr(r["video"])}>{img}<span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])}</i></span><span class="play"></span></button>'''
     return f'''      <div class="fp-cell fp-soon" data-phases="{phases_attr(r)}" data-fms="{formats_attr(r)}" data-ros="{roles_attr(r)}"><span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])} · coming soon</i></span></div>'''
 

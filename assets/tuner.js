@@ -62,7 +62,7 @@
         }).catch(function(){});
       }).catch(function(){});
     } else if (p[0] === 'youtube') {
-      f.src = 'https://www.youtube-nocookie.com/embed/' + p[1] + '?autoplay=1&mute=1&loop=1&playlist=' + p[1] + '&controls=0&rel=0&playsinline=1&cc_load_policy=0&iv_load_policy=3';
+      f.src = 'https://www.youtube-nocookie.com/embed/' + p[1] + '?autoplay=1&mute=1&loop=1&playlist=' + p[1] + '&controls=0&rel=0&playsinline=1&cc_load_policy=0&iv_load_policy=3' + (p[2] ? '&start=' + p[2] : '');
       slot.appendChild(f); apply();
     }
   }

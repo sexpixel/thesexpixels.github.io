@@ -146,7 +146,9 @@
     } else if (p[0] === 'youtube') {
       yt().then(function(){
         if (cur !== mine) return;
-        player = new window.YT.Player(box, { videoId: p[1], playerVars: { autoplay: 1, controls: 0, mute: sound ? 0 : 1, rel: 0, modestbranding: 1, playsinline: 1, cc_load_policy: 0, iv_load_policy: 3 },
+        var pv = { autoplay: 1, controls: 0, mute: sound ? 0 : 1, rel: 0, modestbranding: 1, playsinline: 1, cc_load_policy: 0, iv_load_policy: 3 };
+        if (p[2]) pv.start = +p[2]; if (p[3]) pv.end = +p[3];   // "youtube:ID:START:END": play only that stretch of a longer video
+        player = new window.YT.Player(box, { videoId: p[1], playerVars: pv,
           events: { onReady: function(e){
                       noCaptions(e.target);
                       var yp = e.target;
