@@ -272,7 +272,8 @@
     try { var r = fs.call(stage); if (r && r.catch) r.catch(videoFull); } catch (e) { videoFull(); }
   });
 
-  // Phones and tablets: swipe the video left for the next reel, right for the previous one; a tap plays or pauses.
+  // Phones and tablets: swipe the video left for the next reel, right for the previous one; a tap shows or hides
+  // the controls, as on YouTube (pause with the Play button); held upright, where the controls sit under the video, a tap plays or pauses.
   // The video players swallow touches, so a see-through layer over the video catches them. Up and down still
   // scroll the page; only a clearly sideways swipe changes the reel.
   if (window.matchMedia && matchMedia('(hover:none) and (pointer:coarse)').matches) {
@@ -286,8 +287,8 @@
       swipe.appendChild(hint);
       setTimeout(function(){ if (hint) hint.classList.add('gone'); }, 5000);
     }
-    var sx = 0, sy = 0, st = 0, moved = false;
-    swipe.addEventListener('touchstart', function(e){ var t = e.touches[0]; sx = t.clientX; sy = t.clientY; st = Date.now(); moved = false; }, { passive: true });
+    var sx = 0, sy = 0, st = 0, moved = false, wasTv = false;
+    swipe.addEventListener('touchstart', function(e){ wasTv = document.body.classList.contains('tv'); var t = e.touches[0]; sx = t.clientX; sy = t.clientY; st = Date.now(); moved = false; }, { passive: true });
     swipe.addEventListener('touchmove', function(e){ var t = e.touches[0]; if (Math.abs(t.clientX - sx) > 10 || Math.abs(t.clientY - sy) > 10) moved = true; }, { passive: true });
     swipe.addEventListener('touchend', function(e){
       var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
@@ -296,7 +297,11 @@
         if (hint) { hint.classList.add('gone'); hint = null; try { localStorage.setItem('tsp-swiped', '1'); } catch (x) {} }
         try { slot.animate([{ transform: 'translateX(0)', opacity: 1 }, { transform: 'translateX(' + (dir > 0 ? -40 : 40) + 'px)', opacity: .2 }], { duration: 180, easing: 'ease-in' }); } catch (x) {}
         setTimeout(function(){ sound = true; play(cur + dir); }, 170);
-      } else if (!moved && Date.now() - st < 400 && playBtn) { togglePlay(); }
+      } else if (!moved && Date.now() - st < 400) {
+        // Phone held upright: the controls sit under the video and always show, so a tap still plays or pauses.
+        if (matchMedia('(orientation:portrait) and (max-width:760px)').matches) { if (playBtn) togglePlay(); }
+        else if (!wasTv) document.body.classList.add('tv');   // controls showing: hide them (a tap while hidden has already woken them)
+      }
     }, { passive: true });
   }
 
