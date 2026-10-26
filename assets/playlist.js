@@ -147,7 +147,9 @@
     if (c.getAttribute('data-crop')) stage.setAttribute('data-crop', c.getAttribute('data-crop')); else stage.removeAttribute('data-crop');
     stage.classList.add('playing'); stage.classList.toggle('tall', p[0] === 'instagram');
     showPaused(false);
-    var reuse = !!player && (p[0] === 'youtube' || p[0] === 'vimeo') && kind === p[0];
+    // Only YouTube players are reused: Vimeo checks a reel's domain lock against the page that built the player, and a
+    // reel loaded into an existing player fails that check (and was skipped), so every Vimeo reel gets a fresh player.
+    var reuse = !!player && p[0] === 'youtube' && kind === 'youtube';
     if (reuse) stopExtras(); else { stage.style.removeProperty('--ar'); clear(); }
     var box = document.createElement('div'); if (!reuse) slot.appendChild(box);
     // YouTube "youtube:ID:START:END" plays only that stretch. Fades (data-fade="IN,OUT" seconds, one number sets
@@ -310,6 +312,33 @@
     try { var r = fs.call(stage); if (r && r.catch) r.catch(videoFull); } catch (e) { videoFull(); }
   });
 
+  // Turning a phone sideways fills the screen with the player and hides the overlays. Browsers only allow real
+  // full screen after a touch, so where it exists (Android) the first tap goes full screen; iPhones have no page
+  // full screen, so there the player simply fills the screen. Turning back upright leaves full screen.
+  var landQ = window.matchMedia && matchMedia('(orientation:landscape) and (hover:none) and (pointer:coarse)');
+  var fsPending = false;
+  function inFs(){ return !!(document.fullscreenElement || document.webkitFullscreenElement); }
+  function pageFs(){
+    var fn = stage.requestFullscreen || stage.webkitRequestFullscreen;
+    if (!(document.fullscreenEnabled || document.webkitFullscreenEnabled) || !fn) return false;
+    try { var r = fn.call(stage); if (r && r.then) r.then(function(){ fsPending = false; }).catch(function(){}); } catch (x) {}
+    return true;
+  }
+  function rotated(){
+    if (landQ.matches) {
+      try { stage.scrollIntoView({ block: 'start' }); } catch (x) {}
+      document.body.classList.add('tv');
+      fsPending = !inFs() && pageFs();   // some browsers allow it straight away; otherwise the first tap does it
+    } else {
+      fsPending = false;
+      if (inFs()) { try { var x = (document.exitFullscreen || document.webkitExitFullscreen).call(document); if (x && x.catch) x.catch(function(){}); } catch (y) {} }
+    }
+  }
+  if (landQ) {
+    if (landQ.addEventListener) landQ.addEventListener('change', rotated); else if (landQ.addListener) landQ.addListener(rotated);
+    window.TSPfsTap = function(){ if (fsPending && landQ.matches && !inFs()) { fsPending = false; pageFs(); return true; } return false; };
+  }
+
   // Phones and tablets: swipe the video left for the next reel, right for the previous one; a tap shows or hides
   // the controls, as on YouTube (pause with the Play button); held upright, where the controls sit under the video, a tap plays or pauses.
   // The video players swallow touches, so a see-through layer over the video catches them. Up and down still
@@ -338,7 +367,7 @@
       } else if (!moved && Date.now() - st < 400) {
         // Phone held upright: the controls sit under the video and always show, so a tap still plays or pauses.
         if (matchMedia('(orientation:portrait) and (max-width:760px)').matches) { if (playBtn) togglePlay(); }
-        else if (!wasTv) document.body.classList.add('tv');   // controls showing: hide them (a tap while hidden has already woken them)
+        // sideways: site.js shows or hides the overlays
       }
     }, { passive: true });
   }

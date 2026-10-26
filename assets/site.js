@@ -64,7 +64,22 @@
         if (onHero() && !(nav && nav.classList.contains('open')) && !document.querySelector('.lightbox:not([hidden])')) document.body.classList.add('tv');
       }, IDLE_MS);
     };
-    ['mousemove', 'touchstart', 'keydown', 'scroll', 'focusin'].forEach(function(ev){ window.addEventListener(ev, wake, {passive:true}); });
+    // Phones and tablets held sideways: a tap anywhere on the player (not on a button) shows or hides everything
+    // over it, like YouTube; touches and the browser bar sliding away don't wake it there.
+    var land = window.matchMedia && matchMedia('(orientation:landscape) and (hover:none) and (pointer:coarse)');
+    var isLand = function(){ return !!(land && land.matches); };
+    var tx = 0, ty = 0, tt = 0, lastY = window.scrollY;
+    window.addEventListener('touchstart', function(e){ var t = e.touches[0]; tx = t.clientX; ty = t.clientY; tt = Date.now(); if (!isLand()) wake(); }, {passive:true});
+    window.addEventListener('touchend', function(e){
+      if (!isLand() || !onHero()) return;
+      var t = e.changedTouches[0];
+      if (Math.abs(t.clientX - tx) > 10 || Math.abs(t.clientY - ty) > 10 || Date.now() - tt > 400) return;
+      if (e.target.closest && e.target.closest('a,button,input,select,textarea,label')) return;   // buttons do their own job
+      if (window.TSPfsTap && window.TSPfsTap()) return;   // first tap after turning the phone: go full screen
+      if (document.body.classList.contains('tv')) wake(); else { clearTimeout(idle); document.body.classList.add('tv'); }
+    }, {passive:true});
+    window.addEventListener('scroll', function(){ var y = window.scrollY; if (!isLand() || Math.abs(y - lastY) > 40) wake(); lastY = y; }, {passive:true});
+    ['mousemove', 'keydown', 'focusin'].forEach(function(ev){ window.addEventListener(ev, wake, {passive:true}); });
     wake();
   }
 

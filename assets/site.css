@@ -1179,3 +1179,10 @@ a.sk-card:hover{border-color:var(--accent)}
 }
 @media (max-width:420px){ .sk-card ul{columns:1} }
 .sk-section.first{margin-top:4px;border-top:0;padding-top:0}
+
+/* Sideways on a phone or tablet: a tap shows or hides everything over the player (site.js), so hidden controls
+   don't catch taps, and the swipe hint hides with the rest. */
+@media (orientation:landscape) and (hover:none) and (pointer:coarse){
+  body.tv .heroui,body.tv .reelbar,body.tv .reelbar .fp-ctrls > *{pointer-events:none !important}
+  body.tv .fp-swipehint{opacity:0}
+}
