@@ -68,7 +68,7 @@
     // over it, like YouTube; touches and the browser bar sliding away don't wake it there.
     var land = window.matchMedia && matchMedia('(orientation:landscape) and (hover:none) and (pointer:coarse)');
     var isLand = function(){ return !!(land && land.matches); };
-    var tx = 0, tt = 0, ty = 0, lastY = window.scrollY;
+    var tx = 0, tt = 0, tt2 = 0, ty = 0, lastY = window.scrollY;
     // Sideways, the banner and the scroll cue are part of the screen to tap, not links to the reel grid
     // (they cover much of the picture, so taps there kept jumping to the grid).
     var PASS = '.pbanner, .scrollcue';
@@ -76,6 +76,7 @@
       if (isLand() && e.target.closest && e.target.closest(PASS)) { e.preventDefault(); e.stopPropagation(); }
     }, true);
     window.addEventListener('touchstart', function(e){ var t = e.touches[0]; tx = t.clientX; ty = t.clientY; tt = Date.now(); if (!isLand()) wake(); }, {passive:true});
+    window.addEventListener('touchend', function(){ tt2 = Date.now(); }, {passive:true});
     window.addEventListener('touchend', function(e){
       if (!isLand() || !onHero()) return;
       var t = e.changedTouches[0];
@@ -86,7 +87,11 @@
       if (document.body.classList.contains('tv')) wake(); else { clearTimeout(idle); document.body.classList.add('tv'); }
     }, {passive:true});
     window.addEventListener('scroll', function(){ var y = window.scrollY; if (!isLand() || Math.abs(y - lastY) > 40) wake(); lastY = y; }, {passive:true});
-    ['mousemove', 'keydown', 'focusin'].forEach(function(ev){ window.addEventListener(ev, wake, {passive:true}); });
+    // Phones send a pretend mouse move and focus straight after every tap; ignore those, or they undo the tap that hid the overlays.
+    var notTap = function(){ if (Date.now() - Math.max(tt, tt2) > 1000) wake(); };
+    window.addEventListener('mousemove', notTap, {passive:true});
+    window.addEventListener('focusin', notTap, {passive:true});
+    window.addEventListener('keydown', wake, {passive:true});
     wake();
   }
 
