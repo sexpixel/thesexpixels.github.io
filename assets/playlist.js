@@ -351,6 +351,9 @@
   }
   mirror();
   var cineT = null, realFs = false;
+  // Entering or leaving cinema mode comes from a tap, which phones accept as permission to play: if the reel is
+  // sitting stopped (iPhones sometimes leave a freshly loaded YouTube reel waiting for a press), start it.
+  function kick(){ if (!player) return; playingNow(player, function(on){ if (!on && !(playBtn && playBtn.classList.contains('paused'))) resumePl(player); }); }
   function cineWake(){ stage.classList.remove('cine-hide'); clearTimeout(cineT); cineT = setTimeout(function(){ stage.classList.add('cine-hide'); }, 2500); }
   function cineOn(){ return stage.classList.contains('cinema'); }
   function recropNow(){ if (window.TSPcrop) window.TSPcrop(stage, slot.querySelector('iframe')); }
@@ -366,7 +369,7 @@
         if (r && r.then) r.then(function(){ lock(); cineTurn(); }).catch(function(){ cineTurn(); }); else lock();
       } catch (x) {}
     }
-    cineTurn(); cineWake();
+    cineTurn(); cineWake(); kick();
   }
   function cineOff(){
     if (!cineOn()) return;
@@ -374,11 +377,14 @@
     clearTimeout(cineT);
     try { screen.orientation.unlock(); } catch (x) {}
     if (inFs()) { try { var x = (document.exitFullscreen || document.webkitExitFullscreen).call(document); if (x && x.catch) x.catch(function(){}); } catch (y) {} }
-    recropSoon();
+    recropSoon(); kick();
   }
   document.getElementById('fp-full').addEventListener('click', function(){ if (cineOn()) cineOff(); else cineStart(); });
   ['fullscreenchange', 'webkitfullscreenchange'].forEach(function(ev){ document.addEventListener(ev, function(){ if (!inFs() && realFs) { realFs = false; cineOff(); } else recropSoon(); }); });   // left real full screen (Esc, back gesture): leave cinema too
-  window.addEventListener('orientationchange', function(){ if (cineOn()) setTimeout(cineTurn, 120); });
+  var portraitQ = matchMedia('(orientation:portrait)');
+  var onShape = function(){ if (cineOn()) cineTurn(); };
+  if (portraitQ.addEventListener) portraitQ.addEventListener('change', onShape); else if (portraitQ.addListener) portraitQ.addListener(onShape);
+  window.addEventListener('orientationchange', function(){ if (cineOn()) setTimeout(cineTurn, 150); });   // and once more when the turn has finished
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && cineOn()) cineOff(); });
   window.TSPcineTap = function(){ if (!cineOn()) return false; if (stage.classList.contains('cine-hide')) cineWake(); else { clearTimeout(cineT); stage.classList.add('cine-hide'); } return true; };
 
@@ -395,6 +401,7 @@
     return true;
   }
   function rotated(){
+    if (cineOn()) return;   // cinema mode looks after itself
     if (landQ.matches) {
       try { stage.scrollIntoView({ block: 'start' }); } catch (x) {}
       document.body.classList.add('tv');
