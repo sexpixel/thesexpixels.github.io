@@ -322,15 +322,64 @@
   if (soundBtn) soundBtn.addEventListener('click', function(){ if (sound && blocked) blocked = false; else { sound = !sound; blocked = false; } applySound(); });
   // Full screen: the whole player where the browser allows it; iPhones only allow a video itself to go
   // full screen, so there the Vimeo player opens in the phone's own full-screen view.
-  document.getElementById('fp-full').addEventListener('click', function(){
-    var videoFull = function(){ if (player && player.requestFullscreen) player.requestFullscreen().catch(function(){}); };
-    // iPhones (Safari and Chrome alike) don't allow a page element to go full screen, even when the
-    // browser offers the function: there, go straight to the video's own full-screen view.
-    var canPage = document.fullscreenEnabled || document.webkitFullscreenEnabled;
-    var fs = canPage && (stage.requestFullscreen || stage.webkitRequestFullscreen);
-    if (!fs) return videoFull();
-    try { var r = fs.call(stage); if (r && r.catch) r.catch(videoFull); } catch (e) { videoFull(); }
-  });
+  // Full screen = the site's own cinema mode. The player takes the whole screen with only a small control bar,
+  // and reels with a fill crop (crops.py) are cropped to their picture and fill the width; outside cinema mode
+  // they show their original frame. Real full screen where the browser allows it (computers, Android); iPhones
+  // have none, so there the player fills the window, and when the phone is upright the picture is turned on
+  // its side so you turn the phone to watch. The same button (Exit on the bar), Esc or leaving full screen ends it.
+  var cineBar = document.createElement('div'); cineBar.className = 'cine-bar';
+  var proxy = function(id, cls, label){
+    var src = document.getElementById(id); if (!src) return null;
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'fp-btn ' + cls; b.setAttribute('aria-label', label);
+    b.innerHTML = src.innerHTML;
+    b.addEventListener('click', function(e){ e.stopPropagation(); src.click(); cineWake(); });
+    cineBar.appendChild(b); return b;
+  };
+  var cExit = document.createElement('button'); cExit.type = 'button'; cExit.className = 'fp-btn cexit'; cExit.textContent = 'Exit';
+  cExit.addEventListener('click', function(e){ e.stopPropagation(); cineOff(); });
+  cineBar.appendChild(cExit);
+  proxy('fp-prev', 'ic', 'Previous reel'); var cPlay = proxy('fp-play', 'ic cplay', 'Play / pause'); proxy('fp-next', 'ic', 'Next reel');
+  var cSound = proxy('fp-sound', 'csound', 'Sound');
+  stage.appendChild(cineBar);
+  var mirror = function(){
+    if (cPlay && playBtn) cPlay.classList.toggle('paused', playBtn.classList.contains('paused'));
+    if (cSound && soundBtn) cSound.textContent = soundBtn.textContent;
+  };
+  if (window.MutationObserver) {
+    if (playBtn) new MutationObserver(mirror).observe(playBtn, { attributes: true, attributeFilter: ['class'] });
+    if (soundBtn) new MutationObserver(mirror).observe(soundBtn, { childList: true, characterData: true, subtree: true });
+  }
+  mirror();
+  var cineT = null, realFs = false;
+  function cineWake(){ stage.classList.remove('cine-hide'); clearTimeout(cineT); cineT = setTimeout(function(){ stage.classList.add('cine-hide'); }, 2500); }
+  function cineOn(){ return stage.classList.contains('cinema'); }
+  function recropSoon(){ [0, 80, 300, 700, 1200].forEach(function(ms){ setTimeout(function(){ if (window.TSPcrop) window.TSPcrop(stage, slot.querySelector('iframe')); }, ms); }); }
+  function cineTurn(){ stage.classList.toggle('turned', cineOn() && !inFs() && matchMedia('(orientation:portrait)').matches); recropSoon(); }
+  function cineStart(){
+    stage.classList.add('cinema'); document.documentElement.classList.add('cine-lock'); document.body.classList.add('cinema');
+    var fn = stage.requestFullscreen || stage.webkitRequestFullscreen;
+    if ((document.fullscreenEnabled || document.webkitFullscreenEnabled) && fn) {
+      try {
+        var r = fn.call(stage);
+        var lock = function(){ realFs = true; try { screen.orientation.lock('landscape').catch(function(){}); } catch (x) {} };   // Android: turn to landscape
+        if (r && r.then) r.then(function(){ lock(); cineTurn(); }).catch(function(){ cineTurn(); }); else lock();
+      } catch (x) {}
+    }
+    cineTurn(); cineWake();
+  }
+  function cineOff(){
+    if (!cineOn()) return;
+    stage.classList.remove('cinema', 'turned', 'cine-hide'); document.documentElement.classList.remove('cine-lock'); document.body.classList.remove('cinema');
+    clearTimeout(cineT);
+    try { screen.orientation.unlock(); } catch (x) {}
+    if (inFs()) { try { var x = (document.exitFullscreen || document.webkitExitFullscreen).call(document); if (x && x.catch) x.catch(function(){}); } catch (y) {} }
+    recropSoon();
+  }
+  document.getElementById('fp-full').addEventListener('click', function(){ if (cineOn()) cineOff(); else cineStart(); });
+  ['fullscreenchange', 'webkitfullscreenchange'].forEach(function(ev){ document.addEventListener(ev, function(){ if (!inFs() && realFs) { realFs = false; cineOff(); } else recropSoon(); }); });   // left real full screen (Esc, back gesture): leave cinema too
+  window.addEventListener('orientationchange', function(){ if (cineOn()) setTimeout(cineTurn, 120); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && cineOn()) cineOff(); });
+  window.TSPcineTap = function(){ if (!cineOn()) return false; if (stage.classList.contains('cine-hide')) cineWake(); else { clearTimeout(cineT); stage.classList.add('cine-hide'); } return true; };
 
   // Turning a phone sideways fills the screen with the player and hides the overlays. Browsers only allow real
   // full screen after a touch, so where it exists (Android) the first tap goes full screen; iPhones have no page
@@ -379,6 +428,7 @@
     swipe.addEventListener('touchmove', function(e){ var t = e.touches[0]; if (Math.abs(t.clientX - sx) > 10 || Math.abs(t.clientY - sy) > 10) moved = true; }, { passive: true });
     swipe.addEventListener('touchend', function(e){
       var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+      if (stage.classList.contains('turned')) { var q = dx; dx = dy; dy = -q; }   // cinema mode turned on its side: the picture's left-right runs down the screen
       if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
         var dir = dx < 0 ? 1 : -1;
         if (hint) { hint.classList.add('gone'); hint = null; try { localStorage.setItem('tsp-swiped', '1'); } catch (x) {} }
@@ -386,6 +436,7 @@
         setTimeout(function(){ play(cur + dir); }, 170);
       } else if (!moved && Date.now() - st < 400) {
         // Phone held upright: the controls sit under the video and always show, so a tap still plays or pauses.
+        if (window.TSPcineTap && window.TSPcineTap()) return;   // cinema mode: a tap shows or hides its control bar
         if (matchMedia('(orientation:portrait) and (max-width:760px)').matches) { if (playBtn) togglePlay(); }
         // sideways: site.js shows or hides the overlays
       }

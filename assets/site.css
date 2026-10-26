@@ -1186,3 +1186,23 @@ a.sk-card:hover{border-color:var(--accent)}
   body.tv .heroui,body.tv .reelbar,body.tv .reelbar .fp-ctrls > *{pointer-events:none !important}
   body.tv .fp-swipehint{opacity:0}
 }
+
+/* Cinema mode (Full screen): the player takes the whole screen; only its own small control bar shows, and a tap
+   shows or hides it. On an upright phone without real full screen (iPhone) the player is turned on its side. */
+html.cine-lock,html.cine-lock body{overflow:hidden !important}
+body.cinema .nav{display:none !important}
+.hero.fp-player.cinema{position:fixed !important;inset:0 !important;z-index:10000;width:100vw !important;height:100dvh !important;max-height:none !important;
+  aspect-ratio:auto !important;margin:0 !important;padding:0 !important;border:0 !important;background:#000 !important;display:block !important;transform:none}
+.hero.fp-player.cinema.turned{inset:auto !important;top:50% !important;left:50% !important;width:100dvh !important;height:100vw !important;transform:translate(-50%,-50%) rotate(90deg)}
+.hero.fp-player.cinema .fp-slot{position:absolute !important;inset:0 !important;width:auto !important;height:auto !important;aspect-ratio:auto !important;margin:0 !important}
+.hero.fp-player.cinema .fp-slot iframe{top:0 !important;left:0 !important;width:100% !important;height:100% !important;transform:none !important}
+.hero.fp-player.cinema .heroui,.hero.fp-player.cinema .reelbar,.hero.fp-player.cinema .herotop,.hero.fp-player.cinema .scrollcue,.hero.fp-player.cinema .fp-swipehint{display:none !important}
+.cine-bar{display:none}
+.hero.fp-player.cinema .cine-bar{display:flex;position:absolute;left:0;right:0;bottom:0;z-index:6;justify-content:center;align-items:center;gap:10px;
+  padding:18px 16px max(14px, env(safe-area-inset-bottom));background:linear-gradient(transparent, rgba(0,0,0,.65));transition:opacity .5s ease}
+.hero.fp-player.cinema.cine-hide .cine-bar{opacity:0;pointer-events:none}
+.cine-bar .cexit{margin-right:auto}
+.cine-bar .csound{margin-left:auto}
+.cine-bar .cplay .pl{display:none}
+.cine-bar .cplay.paused .pz{display:none}
+.cine-bar .cplay.paused .pl{display:inline}

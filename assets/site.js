@@ -78,7 +78,7 @@
     window.addEventListener('touchstart', function(e){ var t = e.touches[0]; tx = t.clientX; ty = t.clientY; tt = Date.now(); if (!isLand()) wake(); }, {passive:true});
     window.addEventListener('touchend', function(){ tt2 = Date.now(); }, {passive:true});
     window.addEventListener('touchend', function(e){
-      if (!isLand() || !onHero()) return;
+      if (!isLand() || !onHero() || document.body.classList.contains('cinema')) return;   // cinema mode handles its own taps
       var t = e.changedTouches[0];
       if (Math.abs(t.clientX - tx) > 18 || Math.abs(t.clientY - ty) > 18 || Date.now() - tt > 700) return;
       var hit = e.target.closest && e.target.closest('a,button,input,select,textarea,label');
@@ -103,6 +103,9 @@
     var props = ['width', 'height', 'left', 'top', 'transform', 'clip-path'];
     if (window.TSPplaceTitle) window.TSPplaceTitle();
     if (c.length < 4 || !(c[0] || c[1] || c[2] || c[3])) { props.forEach(function(k){ frame.style.removeProperty(k); }); return; }
+    // A fill crop (cut to the picture and fill the width) only applies in cinema mode (Full screen); otherwise
+    // the reel shows its original frame.
+    if (c[4] === 1 && stage.classList.contains('fp-player') && !stage.classList.contains('cinema')) { props.forEach(function(k){ frame.style.removeProperty(k); }); return; }
     var t = c[0] / 100, b = c[1] / 100, l = c[2] / 100, r = c[3] / 100, fill = c[4] === 1;
     var ar = parseFloat(getComputedStyle(stage).getPropertyValue('--ar')) || 16 / 9;
     var box = frame.closest('.fp-slot') || stage;   // on an upright phone the video sits in its own box under the page name
