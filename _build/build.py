@@ -538,6 +538,9 @@ def reel_cell(i, r):
         elif r["video"].startswith("vimeo:"):
             vid, _, h = r["video"][6:].partition(":"); img = f'<img data-vimeo="https://vimeo.com/{vid}{"/" + h if h else ""}" alt="" hidden>'
         elif r["video"].startswith("youtube:"): img = f'<img src="https://i.ytimg.com/vi/{r["video"].split(":")[1]}/hqdefault.jpg" alt="" loading="lazy">'
+        from crops import LINK_ONLY
+        if r["video"] in LINK_ONLY:   # can't play here: the tile opens the video on its own site
+            return f'''      <a class="fp-cell fp-out" href="https://youtu.be/{r["video"].split(":")[1]}" target="_blank" rel="noopener" data-title="{E(r["title"])}" data-phases="{phases_attr(r)}" data-fms="{formats_attr(r)}" data-ros="{roles_attr(r)}">{img}<span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])} · Watch on YouTube ↗</i></span></a>'''
         return f'''      <button class="fp-cell" type="button" data-i="{i}" data-src="{r["video"]}" data-title="{E(r["title"])}" data-phases="{phases_attr(r)}" data-fms="{formats_attr(r)}" data-ros="{roles_attr(r)}" data-role="{E(reel_info(r)[0])}" data-format="{E(reel_info(r)[1])}" data-phase="{E(reel_info(r)[2])}"{crop_attr(r["video"])}>{img}<span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])}</i></span><span class="play"></span></button>'''
     return f'''      <div class="fp-cell fp-soon" data-phases="{phases_attr(r)}" data-fms="{formats_attr(r)}" data-ros="{roles_attr(r)}"><span class="fp-cap"><b>{E(r["title"])}</b><i>{E(r["kind"])} · coming soon</i></span></div>'''
 

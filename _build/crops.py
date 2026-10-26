@@ -14,6 +14,12 @@ FADES = {
     "youtube:NSJe0wIv718:30:74": (5, 2),  # (in, out) seconds; a single number sets both. Guardians of the Galaxy · Prison Break, asked by Mark 26 Oct 2026
 }
 
+# Reels that can't play inside the site (e.g. age-restricted on YouTube): the tile links out to the video
+# instead, and the player skips it.
+LINK_ONLY = {
+    "youtube:umS0sw8_D30",  # Klaxons · Twin Flames: age-restricted on YouTube, so it can't be embedded (Mark, 26 Oct 2026)
+}
+
 def crop_of(spec):
     return CROPS.get(spec)
 
