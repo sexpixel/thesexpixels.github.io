@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Sound test</title>
+<style>
+  :root{color-scheme:dark}
+  body{margin:0;background:#111012;color:#eeeae4;font:15px/1.4 -apple-system,system-ui,sans-serif;padding:16px}
+  h1{font-size:20px;margin:0 0 4px}
+  p{margin:0 0 12px;color:#bdb7b0}
+  h2{font-size:14px;letter-spacing:2px;text-transform:uppercase;color:#d4497c;margin:22px 0 8px}
+  .vid{position:relative;width:100%;aspect-ratio:16/9;background:#000;margin-bottom:8px}
+  .vid iframe,.vid > div{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .btns{display:flex;flex-wrap:wrap;gap:8px}
+  button{font:inherit;font-size:14px;color:#eeeae4;background:#1c1a1d;border:1px solid #444;border-radius:999px;padding:10px 14px}
+  button:active{background:#d4497c;color:#111}
+  #log{margin-top:20px;font:12px/1.5 ui-monospace,Menlo,monospace;white-space:pre-wrap;background:#1c1a1d;padding:12px;border-radius:8px;min-height:120px}
+</style>
+</head>
+<body>
+<h1>Sound test</h1>
+<p>Do the steps in order, top to bottom, with your phone upright. Each step writes what happened in the log at the bottom. Then screenshot the log and send it to Claude.</p>
+
+<h2>Vimeo</h2>
+<div class="vid" id="vbox"></div>
+<div class="btns">
+  <button id="v1">1 · Start (muted)</button>
+  <button id="v2">2 · Sound on (site button)</button>
+  <button id="v3">3 · Load next: VH-1 (locked)</button>
+  <button id="v4">4 · Load next: Guardians Vol. 3</button>
+  <button id="v5">5 · Load next: Showreel 2020</button>
+</div>
+
+<h2>YouTube</h2>
+<div class="vid"><div id="ybox"></div></div>
+<div class="btns">
+  <button id="y1">6 · Start (muted)</button>
+  <button id="y2">7 · Sound on (site button)</button>
+  <button id="y3">8 · Load next YouTube reel</button>
+</div>
+
+<h2>Log</h2>
+<div id="log"></div>
+
+<script src="https://player.vimeo.com/api/player.js"></script>
+<script>
+var logEl = document.getElementById('log');
+function log(m){ var t = new Date().toTimeString().slice(0, 8); logEl.textContent += t + '  ' + m + '\n'; }
+log('Phone: ' + navigator.userAgent.replace(/^Mozilla\/5\.0 /, '').slice(0, 90));
+
+// ---- Vimeo
+var vp = null, vf = null;
+function vState(label){
+  if (!vp) return;
+  setTimeout(function(){
+    Promise.all([vp.getPaused(), vp.getMuted(), vp.getVolume(), vp.getVideoId()]).then(function(d){
+      log(label + ' → video ' + d[3] + (d[0] ? ' PAUSED' : ' playing') + (d[1] || d[2] === 0 ? ', MUTED' : ', SOUND ON (vol ' + d[2] + ')'));
+    }).catch(function(e){ log(label + ' → could not read state: ' + (e && e.name || e)); });
+  }, 1500);
+}
+document.getElementById('v1').onclick = function(){
+  var box = document.getElementById('vbox'); box.innerHTML = '';
+  vf = document.createElement('iframe');
+  vf.src = 'https://player.vimeo.com/video/1232958213?h=ffbea294d7&autoplay=1&muted=1&controls=0&title=0&byline=0&portrait=0&dnt=1&playsinline=1';
+  vf.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media');
+  vf.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+  box.appendChild(vf);
+  vp = new Vimeo.Player(vf);
+  vp.on('error', function(e){ log('Vimeo ERROR: ' + (e && (e.name + ' ' + (e.message || ''))).slice(0, 140)); });
+  vp.on('loaded', function(e){ log('Vimeo loaded video ' + (e && e.id)); });
+  log('1 · Vimeo started muted (Compositing showreel 2026)');
+  vState('1');
+};
+document.getElementById('v2').onclick = function(){
+  if (!vp) return log('Do step 1 first');
+  vp.setMuted(false).catch(function(e){ log('setMuted failed: ' + (e && e.name)); });
+  vp.setVolume(1).catch(function(){});
+  vp.play().catch(function(e){ log('play failed: ' + (e && e.name)); });
+  log('2 · Asked Vimeo for sound');
+  vState('2');
+};
+function vLoad(n, id, label){
+  if (!vp) return log('Do step 1 first');
+  log(n + ' · Loading ' + label + ' into the same player…');
+  vp.loadVideo(id).then(function(){ log(n + ' · load accepted'); return vp.play(); })
+    .catch(function(e){ log(n + ' · load FAILED: ' + (e && (e.name + ' ' + (e.message || ''))).slice(0, 140)); });
+  vState(n);
+}
+document.getElementById('v3').onclick = function(){ vLoad('3', 1236267195, 'VH-1 (embed limited to thesexpixels.com)'); };
+document.getElementById('v4').onclick = function(){ vLoad('4', 1014147480, 'Guardians of the Galaxy Vol. 3'); };
+document.getElementById('v5').onclick = function(){ vLoad('5', 389670596, 'Showreel 2020'); };
+
+// ---- YouTube
+var yp = null;
+function yState(label){
+  if (!yp) return;
+  setTimeout(function(){
+    try {
+      var st = yp.getPlayerState(), names = { '-1': 'not started', 0: 'ENDED', 1: 'playing', 2: 'PAUSED', 3: 'buffering', 5: 'cued' };
+      log(label + ' → ' + (names[st] || st) + (yp.isMuted() ? ', MUTED' : ', SOUND ON (vol ' + yp.getVolume() + ')'));
+    } catch (e) { log(label + ' → could not read state'); }
+  }, 1500);
+}
+var ytReady = new Promise(function(res){ window.onYouTubeIframeAPIReady = res; var s = document.createElement('script'); s.src = 'https://www.youtube.com/iframe_api'; document.head.appendChild(s); });
+document.getElementById('y1').onclick = function(){
+  ytReady.then(function(){
+    if (yp) return log('YouTube already started');
+    var box = document.getElementById('ybox');
+    if (!box) { box = document.createElement('div'); box.id = 'ybox'; document.querySelectorAll('.vid')[1].appendChild(box); }
+    yp = new YT.Player('ybox', { videoId: 'NSJe0wIv718', playerVars: { autoplay: 1, mute: 1, controls: 0, playsinline: 1, rel: 0, start: 30 },
+      events: { onError: function(e){ log('YouTube ERROR ' + e.data); } } });
+    log('6 · YouTube started muted (Guardians · Prison Break)');
+    yState('6');
+  });
+};
+document.getElementById('y2').onclick = function(){
+  if (!yp) return log('Do step 6 first');
+  try { yp.unMute(); yp.setVolume(100); yp.playVideo(); } catch (e) { log('unMute failed'); }
+  log('7 · Asked YouTube for sound');
+  yState('7');
+};
+document.getElementById('y3').onclick = function(){
+  if (!yp) return log('Do step 6 first');
+  try { yp.loadVideoById({ videoId: 'z1B5W55TFyo' }); } catch (e) { log('load failed'); }
+  log('8 · Loaded The Ballad of a Small Player trailer into the same player');
+  yState('8');
+};
+</script>
+</body>
+</html>
