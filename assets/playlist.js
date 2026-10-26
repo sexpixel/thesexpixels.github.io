@@ -211,7 +211,13 @@
         pl.on('ended', function(){ if (pl === player) play(cur + 1); });
         pl.on('play', function(){ if (pl !== player) return; showPaused(false); if (pl._settled !== pl._tok) { pl._settled = pl._tok; settleSound(pl); } });
         pl.on('pause', function(){ if (pl === player) showPaused(true); });
-        pl.on('error', function(){ if (pl === player) skip(pl); });
+        pl.on('error', function(e){
+          if (pl !== player) return;
+          // Only a reel that can't load (privacy, removed) is skipped. A refused play or sound request (iPhones
+          // refuse sound without a tap) is not a dead reel: carry on muted instead.
+          if (e && (e.name === 'NotAllowedError' || e.method)) { if (sound) blocked = true; showSound(); mutePl(pl); resumePl(pl); return; }
+          skip(pl);
+        });
         if (window.TSPnoSubs) window.TSPnoSubs(pl); else if (pl.disableTextTrack) pl.disableTextTrack().catch(function(){});   // no subtitles, even if Vimeo turns them on later
         sizeVimeo(pl, f);
         rescue(pl);
