@@ -132,12 +132,18 @@
     if (hero) hero.style.paddingTop = window.matchMedia('(orientation:portrait)').matches ? y : '';
   };
   window.TSPplaceTitle();
-  window.addEventListener('resize', function(){
+  var recrop = function(){
     window.TSPplaceTitle();
     document.querySelectorAll('[data-crop]').forEach(function(st){
       if (st.classList.contains('hero')) window.TSPcrop(st, st.querySelector('.fp-slot iframe, :scope > iframe'));
     });
-  });
+  };
+  window.addEventListener('resize', recrop);
+  // Phones report the new size in steps while turning (and as the browser bars slide), so measure again
+  // a few times after a turn; otherwise a cropped reel can be placed for the old shape and sit off screen.
+  var again = function(){ [60, 250, 600, 1200].forEach(function(ms){ setTimeout(recrop, ms); }); };
+  window.addEventListener('orientationchange', again);
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', recrop);
 
   // Keep Vimeo subtitles off. Vimeo can switch a caption track on after the video starts (when the
   // video has one set as default), so they're switched off again whenever a track turns on.
