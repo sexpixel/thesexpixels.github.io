@@ -218,4 +218,9 @@ TAGS = {'vimeo:389670596': {'order': 0,
                                'title': 'Guardians of the Galaxy · Prison Break',
                                'phases': ['Post-production'],
                                'roles': ['Nuke Compositor'],
-                               'formats': ['Feature film']}}
+                               'formats': ['Feature film']},
+ 'youtube:byd5PRryi_Y': {'order': 43,
+                         'title': 'Rogue Trooper · Official trailer',
+                         'phases': ['Post-production'],
+                         'roles': ['Nuke Compositor'],
+                         'formats': ['Feature animation']}}
