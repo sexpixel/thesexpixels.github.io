@@ -269,7 +269,7 @@
   var main = document.querySelector('main[class^="pg-"]:not(.pg-fleapit)'); if (!main) return;
   var rail = main.querySelector('.fp-reels .rail'); if (!rail) return;
   var ua = navigator.userAgent, floatingBar = /Safari/.test(ua) && /iP(hone|od)/.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
-  var BAR = 14, BEHIND = floatingBar ? 90 : 0;   // Safari reports the screen as ending at the top of its floating bar, so the line can sit just above it; what follows also clears the strip behind the bar
+  var BAR = 46, BEHIND = floatingBar ? 90 : 0;   // Safari reports the screen as ending at the top of its floating bar, so the line can sit just above it; what follows also clears the strip behind the bar
   function fit(){
     main.classList.remove('pg-fit'); main.style.removeProperty('--rp'); main.style.removeProperty('--rm');
     if (!matchMedia('(orientation:portrait) and (max-width:760px)').matches) return;
